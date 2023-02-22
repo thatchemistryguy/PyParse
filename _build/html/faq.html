@@ -2,9 +2,12 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="#" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Advanced Guide" href="advanced_guide.html" /><link rel="prev" title="Additional Parameters" href="add_param.html" />
 
-    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 --><title>Search - PyParse 2023.1.0 documentation</title><link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
+        <title>Frequently Asked Questions - PyParse 2023.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -132,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -146,18 +149,18 @@
   
   <span class="sidebar-brand-text">PyParse 2023.1.0 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="#" role="search">
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_desc.html">PyParse Outputs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_param.html">Additional Parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced_guide.html">Advanced Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyparse_det.html">PyParse Function Detail</a></li>
 </ul>
@@ -179,7 +182,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -187,31 +191,81 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          
-<noscript>
-<div class="admonition error">
-  <p class="admonition-title">Error</p>
-  <p>
-    Please activate JavaScript to enable the search functionality.
-  </p>
-</div>
-</noscript>
-
-<div id="search-results"></div>
+          <section id="frequently-asked-questions">
+<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<p>Below are some commonly asked questions which may help when running an analysis!</p>
+<section id="which-analysis-type-should-i-choose">
+<h3>Which analysis type should I choose?<a class="headerlink" href="#which-analysis-type-should-i-choose" title="Permalink to this heading">#</a></h3>
+<blockquote>
+<div><p>This depends on your plate and the information you want to extract – speak to a lead user or super
+user for advice, or refer to the “Help” tab in Pipeline Pilot for detail on each analysis type.</p>
+</div></blockquote>
+</section>
+<section id="my-plate-design-has-deliberate-gaps-empty-wells-in-it-what-do-i-do">
+<h3>My plate design has deliberate gaps/empty wells in it - what do I do?<a class="headerlink" href="#my-plate-design-has-deliberate-gaps-empty-wells-in-it-what-do-i-do" title="Permalink to this heading">#</a></h3>
+<blockquote>
+<div><p>Continue generating the platemap as per the guide on <a class="reference internal" href="installation.html#preparing-a-platemap-label"><span class="std std-ref">Preparing a Platemap</span></a>, omitting
+any wells which shouldn’t be used in the analysis.</p>
+</div></blockquote>
+</section>
+<section id="i-d-like-to-view-the-results-in-excel-spotfire-another-program-how-do-i-do-this">
+<h3>I’d like to view the results in Excel/Spotfire/another program - how do I do this?<a class="headerlink" href="#i-d-like-to-view-the-results-in-excel-spotfire-another-program-how-do-i-do-this" title="Permalink to this heading">#</a></h3>
+<blockquote>
+<div><p>The compoundtable.csv and outputTable.csv output files contain all the information used
+to generate the visualisations detailed in the section on <a class="reference internal" href="output_desc.html#pyparse-outputs-label"><span class="std std-ref">PyParse Outputs</span></a>.
+Import these files into your preferred data analysis program for custom visualisations.</p>
+</div></blockquote>
+</section>
+<section id="the-program-didn-t-find-my-product">
+<h3>The program didn’t find my product!!<a class="headerlink" href="#the-program-didn-t-find-my-product" title="Permalink to this heading">#</a></h3>
+<p>Check that the compound strongly ionises to give an [M+H]+, [M+2H]2+ or [M+3H]3+ ion, or Boc group degradation fragment ions.
+PyParse uses a generous limit to ensure that background MS noise isn’t captured as a compound. If the compound
+doesn’t ionise, add the retention time to the platemap to force PyParse to accept peaks at that time which don’t ionise correctly
+<a class="reference internal" href="installation.html#adding-a-rt-label"><span class="std std-ref">Specifying a Retention Time in the Platemap</span></a></p>
+</section>
+<section id="the-output-says-peak-overlap-detected-for-my-compound-what-does-this-mean">
+<h3>The output says “Peak overlap detected!” for my compound – what does this mean?<a class="headerlink" href="#the-output-says-peak-overlap-detected-for-my-compound-what-does-this-mean" title="Permalink to this heading">#</a></h3>
+<p>PyParse found that in the Best Well for that product, the compound peak overlapped with another
+peak in the LCMS. The calculated purity given in the “Purity of Best Well” column may therefore be
+incorrect. Check the LCMS yourself, and re-run using a different modifier (typically formic acid, ammonium bicarbonate or
+trifluoroacetic acid).</p>
+</section>
+</section>
+</section>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="advanced_guide.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Advanced Guide</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="add_param.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Additional Parameters</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -230,8 +284,34 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Frequently Asked Questions</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#which-analysis-type-should-i-choose">Which analysis type should I choose?</a></li>
+<li><a class="reference internal" href="#my-plate-design-has-deliberate-gaps-empty-wells-in-it-what-do-i-do">My plate design has deliberate gaps/empty wells in it - what do I do?</a></li>
+<li><a class="reference internal" href="#i-d-like-to-view-the-results-in-excel-spotfire-another-program-how-do-i-do-this">I’d like to view the results in Excel/Spotfire/another program - how do I do this?</a></li>
+<li><a class="reference internal" href="#the-program-didn-t-find-my-product">The program didn’t find my product!!</a></li>
+<li><a class="reference internal" href="#the-output-says-peak-overlap-detected-for-my-compound-what-does-this-mean">The output says “Peak overlap detected!” for my compound – what does this mean?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
@@ -244,8 +324,5 @@
     <script src="_static/scripts/furo.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    
-<script src="_static/searchtools.js"></script>
-<script src="_static/language_data.js"></script>
-<script src="searchindex.js"></script></body>
+    </body>
 </html>

@@ -9,6 +9,7 @@
         <title>Installation and Run - PyParse 2023.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -159,6 +160,8 @@
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Installation and Run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_desc.html">PyParse Outputs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_param.html">Additional Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_guide.html">Advanced Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyparse_det.html">PyParse Function Detail</a></li>
 </ul>
 
@@ -209,10 +212,11 @@
 as part of the Github repository.</p>
 </section>
 <section id="preparing-a-platemap">
-<h2>Preparing a Platemap<a class="headerlink" href="#preparing-a-platemap" title="Permalink to this heading">#</a></h2>
-<p>To find the correct set of peaks, PyParse requires a platemap detailing the
-structures of the materials that are expected in each well.</p>
-<p>As a minimum, the structure of the product expected in each well is required:</p>
+<span id="preparing-a-platemap-label"></span><h2>Preparing a Platemap<a class="headerlink" href="#preparing-a-platemap" title="Permalink to this heading">#</a></h2>
+<p>To run the analysis correctly, PyParse requires a platemap detailing the
+structures of the materials that are expected in each well. This platemap should be provided as
+Comma-Separated-Values (.csv) file.</p>
+<p>As a minimum, the structure of the desired product expected in each well is required, provided as a SMILES string:</p>
 <div class="table-wrapper docutils container" id="id1">
 <table class="docutils align-default" id="id1">
 <caption><span class="caption-text">Example Platemap</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
@@ -364,7 +368,7 @@ in the column header, e.g.</p>
 </div>
 </section>
 <section id="specifying-a-retention-time-in-the-platemap">
-<h2>Specifying a Retention Time in the Platemap<a class="headerlink" href="#specifying-a-retention-time-in-the-platemap" title="Permalink to this heading">#</a></h2>
+<span id="adding-a-rt-label"></span><h2>Specifying a Retention Time in the Platemap<a class="headerlink" href="#specifying-a-retention-time-in-the-platemap" title="Permalink to this heading">#</a></h2>
 <p>By specifying a retention time in the platemap, PyParse can be guided to use only the peaks which are present
 close to that time.</p>
 <p>In a typical analysis, there may be many sets of peaks which contain the m/z which corresponds to that compound. In the below example,
@@ -496,5 +500,7 @@ or won’t use the ratio of product:internal standard to compare wells.</p>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     </body>
 </html>

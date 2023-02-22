@@ -13,7 +13,7 @@ draw conclusions as to the success or otherwise of the reaction. It also provide
 of the processed data for long term storage, searching, and machine learning.
 
 The visualisations and logs are formatted into an easy-to-use HTML format. All data is also wrapped up into a zip file 
-for each of file sharing. 
+for ease of file sharing. 
 
 
 
@@ -39,6 +39,36 @@ and the size of each wedge corresponds to the LCMS UV percentage area of the pea
 	
 	Example Trellised Pie-Chart Plot
 	
+Compound Summary Table
+------------------------
+
+The compound summary table shows the compounds that were provided in the platemap with:
+
+* The name given to the compound
+* The structure, rendered using RDKit
+* The exact masses that were calculated (including halide isotope and Boc-degradation fragments)
+* The retention time observed for that compound
+* The m/z ions which were observed for that compound
+* The well which was deemed to be the best, depending on the plot_type parameter which was used
+* The purity by LCMS UV percentage area of the compound in the best well
+
+.. important:: 
+	Doubly and triply protonated ions, such as [M+2H]2+ and [M+3H]3+, are not explictly described in this 
+	table, but are nonetheless calculated by PyParse and used to find hits from the LCMS data. 
+
+There are two further columns which PyParse populates in cases where the analysis was complicated by 
+the data itself:
+
+* Overlap Detection
+	PyParse notes cases where the peak found in the "Best Well" was found to overlap with another peak, i.e.
+	a shoulder peak. This may impact the peak area described in the LCMS data file, and warns the user to 
+	carefully check the conclusion in this case.
+* Potential Conflicts
+	There may be cases where the compound is found to have the same or similar retention time as another compound. 
+	In these cases, the compound may co-elute with another, affecting the reported purity. Whilst PyParse attempts
+	to find all examples of co-elution, these can go undetected. Thus, PyParse warns the user that this is the case 
+	and that they should check the conclusions. 
+	
 Hit Validation Graph
 ----------------------
 
@@ -55,8 +85,9 @@ discounted by the hit validation algorithm in PyParse.
 	
 * One hit validation graph is generated per compound
 * All hits (peaks which contain the desired m/z) are plotted by their retention time vs the well in which they were observed.
+* The size of the hit corresponds to the LCMS UV peak percentage area
 * Hits coloured in black are those which were used to generate the heatmap, pie-charts and other outputs
-* Hits coloured in red are those which were discarded by the hit validation algorithm. 
+* Hits coloured in red are those which were discarded by the hit validation algorithm, i.e. false positives. 
 * Hits are shaped by the cluster to which they were assigned during validation.
 
 

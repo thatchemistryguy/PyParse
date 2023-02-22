@@ -14,13 +14,16 @@ The following packages should be installed if not already available:
 The suggested version of each package is provided in parentheses. A conda text file is provided 
 as part of the Github repository. 
 
+.. _preparing_a_platemap_label:
+
 Preparing a Platemap
 ---------------------
 
-To find the correct set of peaks, PyParse requires a platemap detailing the 
-structures of the materials that are expected in each well. 
+To run the analysis correctly, PyParse requires a platemap detailing the 
+structures of the materials that are expected in each well. This platemap should be provided as
+Comma-Separated-Values (.csv) file. 
 
-As a minimum, the structure of the product expected in each well is required:
+As a minimum, the structure of the desired product expected in each well is required, provided as a SMILES string:
 
 .. csv-table:: Example Platemap
 	:header-rows: 1
@@ -80,6 +83,7 @@ in the column header, e.g.
 	"A5", "CCN(CC)c1ccccc1", "DiEthyl Product", "Clc1ccccc1", 0.95, "Fc1ccccc1", "", "c1ccccc1"
 	"A6", "CCN(CC)c1ccccc1", "DiEthyl Product", "Clc1ccccc1", 0.95, "Fc1ccccc1", "", "c1ccccc1"
 
+.. _adding_a_rt_label:
 
 Specifying a Retention Time in the Platemap
 --------------------------------------------
@@ -114,8 +118,6 @@ Each analysis should specify, at a minimum, the locations of the LCMS .rpt file 
 	:caption: Standard Analysis for a 96-Well Plate 
 	
 	python PyParse.py example_rpt.rpt example_platemap.csv
-	
-	
 	
 
 Commonly Used Optional Parameters

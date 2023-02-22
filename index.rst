@@ -57,4 +57,6 @@ Contents
    installation
    output_desc
    add_param
+   faq
+   advanced_guide
    pyparse_det
