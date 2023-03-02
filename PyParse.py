@@ -244,7 +244,7 @@ def importStructures(filename):
         #Look for halide isotops if no Boc group was found. 
         else:
             if "Cl" in index or "Br" in index:
-                mass2.append(mw1 + 2)
+                mass2.append(round(mw1 + 2, 2))
             else:
                 mass2.append(0)
 
@@ -259,7 +259,6 @@ def importStructures(filename):
         else: 
             mass3.append(0)
         
-    
     #Append the mass data to the dataframe
     compoundDF["mass1"] = mass1
     compoundDF["mass2"] = mass2
@@ -274,6 +273,7 @@ def getUserReadableWell(wellno):
     e.g. well 11 becomes "B5" for a 4*6 well plate
 
     :param wellno: An integer representing a specific well on the plate
+    
     :return: A string representing a specific well on the plate
     """
     
@@ -291,6 +291,7 @@ def getChromatogram(spectrum):
     and extracts the data into two lists, corresponding to x-values and y-values. 
     
     :param spectrum: Section of rpt file as string
+    
     :return: A list of 2 lists, [x-values, y-values]
     """            
     
@@ -323,6 +324,7 @@ def getMSData(spectrum):
     normalised intensity.
     
     :param spectrum: Section of rpt file as string
+    
     :return: 2-D list in following format: 
         [m/z value, normalised intensity of that value]
     """
@@ -357,6 +359,7 @@ def getUVData(spectrum):
     specified in options.
     
     :param spectrum: Section of rpt file as string
+    
     :return: UV maxima as a list
     """
 
@@ -387,13 +390,14 @@ def getUVData(spectrum):
 
 def convertRPT2Dict(filename):
     """
-    Converts the input .rpt file into a dict where each dict index corresponds to a well.
-    Each dict value contains a list of peaks as dictionaries with the 
-    peak area, m/z and UV (if available) data present. 
+    Converts the input .rpt file into a dictionary where each index corresponds to a well.
+    Each dictionary value contains a list of peaks, where each peak is represented as a dictionary
+    with the peak area, m/z and UV (if available) data present. 
     
     :param filename: Address of the input file
-    :return: List comprising [a dictionary of all peaks in all wells, a list containing each chromatogram,
-                the sample ID for each well] 
+    
+    :return: List comprising: [a dictionary of all peaks in all wells, a list containing each chromatogram,
+                a list of the sample IDs for each well] 
     """
     
     wellData = []
@@ -591,6 +595,7 @@ def findHits(compound, dataTable):
     :param compound: A Series corresponding to a specific compound
                      from the compoundDF pandas dataframe
     :param dataTable: A dictionary of all peaks in all wells for the plate
+    
     :return: a list of hits, where each item in the list is a dictionary
     """
 
@@ -625,9 +630,9 @@ def findHits(compound, dataTable):
                             intensity_pc = intensity/total_ms_plus * 100
                             if math.isclose(targetmass+1.01, mass, abs_tol=options.mass_abs_tol):
                                 mass_plus.append([mass, intensity_pc])
-                            elif math.isclose((targetmass+2.02)/2, mass, abs_tol=options.mass_abs_tol):
+                            elif math.isclose((targetmass+2.02)/2, mass, abs_tol=options.mass_abs_tol) and options.calc_higherions == "True":
                                 mass_plus.append([mass, intensity_pc])
-                            elif math.isclose((targetmass+3.03)/3, mass, abs_tol=options.mass_abs_tol):
+                            elif math.isclose((targetmass+3.03)/3, mass, abs_tol=options.mass_abs_tol) and options.calc_higherions == "True":
                                 mass_plus.append([mass, intensity_pc])
 
                                 
@@ -672,6 +677,7 @@ def refineClusterByTime(cluster, comments, expected_rt):
     
     :param cluster: list of dictionaries, where each dictionary is a hit
     :param comments: A list of comments for that structure so far.
+    
     :return: List comprising [a dictionary for the refined cluster, list of comments]
     """
 
@@ -752,6 +758,7 @@ def refineClusterByUV(cluster, UVdatafound, comments):
     :param cluster: a dict, with list of dicts for each header
     :param UVdatafound: boolean for whether the rpt data contains UV data
     :param comments: A list of comments for that structure so far
+    
     :return: List comprising [a dictionary for the refined cluster, list of comments]
     """
     
@@ -823,6 +830,7 @@ def refineClusterByMassConf(cluster, comments):
     
     :param cluster: a dict, with list of dicts for each header
     :param comments: A list of comments for the compound so far
+    
     :return: List comprising [a dictionary for the refined cluster, list of comments]
     """
     
@@ -865,6 +873,7 @@ def selectClusterByMassConf(clusters):
     
     :param clusters: a list of dicts, with list of dicts for each header
     :return refined_clusters: a list of dicts, with list of dicts for each header
+    
     :return discarded_clusters: a list of dicts, with list of dicts for each header
     """
     
@@ -902,6 +911,7 @@ def selectClusterBySize(clusters):
     
     :param clusters: a list of dicts, with list of dicts for each header
     :return refined_clusters: a list of dicts, with list of dicts for each header
+    
     :return discarded_clusters: a list of dicts, with list of dicts for each header
     """
     
@@ -1043,7 +1053,7 @@ def validateHits(cpname, peakList, expected_rt):
     #Note: if options.validate is set to true, validation may still run 
     #using the one cluster identified from the given retention time
     #(assuming one was)      
-    if len(hitwells) > options.min_no_of_wells and options.validate:
+    if len(hitwells) > options.min_no_of_wells and options.validate == "True":
            
         #iterate through the clusters and refine each cluster
         #by time, then by UV, then by massconf.
@@ -1153,7 +1163,12 @@ def validateHits(cpname, peakList, expected_rt):
                     
                     max_val = max(peak[id_max] for peak in well["green"])
                     peak_added = False
-                    for peak in well["green"]:
+                    
+                    #Sort the peaks by their peak area, so that if two
+                    #peaks have the same mass_conf when options.mass_or_area is
+                    #equal to "mass_conf", the largest peak is selected in preference. 
+
+                    for peak in sorted(well["green"], key = lambda x: x["area"], reverse=True):
                         if peak_added == False and peak[id_max] == max_val:
                             output["green"].append(peak)
                             comment_text.append(f'Largest {id_max} selected in preference to others available for well '
@@ -1180,7 +1195,12 @@ def validateHits(cpname, peakList, expected_rt):
                 id_max = options.mass_or_area
                 max_val = max(peak[id_max] for peak in well["orange"])
                 peak_added = False
-                for peak in well["orange"]:
+
+                #Sort the peaks by their peak area, so that if two
+                #peaks have the same mass_conf when options.mass_or_area is
+                #equal to "mass_conf", the largest peak is selected in preference. 
+
+                for peak in sorted(well["orange"], key = lambda x: x["area"], reverse=True):
                     if peak_added == False and peak[id_max] == max_val:
                         output["green"].append(peak)
                         comment_text.append(f'Largest {id_max} selected in preference to other tentative hits available for well '
@@ -1191,10 +1211,11 @@ def validateHits(cpname, peakList, expected_rt):
                         comment_text.append(f'<strong>The tentative peak at {peak["time"]} in well {getUserReadableWell(peak["well"])} '
                                                       f'was discarded as it had a smaller {id_max} than an '
                                                       f'equally likely alternative.</strong>')
+        
         mean_time = sum([i["time"] for i in output["green"]]) / len(output["green"])
                 
     elif len(peakList) > 0:
-        if not options.validate:
+        if not options.validate == "True":
             comment_text.append("Validation was not performed as requested by the user.")
         else:
             comment_text.append(f'Validation was not performed for {cpname} as '
@@ -1213,13 +1234,19 @@ def validateHits(cpname, peakList, expected_rt):
             if len(well) > 1:
                 id_max = options.mass_or_area
                 max_val = max(well, key = lambda x: x[id_max])[id_max]
-                for peak in well:
+
+                #Sort the peaks by their peak area, so that if two
+                #peaks have the same mass_conf when options.mass_or_area is
+                #equal to "mass_conf", the largest peak is selected in preference. 
+                peak_added = False
+                for peak in sorted(well, key = lambda x: x["area"], reverse=True):
                     
-                    if peak[id_max] == max_val:
+                    if peak_added == False and peak[id_max] == max_val:
                         output["green"].append(peak)
                         comment_text.append(f'The hit at {peak["time"]} for {cpname} in well'
                                             f' {getUserReadableWell(peak["well"])} was selected as it had the largest'
                                             f' {id_max}.')
+                        peak_added = True
                     else:
                         output["discarded"].append(peak)
                         comment_text.append(f'The hit at {peak["time"]} for {cpname} in well'
@@ -1554,7 +1581,7 @@ def findPotentialConflicts(compoundDF):
     may be a problem. 
 
     :param compoundDF: Pandas datatable for compounds
-    :output: A text output for that compound. 
+    :return: A text output for that compound. 
     """
 
     output = []
@@ -1596,7 +1623,8 @@ def plotHitValidationGraph(cpname, validatedHits, save_dir, cluster_bands):
     :param validatedHits: a dict, where each header contains a list of dicts
     :param save_dir: File directory for where to save the matplotlib figure
     :param cluster_bands: A list of the average retention times for each cluster.
-    :output: jpg of the hit validation graph saved to output directory 
+    
+    :return: jpg of the hit validation graph saved to output directory 
     """  
     
     #Find the largest peak area, and the minimum/maximum retention times
@@ -1702,7 +1730,8 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
     :param ms_minus: a list [x-values, y-values] for MS- spectrometric data
     :param mass1: the isotopic mass of a compound, to which +1/-1 should be added
         to get to an expected observed mass (typically parent isotopic mass)
-    :output: jpg of the chromatogram saved to output directory
+    
+    :return: jpg of the chromatogram saved to output directory
     """
     fig, (a0, a1, a2) = plt.subplots(3, 1, gridspec_kw={'height_ratios': [2, 2, 6]})
     
@@ -1836,7 +1865,8 @@ def plotPieCharts(zvalue, outputTable, save_dir, by_products):
     :param outputTable: a pandas datatable
     :param save_dir: a string for the output directory
     :param by_products: a list of names of byproducts
-    :output: jpg of the piecharts saved to output directory
+    
+    :return: jpg of the piecharts saved to output directory
     """
 
     #declare color palette
@@ -1982,7 +2012,8 @@ def plotHeatmap(zvalue, outputTable, save_dir):
     :param zvalue: a string corresponding to the desired output metric (e.g. P/STD)
     :param outputTable: a pandas datatable
     :param save_dir: a string for the output directory
-    :output: jpg of the heatmap saved to output directory
+    
+    :return: jpg of the heatmap saved to output directory
     """
 
     returnVal = []
@@ -2030,7 +2061,8 @@ def plotHistogram(dataframe, save_dir):
 
     :param dataframe: A Pandas dataframe
     :param save_dir: a string for the output directory
-    :output: jpg of the histogram saved to output directory
+    
+    :return: jpg of the histogram saved to output directory
     """
 
     #Configure histogram. Use colours for clear differentiation
@@ -2064,7 +2096,7 @@ def plotDonut(dataframe, save_dir):
     :param dataframe: A Pandas dataframe
     :param save_dir: a string for the output directory
     
-    :output: Saved jpg of the donut chart
+    :return: Saved jpg of the donut chart
     
     """
     
@@ -2104,6 +2136,8 @@ def generateMol(smiles, name, save_dir):
     :param smiles: a string (SMILES) of the compound
     :param name: a string corresponding to name of that compound
     :param save_dir: a string corresponding to the output directory
+    
+    :return: A .png rendering of the given compound
     """
 
     mol = Chem.MolFromSmiles(smiles.strip())
@@ -2118,10 +2152,12 @@ def buildHTML(save_dir, compoundDF, all_compounds, times = {}):
     to enable certain parts of user interface. 
     
     :param save_dir: A string designating the output directory
-    :param compoundDF: Pandas datatable
+    :param compoundDF: Pandas datatable containing all information on 
+                        the compounds used for analysis
     :param all_compounds: a list of all compound names
-    :param times: Optional parameter of a list of floats for processing time
-    :output: HTML file saved to save_dir 
+    :param times: Optional parameter of a list of floats related to processing time
+                    for each step of the analysis. 
+    :return: HTML file saved to save_dir 
     """
 
     #Initiate the filetext variable
@@ -2130,8 +2166,8 @@ def buildHTML(save_dir, compoundDF, all_compounds, times = {}):
     #link to Bootstrap library
     csslink = ('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"'
                 ' integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">')
-    jslink = ('<script src="<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" '
-                'integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>"></script>')
+    jslink = ('<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" '
+                'integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>')
     filetext.append('<head>')
     filetext.append(f'{csslink}')
     filetext.append(f'{jslink}')
@@ -2350,8 +2386,8 @@ def main():
     parser = argparse.ArgumentParser(description = usage,
                                      formatter_class=argparse.RawTextHelpFormatter,)
     parser.set_defaults(
-                        validate = True,
-                        verbose = False,
+                        validate = "True",
+                        verbose = "False",
 
                         mass_abs_tol = 0.5,
                         time_abs_tol = 0.025,
@@ -2375,9 +2411,10 @@ def main():
                         
                         mass_or_area = "mass_conf",
                         plot_type = "corrP/STD", 
+                        calc_higherions = "True",
                         
-                        gen_csv = True,
-                        gen_zip = True,
+                        gen_csv = "True",
+                        gen_zip = "True",
 
                         output = "output",
 
@@ -2390,7 +2427,7 @@ def main():
     parser.add_argument("-o", "--output", action="store", type=str, dest = "output",
                         help = "Location to store output.")
     
-    parser.add_argument("-V", "--validate", action = "store", type=bool, dest = "validate",
+    parser.add_argument("-V", "--validate", action = "store", type=str, dest = "validate",
                        help = "True/False: Run hit validation processes. \n")
 
     parser.add_argument("-v","--verbose", action = "store", type = str, dest = "verbose",
@@ -2446,11 +2483,15 @@ def main():
                                "from the following options: SMarea, Parea, STDarea, "
                                "corrSMarea, corrParea, corrSTDarea, P/SM+P, P/STD, "
                                "corrP/STD, corrP/SM+P.\n")
-
-    parser.add_argument("-g", "--generate_csv", action="store", type=bool, dest = "gen_csv", 
+    
+    parser.add_argument("-chi", "--calc_higherions", action="store", type=str, dest = "calc_higherions",
+                        help = "Look for [M+2H]2+ and [M+3H]3+ to find hits and calculate the mass confidence"
+                        " of a peak, True/False")
+                        
+    parser.add_argument("-g", "--generate_csv", action="store", type=str, dest = "gen_csv", 
                         help = "Choose to generate and save a CSV, True/False.\n")
     
-    parser.add_argument("-z", "--generate_zip", action="store", type=bool, dest = "gen_zip", 
+    parser.add_argument("-z", "--generate_zip", action="store", type=str, dest = "gen_zip", 
                         help = "Choose to generate and save a zip file, True/False.\n")
 
 
@@ -2487,7 +2528,7 @@ def main():
 	
     #Start logging, and log error_msg if one was created whilst making the output
     #directory. 
-    if options.verbose:
+    if options.verbose == "True":
         logging.basicConfig(filename = f'{save_dir}/logfile.txt', level=logging.DEBUG)    
     else:
         logging.basicConfig(filename = f'{save_dir}/logfile.txt', level=logging.INFO)
@@ -2865,7 +2906,7 @@ def main():
     logging.info('The HTML output was generated.')
 
     #Generate an csv of the output table.
-    if options.gen_csv == True:
+    if options.gen_csv == "True":
         csv = outputTable.to_csv(f'{save_dir}outputTable.csv', index = False)
         newslice = compoundDF.loc[:, ["name", "g_smiles", "mass1", "mass2", "mass3",
                                 "time", "mass-", "mass+", "best_well", "best_purity", 
@@ -2876,7 +2917,7 @@ def main():
     
     #Generate a ZIP file containing all analysis files and graphs
 
-    if options.gen_zip == True:
+    if options.gen_zip == "True":
 
         with zipfile.ZipFile(f'{save_dir}output.zip', "w", allowZip64 = True) as myzip:
             for path, directories, files in os.walk(save_dir):
@@ -2890,9 +2931,12 @@ def main():
 
     total_time = time.perf_counter() - time_start
     logging.info(f'The analysis was completed in {total_time} seconds.')
+    print(f'The analysis was completed in {round(total_time, 2)} seconds.')
 
 if __name__ == "__main__":
     try:
+        print("")
+        print("Running analysis....")
         main()
     except Exception:
         logging.exception("A fatal exception occurred. Contact administrator.")

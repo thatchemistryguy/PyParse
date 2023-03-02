@@ -1,0 +1,897 @@
+<html>
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<style>
+.container-fluid {
+	display: flex;
+	justify-content: center;
+}
+h1, h3, table, p, h2:not(.no-margin) {
+	margin-left: 2%;
+	margin-top: 2%;
+}
+.logs {
+	margin-left: 2%;
+	margin-top: 2%;
+}
+</style>
+</head>
+<body data-bs-scroll="scroll" data-bs-target="navbar">
+<nav id="navbar" class="navbar bg-light sticky-top"><a style="margin-left: 1%;" class="navbar-brand" href="#">PyParse</a><ul class="nav navbar-pills"><li class="nav-item"><a class="nav-link" href="#PlateAnalysis">Plate Analysis</a></li><li class="nav-item"><a class="nav-link" href="#CompoundSummary">Compound Summary</a></li><li class="nav-item"><a class="nav-link" href="#CompoundDetail">Compound Detail</a></li><li class="nav-item"><a class="nav-link" href="#PlateSummary">Plate Summary</a></li><li class="nav-item"><input id="cp_search" class="form-control" type="search" placeholder="Search for Compound" aria-label="Search for Compound"><ul id="search_options" class="downdown-menu"></ul></li></ul></nav>
+<h1>Analysis Output</h1>
+<h2 id = "PlateAnalysis">Plate Analysis</h2>
+<div class="container-fluid"><img class="graph" src="graphs/heatmap.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/piecharts.jpg"></img></div>
+<h2 id = "CompoundSummary">Compound Summary</h2>
+<div class="table-responsive">
+<table class="table table-hover"><tr><th>Name</th><th>SMILES</th><th>Mass 1</th><th>Mass 2</th><th>Mass 3</th><th>Retention Time</th><th>m/z-</th><th>m/z+</th><th>Best Well</th><th>Purity of Best Well</th><th>Overlap Detection</th><th>Potential Conflicts</th></tr>
+<tr>
+<td><a href="#header_Product1">Product1</a></td>
+<td><img src="structures/Product1.png"></img></td>
+<td>240.93</td>
+<td>242.93</td>
+<td>0.0</td>
+<td>1.23</td>
+<td>-</td>
+<td>243.94</td>
+<td>A1</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product2">Product2</a></td>
+<td><img src="structures/Product2.png"></img></td>
+<td>236.98</td>
+<td>238.98</td>
+<td>0.0</td>
+<td>1.3</td>
+<td>-</td>
+<td>240.05</td>
+<td>A2</td>
+<td>98.93</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product3">Product3</a></td>
+<td><img src="structures/Product3.png"></img></td>
+<td>201.08</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.59</td>
+<td>200.21</td>
+<td>202.13</td>
+<td>A3</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product4">Product4</a></td>
+<td><img src="structures/Product4.png"></img></td>
+<td>201.08</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.55</td>
+<td>200.05</td>
+<td>202.16</td>
+<td>A4</td>
+<td>98.21</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product5">Product5</a></td>
+<td><img src="structures/Product5.png"></img></td>
+<td>284.88</td>
+<td>286.88</td>
+<td>0.0</td>
+<td>1.22</td>
+<td>-</td>
+<td>287.84</td>
+<td>A5</td>
+<td>97.78</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product6">Product6</a></td>
+<td><img src="structures/Product6.png"></img></td>
+<td>231.96</td>
+<td>233.96</td>
+<td>0.0</td>
+<td>1.11</td>
+<td>-</td>
+<td>232.93</td>
+<td>A6</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product7">Product7</a></td>
+<td><img src="structures/Product7.png"></img></td>
+<td>240.93</td>
+<td>242.93</td>
+<td>0.0</td>
+<td>1.23</td>
+<td>-</td>
+<td>243.97</td>
+<td>A7</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product8">Product8</a></td>
+<td><img src="structures/Product8.png"></img></td>
+<td>195.08</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.82</td>
+<td>194.13</td>
+<td>196.14</td>
+<td>A8</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product9">Product9</a></td>
+<td><img src="structures/Product9.png"></img></td>
+<td>251.09</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.03</td>
+<td>250.18</td>
+<td>252.16</td>
+<td>A9</td>
+<td>95.08</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product10">Product10</a></td>
+<td><img src="structures/Product10.png"></img></td>
+<td>242.15</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.67</td>
+<td>-</td>
+<td>243.23</td>
+<td>A10</td>
+<td>98.76</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product11">Product11</a></td>
+<td><img src="structures/Product11.png"></img></td>
+<td>274.96</td>
+<td>276.96</td>
+<td>0.0</td>
+<td>1.26</td>
+<td>-</td>
+<td>277.95</td>
+<td>A11</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product12">Product12</a></td>
+<td><img src="structures/Product12.png"></img></td>
+<td>254.95</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.07</td>
+<td>-</td>
+<td>255.98</td>
+<td>A12</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product13">Product13</a></td>
+<td><img src="structures/Product13.png"></img></td>
+<td>341.07</td>
+<td>285.01</td>
+<td>241.02</td>
+<td>1.32</td>
+<td>-</td>
+<td>342.09</td>
+<td>B1</td>
+<td>96.22</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product14">Product14</a></td>
+<td><img src="structures/Product14.png"></img></td>
+<td>302.17</td>
+<td>246.11</td>
+<td>202.12</td>
+<td>1.04</td>
+<td>-</td>
+<td>303.19</td>
+<td>B2</td>
+<td>98.92</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product15">Product15</a></td>
+<td><img src="structures/Product15.png"></img></td>
+<td>342.07</td>
+<td>286.01</td>
+<td>242.02</td>
+<td>1.32</td>
+<td>-</td>
+<td>287.0</td>
+<td>B3</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product16">Product16</a></td>
+<td><img src="structures/Product16.png"></img></td>
+<td>206.97</td>
+<td>208.97</td>
+<td>0.0</td>
+<td>1.07</td>
+<td>-</td>
+<td>208.0</td>
+<td>B4</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product17">Product17</a></td>
+<td><img src="structures/Product17.png"></img></td>
+<td>452.19</td>
+<td>396.13</td>
+<td>352.14</td>
+<td>0.9</td>
+<td>-</td>
+<td>397.23</td>
+<td>B5</td>
+<td>98.59</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product18">Product18</a></td>
+<td><img src="structures/Product18.png"></img></td>
+<td>298.12</td>
+<td>242.06</td>
+<td>198.07</td>
+<td>1.07</td>
+<td>-</td>
+<td>299.12</td>
+<td>B6</td>
+<td>92.87</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product19">Product19</a></td>
+<td><img src="structures/Product19.png"></img></td>
+<td>255.04</td>
+<td>257.04</td>
+<td>0.0</td>
+<td>0.99</td>
+<td>-</td>
+<td>258.08</td>
+<td>B7</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product20">Product20</a></td>
+<td><img src="structures/Product20.png"></img></td>
+<td>284.88</td>
+<td>286.88</td>
+<td>0.0</td>
+<td>1.18</td>
+<td>-</td>
+<td>287.86</td>
+<td>B8</td>
+<td>95.95</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product21">Product21</a></td>
+<td><img src="structures/Product21.png"></img></td>
+<td>242.01</td>
+<td>244.01</td>
+<td>0.0</td>
+<td>0.95</td>
+<td>-</td>
+<td>245.05</td>
+<td>B9</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product22">Product22</a></td>
+<td><img src="structures/Product22.png"></img></td>
+<td>314.12</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.87</td>
+<td>313.22</td>
+<td>315.14</td>
+<td>B10</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product23">Product23</a></td>
+<td><img src="structures/Product23.png"></img></td>
+<td>224.98</td>
+<td>226.98</td>
+<td>0.0</td>
+<td>0.43</td>
+<td>224.1</td>
+<td>-</td>
+<td>B11</td>
+<td>100.0</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+<tr>
+<td><a href="#header_Product24">Product24</a></td>
+<td><img src="structures/Product24.png"></img></td>
+<td>255.04</td>
+<td>257.04</td>
+<td>0.0</td>
+<td>1.01</td>
+<td>-</td>
+<td>258.09</td>
+<td>B12</td>
+<td>98.33</td>
+<td>No peak overlap detected.</td>
+<td>No potential conflicts found.</td>
+</tr>
+</table></div>
+<h2 id = "CompoundDetail">Compound Detail</h2>
+<h3 id = "header_Product1">Product1</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product1">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product1">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product1"aria-expanded="true" aria-controls="collapse1-Product1">Key Logs</button>
+</h2>
+<div id="collapse1-Product1" class="accordion-collapse collapse show" aria-labelledby="heading1-Product1">
+<div class="accordion-body">
+1 hits were found for Product1.<br>
+1 clusters were found for Product1.<br>
+Validation was not performed for Product1 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product1.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product1-best.jpg"></img></div>
+<h3 id = "header_Product2">Product2</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product2">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product2">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product2"aria-expanded="true" aria-controls="collapse1-Product2">Key Logs</button>
+</h2>
+<div id="collapse1-Product2" class="accordion-collapse collapse show" aria-labelledby="heading1-Product2">
+<div class="accordion-body">
+1 hits were found for Product2.<br>
+1 clusters were found for Product2.<br>
+Validation was not performed for Product2 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product2.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product2-best.jpg"></img></div>
+<h3 id = "header_Product3">Product3</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product3">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product3">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product3"aria-expanded="true" aria-controls="collapse1-Product3">Key Logs</button>
+</h2>
+<div id="collapse1-Product3" class="accordion-collapse collapse show" aria-labelledby="heading1-Product3">
+<div class="accordion-body">
+1 hits were found for Product3.<br>
+1 clusters were found for Product3.<br>
+Validation was not performed for Product3 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product3.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product3-best.jpg"></img></div>
+<h3 id = "header_Product4">Product4</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product4">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product4">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product4"aria-expanded="true" aria-controls="collapse1-Product4">Key Logs</button>
+</h2>
+<div id="collapse1-Product4" class="accordion-collapse collapse show" aria-labelledby="heading1-Product4">
+<div class="accordion-body">
+1 hits were found for Product4.<br>
+1 clusters were found for Product4.<br>
+Validation was not performed for Product4 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product4.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product4-best.jpg"></img></div>
+<h3 id = "header_Product5">Product5</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product5">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product5">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product5"aria-expanded="true" aria-controls="collapse1-Product5">Key Logs</button>
+</h2>
+<div id="collapse1-Product5" class="accordion-collapse collapse show" aria-labelledby="heading1-Product5">
+<div class="accordion-body">
+1 hits were found for Product5.<br>
+1 clusters were found for Product5.<br>
+Validation was not performed for Product5 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product5.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product5-best.jpg"></img></div>
+<h3 id = "header_Product6">Product6</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product6">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product6">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product6"aria-expanded="true" aria-controls="collapse1-Product6">Key Logs</button>
+</h2>
+<div id="collapse1-Product6" class="accordion-collapse collapse show" aria-labelledby="heading1-Product6">
+<div class="accordion-body">
+1 hits were found for Product6.<br>
+1 clusters were found for Product6.<br>
+Validation was not performed for Product6 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product6.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product6-best.jpg"></img></div>
+<h3 id = "header_Product7">Product7</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product7">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product7">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product7"aria-expanded="true" aria-controls="collapse1-Product7">Key Logs</button>
+</h2>
+<div id="collapse1-Product7" class="accordion-collapse collapse show" aria-labelledby="heading1-Product7">
+<div class="accordion-body">
+1 hits were found for Product7.<br>
+1 clusters were found for Product7.<br>
+Validation was not performed for Product7 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product7.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product7-best.jpg"></img></div>
+<h3 id = "header_Product8">Product8</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product8">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product8">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product8"aria-expanded="true" aria-controls="collapse1-Product8">Key Logs</button>
+</h2>
+<div id="collapse1-Product8" class="accordion-collapse collapse show" aria-labelledby="heading1-Product8">
+<div class="accordion-body">
+1 hits were found for Product8.<br>
+1 clusters were found for Product8.<br>
+Validation was not performed for Product8 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product8.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product8-best.jpg"></img></div>
+<h3 id = "header_Product9">Product9</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product9">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product9">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product9"aria-expanded="true" aria-controls="collapse1-Product9">Key Logs</button>
+</h2>
+<div id="collapse1-Product9" class="accordion-collapse collapse show" aria-labelledby="heading1-Product9">
+<div class="accordion-body">
+1 hits were found for Product9.<br>
+1 clusters were found for Product9.<br>
+Validation was not performed for Product9 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product9.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product9-best.jpg"></img></div>
+<h3 id = "header_Product10">Product10</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product10">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product10">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product10"aria-expanded="true" aria-controls="collapse1-Product10">Key Logs</button>
+</h2>
+<div id="collapse1-Product10" class="accordion-collapse collapse show" aria-labelledby="heading1-Product10">
+<div class="accordion-body">
+1 hits were found for Product10.<br>
+1 clusters were found for Product10.<br>
+Validation was not performed for Product10 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product10.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product10-best.jpg"></img></div>
+<h3 id = "header_Product11">Product11</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product11">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product11">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product11"aria-expanded="true" aria-controls="collapse1-Product11">Key Logs</button>
+</h2>
+<div id="collapse1-Product11" class="accordion-collapse collapse show" aria-labelledby="heading1-Product11">
+<div class="accordion-body">
+1 hits were found for Product11.<br>
+1 clusters were found for Product11.<br>
+Validation was not performed for Product11 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product11.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product11-best.jpg"></img></div>
+<h3 id = "header_Product12">Product12</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product12">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product12">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product12"aria-expanded="true" aria-controls="collapse1-Product12">Key Logs</button>
+</h2>
+<div id="collapse1-Product12" class="accordion-collapse collapse show" aria-labelledby="heading1-Product12">
+<div class="accordion-body">
+1 hits were found for Product12.<br>
+1 clusters were found for Product12.<br>
+Validation was not performed for Product12 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product12.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product12-best.jpg"></img></div>
+<h3 id = "header_Product13">Product13</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product13">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product13">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product13"aria-expanded="true" aria-controls="collapse1-Product13">Key Logs</button>
+</h2>
+<div id="collapse1-Product13" class="accordion-collapse collapse show" aria-labelledby="heading1-Product13">
+<div class="accordion-body">
+2 hits were found for Product13.<br>
+2 clusters were found for Product13.<br>
+Validation was not performed for Product13 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading2-Product13">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-Product13"aria-expanded="false" aria-controls="collapse2-Product13">Additional Logs</button>
+</h2>
+<div id="collapse2-Product13" class="accordion-collapse collapse" aria-labelledby="heading2-Product13"data-bs-parent="#accordion-Product13">
+<div class="accordion-body">
+The hit at 1.3217 for Product13 in well B1 was selected as it had the largest area.<br>
+The hit at 1.4329 for Product13 in well B1 was discarded as it did not have the largest area of all hits found.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product13.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product13-best.jpg"></img></div>
+<h3 id = "header_Product14">Product14</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product14">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product14">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product14"aria-expanded="true" aria-controls="collapse1-Product14">Key Logs</button>
+</h2>
+<div id="collapse1-Product14" class="accordion-collapse collapse show" aria-labelledby="heading1-Product14">
+<div class="accordion-body">
+1 hits were found for Product14.<br>
+1 clusters were found for Product14.<br>
+Validation was not performed for Product14 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product14.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product14-best.jpg"></img></div>
+<h3 id = "header_Product15">Product15</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product15">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product15">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product15"aria-expanded="true" aria-controls="collapse1-Product15">Key Logs</button>
+</h2>
+<div id="collapse1-Product15" class="accordion-collapse collapse show" aria-labelledby="heading1-Product15">
+<div class="accordion-body">
+1 hits were found for Product15.<br>
+1 clusters were found for Product15.<br>
+Validation was not performed for Product15 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product15.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product15-best.jpg"></img></div>
+<h3 id = "header_Product16">Product16</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product16">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product16">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product16"aria-expanded="true" aria-controls="collapse1-Product16">Key Logs</button>
+</h2>
+<div id="collapse1-Product16" class="accordion-collapse collapse show" aria-labelledby="heading1-Product16">
+<div class="accordion-body">
+1 hits were found for Product16.<br>
+1 clusters were found for Product16.<br>
+Validation was not performed for Product16 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product16.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product16-best.jpg"></img></div>
+<h3 id = "header_Product17">Product17</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product17">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product17">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product17"aria-expanded="true" aria-controls="collapse1-Product17">Key Logs</button>
+</h2>
+<div id="collapse1-Product17" class="accordion-collapse collapse show" aria-labelledby="heading1-Product17">
+<div class="accordion-body">
+1 hits were found for Product17.<br>
+1 clusters were found for Product17.<br>
+Validation was not performed for Product17 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product17.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product17-best.jpg"></img></div>
+<h3 id = "header_Product18">Product18</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product18">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product18">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product18"aria-expanded="true" aria-controls="collapse1-Product18">Key Logs</button>
+</h2>
+<div id="collapse1-Product18" class="accordion-collapse collapse show" aria-labelledby="heading1-Product18">
+<div class="accordion-body">
+2 hits were found for Product18.<br>
+2 clusters were found for Product18.<br>
+Validation was not performed for Product18 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading2-Product18">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-Product18"aria-expanded="false" aria-controls="collapse2-Product18">Additional Logs</button>
+</h2>
+<div id="collapse2-Product18" class="accordion-collapse collapse" aria-labelledby="heading2-Product18"data-bs-parent="#accordion-Product18">
+<div class="accordion-body">
+The hit at 1.0684 for Product18 in well B6 was selected as it had the largest area.<br>
+The hit at 1.2758 for Product18 in well B6 was discarded as it did not have the largest area of all hits found.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product18.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product18-best.jpg"></img></div>
+<h3 id = "header_Product19">Product19</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product19">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product19">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product19"aria-expanded="true" aria-controls="collapse1-Product19">Key Logs</button>
+</h2>
+<div id="collapse1-Product19" class="accordion-collapse collapse show" aria-labelledby="heading1-Product19">
+<div class="accordion-body">
+1 hits were found for Product19.<br>
+1 clusters were found for Product19.<br>
+Validation was not performed for Product19 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product19.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product19-best.jpg"></img></div>
+<h3 id = "header_Product20">Product20</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product20">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product20">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product20"aria-expanded="true" aria-controls="collapse1-Product20">Key Logs</button>
+</h2>
+<div id="collapse1-Product20" class="accordion-collapse collapse show" aria-labelledby="heading1-Product20">
+<div class="accordion-body">
+1 hits were found for Product20.<br>
+1 clusters were found for Product20.<br>
+Validation was not performed for Product20 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product20.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product20-best.jpg"></img></div>
+<h3 id = "header_Product21">Product21</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product21">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product21">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product21"aria-expanded="true" aria-controls="collapse1-Product21">Key Logs</button>
+</h2>
+<div id="collapse1-Product21" class="accordion-collapse collapse show" aria-labelledby="heading1-Product21">
+<div class="accordion-body">
+1 hits were found for Product21.<br>
+1 clusters were found for Product21.<br>
+Validation was not performed for Product21 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product21.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product21-best.jpg"></img></div>
+<h3 id = "header_Product22">Product22</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product22">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product22">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product22"aria-expanded="true" aria-controls="collapse1-Product22">Key Logs</button>
+</h2>
+<div id="collapse1-Product22" class="accordion-collapse collapse show" aria-labelledby="heading1-Product22">
+<div class="accordion-body">
+1 hits were found for Product22.<br>
+1 clusters were found for Product22.<br>
+Validation was not performed for Product22 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product22.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product22-best.jpg"></img></div>
+<h3 id = "header_Product23">Product23</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product23">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product23">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product23"aria-expanded="true" aria-controls="collapse1-Product23">Key Logs</button>
+</h2>
+<div id="collapse1-Product23" class="accordion-collapse collapse show" aria-labelledby="heading1-Product23">
+<div class="accordion-body">
+1 hits were found for Product23.<br>
+1 clusters were found for Product23.<br>
+Validation was not performed for Product23 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product23.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product23-best.jpg"></img></div>
+<h3 id = "header_Product24">Product24</h3>
+<div class="container-lg logs">
+<div class="accordion" id="accordion-Product24">
+<div class="accordion-item">
+<h2 class="accordion-header no-margin" id="heading1-Product24">
+<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-Product24"aria-expanded="true" aria-controls="collapse1-Product24">Key Logs</button>
+</h2>
+<div id="collapse1-Product24" class="accordion-collapse collapse show" aria-labelledby="heading1-Product24">
+<div class="accordion-body">
+1 hits were found for Product24.<br>
+1 clusters were found for Product24.<br>
+Validation was not performed for Product24 as there were insufficient hits.<br>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="container-fluid"><img class="graph" src="graphs/hits-Product24.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/chroma-Product24-best.jpg"></img></div>
+<h2 id= 'PlateSummary'>Plate Summary</h2><br>
+<div class="container-fluid"><img class="graph" src="graphs/histogram.jpg"></img></div>
+<div class="container-fluid"><img class="graph" src="graphs/donut.jpg"></img></div>
+<h2>Process Summary</h2><br>
+<table><tr><th>Process</th><th>Time Taken</th></tr>
+<tr><td>Initialise Script</td><td>0.0 s</td></tr>
+<tr><td>Import Compound File</td><td>0.03 s</td></tr>
+<tr><td>Import RPT File</td><td>0.07 s</td></tr>
+<tr><td>Find Hits and Validate</td><td>0.02 s</td></tr>
+<tr><td>Remove Duplicate Assignments</td><td>0.02 s</td></tr>
+<tr><td>Generate Output Table</td><td>0.02 s</td></tr>
+<tr><td>Plot Peaks</td><td>7.54 s</td></tr>
+<tr><td>Find Potential Conlicts</td><td>0.01 s</td></tr>
+<tr><td>Generate Heatmap</td><td>0.15 s</td></tr>
+<tr><td>Generate Piechart</td><td>0.37 s</td></tr>
+<tr><td>Generate Histogram and Donut</td><td>0.19 s</td></tr>
+<tr><td>Total time</td><td>0.27 s</td></tr>
+</table><br><br>
+<script>
+const search = document.querySelector("#cp_search")
+const optionsUl = document.querySelector("#search_options")
+const search_options = ["Product1","Product2","Product3","Product4","Product5","Product6","Product7","Product8","Product9","Product10","Product11","Product12","Product13","Product14","Product15","Product16","Product17","Product18","Product19","Product20","Product21","Product22","Product23","Product24",""]
+let innerText = ""
+search_options.forEach(x => {
+innerText += "<li id = '" + x + "'><a onclick='clearList()' href='#header_" + x + "'>" + x + "</a></li>"
+})
+optionsUl.innerHTML=innerText
+let lis = document.querySelectorAll("#search_options li")
+lis.forEach(x => {
+x.setAttribute("style", "display:none")
+})
+search.onkeyup = function(e) {
+lis.forEach(x => {
+x.setAttribute("style", "display:none")
+})
+if(search.value != "") {
+let myregex = new RegExp(search.value.toLowerCase())
+let matches = search_options.filter(x => myregex.test(x.toLowerCase()))
+matches.forEach(x => {
+let docObject = document.querySelector("#"+x)
+docObject.setAttribute("style", "display:block")
+})
+}
+}
+function clearList() {
+lis.forEach(x => {
+x.setAttribute("style", "display:none")
+})
+}
+</script>
+
+</body>
+</html>
