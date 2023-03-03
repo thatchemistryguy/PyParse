@@ -343,7 +343,7 @@ it as a .png</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A Pandas table</p>
+<dd class="field-even"><p>A Pandas table named outputTable</p>
 </dd>
 </dl>
 </dd></dl>
@@ -478,7 +478,7 @@ to be saved in the output folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataframe</strong> – A Pandas dataframe</p></li>
+<li><p><strong>dataframe</strong> – A Pandas dataframe (AKA outputTable)</p></li>
 <li><p><strong>save_dir</strong> – a string for the output directory</p></li>
 </ul>
 </dd>
@@ -515,7 +515,7 @@ to be saved in the output folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataframe</strong> – A Pandas dataframe</p></li>
+<li><p><strong>dataframe</strong> – A Pandas dataframe (AKA outputTable)</p></li>
 <li><p><strong>save_dir</strong> – a string for the output directory</p></li>
 </ul>
 </dd>
@@ -613,7 +613,7 @@ in the same well into “discarded”.</p>
 <dt class="sig sig-object py" id="PyParse.refineClusterByUV">
 <span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">refineClusterByUV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">UVdatafound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#refineClusterByUV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.refineClusterByUV" title="Permalink to this definition">#</a></dt>
 <dd><p>Takes in input cluster of all the hit peaks,
-and refines them by ensuring all peaks have a “sensible” set
+and refines the cluster by ensuring all peaks have a similar set
 of UV maxima. Those which do are left in “green”, those which
 don’t are moved to the “orange” category</p>
 <dl class="field-list simple">
@@ -648,7 +648,7 @@ product third priority and finally a by-product is lowest priority.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Pandas dataframe</p>
+<dd class="field-even"><p>compoundDF as Pandas dataframe</p>
 </dd>
 </dl>
 </dd></dl>
@@ -662,13 +662,13 @@ which cluster has the highest mean massConf. If more than one cluster
 has a close-to-highest-mean massconf, take them all.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>clusters</strong> – a list of dicts, with list of dicts for each header</p>
+<dd class="field-odd"><p><strong>clusters</strong> – a list of dictionaries, with list of dictionaries for each header</p>
 </dd>
 <dt class="field-even">Return refined_clusters<span class="colon">:</span></dt>
-<dd class="field-even"><p>a list of dicts, with list of dicts for each header</p>
+<dd class="field-even"><p>a list of dictionaries, with list of dictionaries for each header</p>
 </dd>
 <dt class="field-odd">Return discarded_clusters<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a list of dicts, with list of dicts for each header</p>
+<dd class="field-odd"><p>a list of dictionaries, with list of dictionaries for each header</p>
 </dd>
 </dl>
 </dd></dl>
@@ -682,13 +682,13 @@ which cluster is the largest. If more than one cluster
 has a close-to-largest size, take them all.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>clusters</strong> – a list of dicts, with list of dicts for each header</p>
+<dd class="field-odd"><p><strong>clusters</strong> – a list of dictionaries, with list of dictionaries for each header</p>
 </dd>
 <dt class="field-even">Return refined_clusters<span class="colon">:</span></dt>
-<dd class="field-even"><p>a list of dicts, with list of dicts for each header</p>
+<dd class="field-even"><p>a list of dictionaries, with list of dictionaries for each header</p>
 </dd>
 <dt class="field-odd">Return discarded_clusters<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a list of dicts, with list of dicts for each header</p>
+<dd class="field-odd"><p>a list of dictionaries, with list of dictionaries for each header</p>
 </dd>
 </dl>
 </dd></dl>
@@ -709,7 +709,7 @@ one hit per well.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A dict, where each header contains a list of dicts (peaks),
+<dd class="field-even"><p>A dictionary, where each header contains a list of dictionaries (peaks),
 along with other useful variables to aid plot generation.</p>
 </dd>
 </dl>
