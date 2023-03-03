@@ -36,7 +36,7 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import Descriptors
 from rdkit.Chem import Draw
 import zipfile
-import shutil
+
 
 
 
@@ -751,7 +751,7 @@ def refineClusterByTime(cluster, comments, expected_rt):
 def refineClusterByUV(cluster, UVdatafound, comments):
     """
     Takes in input cluster of all the hit peaks, 
-    and refines them by ensuring all peaks have a "sensible" set
+    and refines the cluster by ensuring all peaks have a similar set
     of UV maxima. Those which do are left in "green", those which
     don't are moved to the "orange" category
     
@@ -871,10 +871,10 @@ def selectClusterByMassConf(clusters):
     which cluster has the highest mean massConf. If more than one cluster
     has a close-to-highest-mean massconf, take them all. 
     
-    :param clusters: a list of dicts, with list of dicts for each header
-    :return refined_clusters: a list of dicts, with list of dicts for each header
+    :param clusters: a list of dictionaries, with list of dictionaries for each header
+    :return refined_clusters: a list of dictionaries, with list of dictionaries for each header
     
-    :return discarded_clusters: a list of dicts, with list of dicts for each header
+    :return discarded_clusters: a list of dictionaries, with list of dictionaries for each header
     """
     
     refined_clusters = []
@@ -909,10 +909,10 @@ def selectClusterBySize(clusters):
     which cluster is the largest. If more than one cluster
     has a close-to-largest size, take them all. 
     
-    :param clusters: a list of dicts, with list of dicts for each header
-    :return refined_clusters: a list of dicts, with list of dicts for each header
+    :param clusters: a list of dictionaries, with list of dictionaries for each header
+    :return refined_clusters: a list of dictionaries, with list of dictionaries for each header
     
-    :return discarded_clusters: a list of dicts, with list of dicts for each header
+    :return discarded_clusters: a list of dictionaries, with list of dictionaries for each header
     """
     
     refined_clusters = []
@@ -957,7 +957,7 @@ def validateHits(cpname, peakList, expected_rt):
     :param peakList: A list of all hits for (peaks assigned to) that compound
     :param expected_rt: An integer for the expected retention time of the compound
     
-    :return: A dict, where each header contains a list of dicts (peaks), 
+    :return: A dictionary, where each header contains a list of dictionaries (peaks), 
             along with other useful variables to aid plot generation. 
     """
     #Initialise variables which end up in the final output
@@ -1273,7 +1273,7 @@ def removeDupAssigns(compoundDF, internalSTD, SMs, products, by_products):
     :param products: A list of product names
     :param by_products: A list of by_product names
     
-    :return: Pandas dataframe
+    :return: compoundDF as Pandas dataframe
     """
     def isSamePeak(hit1, row):
         overlap = False
@@ -1371,7 +1371,7 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
     :param by_products: a list of indices for the by-products
     :param total_area_abs: A float corresponding to the sum of all peak_area_absolutes
     
-    :return: A Pandas table 
+    :return: A Pandas table named outputTable
     
     """
     
@@ -2059,7 +2059,7 @@ def plotHistogram(dataframe, save_dir):
     Takes the outputTable dataframe and generates a histogram for product %area
     to be saved in the output folder. 
 
-    :param dataframe: A Pandas dataframe
+    :param dataframe: A Pandas dataframe (AKA outputTable)
     :param save_dir: a string for the output directory
     
     :return: jpg of the histogram saved to output directory
@@ -2093,7 +2093,7 @@ def plotDonut(dataframe, save_dir):
     Takes the outputTable dataframe and generates a donut chart for product %area
     to be saved in the output folder.
 
-    :param dataframe: A Pandas dataframe
+    :param dataframe: A Pandas dataframe (AKA outputTable)
     :param save_dir: a string for the output directory
     
     :return: Saved jpg of the donut chart
