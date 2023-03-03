@@ -11,7 +11,7 @@ The following packages should be installed if not already available:
 * pandas: https://pandas.pydata.org/ (v 1.1.3)
 * rdkit: https://rdkit.org/docs/api-docs.html (v 2020.09.1)
 
-The suggested version of each package is provided in parentheses. A conda text file is provided 
+The suggested version of each package is provided in parentheses. A conda text/yml file is provided 
 as part of the Github repository. 
 
 .. _preparing_a_platemap_label:
