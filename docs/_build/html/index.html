@@ -202,11 +202,13 @@
 <p>Authors: Joseph Mason, Francesco Rianjongdee, Harry Wilders, David Fallon</p>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
-<p>This script carries out an automated analysis of LCMS data in the Waters OpenLynx™ browser report file (.rpt)
-format, using a .csv platemap to inform which compounds are found in which well of
-a plate. It was designed specifically for the analysis of data generated from
+<p>This script will read Liquid Chromatography Mass Spectrometry (LCMS) data in the Waters OpenLynx™ browser report (.rpt) file
+format, and assign peaks to compounds specified in  a .csv platemap. This assignment is then used to generate heatmaps and
+other visualisations to compare and contrast different LCMS runs. It was designed specifically for the analysis of data generated from
 high-throughput chemistry, and is suitable for reaction optimisations, parallel synthesis
 and library validation experiments.</p>
+<p>See the <a class="reference external" href="https://www.waters.com/nextgen/ie/en/library/application-notes/2007/openlynx-open-access-and-software-tools-for-managing-an-open-access-laboratory-environment.html">Waters OpenLynx™</a>
+page for further information about the OpenLynx™ file format.</p>
 </section>
 <section id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this heading">#</a></h2>
@@ -242,7 +244,7 @@ to “new_output_directory”.)</p>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Run</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#pre-requisite-packages">Pre-Requisite Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#pre-requisites">Pre-Requisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#preparing-a-platemap">Preparing a Platemap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#specifying-a-retention-time-in-the-platemap">Specifying a Retention Time in the Platemap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#running-a-pyparse-analysis">Running a PyParse Analysis</a></li>

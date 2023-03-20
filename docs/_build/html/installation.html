@@ -199,9 +199,9 @@
         <article role="main">
           <section id="installation-and-run">
 <h1>Installation and Run<a class="headerlink" href="#installation-and-run" title="Permalink to this heading">#</a></h1>
-<section id="pre-requisite-packages">
-<h2>Pre-Requisite Packages<a class="headerlink" href="#pre-requisite-packages" title="Permalink to this heading">#</a></h2>
-<p>The following packages should be installed if not already available:</p>
+<section id="pre-requisites">
+<h2>Pre-Requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this heading">#</a></h2>
+<p>PyParse was written for Python v3.7, and the following packages should be installed if not already available:</p>
 <ul class="simple">
 <li><p>matplotlib: <a class="reference external" href="https://matplotlib.org/stable/index.html">https://matplotlib.org/stable/index.html</a> (v 3.3.2)</p></li>
 <li><p>seaborn: <a class="reference external" href="https://seaborn.pydata.org/">https://seaborn.pydata.org/</a> (v 0.11.0)</p></li>
@@ -210,6 +210,8 @@
 </ul>
 <p>The suggested version of each package is provided in parentheses. A conda text/yml file is provided
 as part of the Github repository.</p>
+<p>PyParse is currently only capable of analysing LCMS data in the Waters OpenLynx™ browser report (.rpt) file
+format. All data for the analysis <em>must</em> be in a <em>single</em> file of this format.</p>
 </section>
 <section id="preparing-a-platemap">
 <span id="preparing-a-platemap-label"></span><h2>Preparing a Platemap<a class="headerlink" href="#preparing-a-platemap" title="Permalink to this heading">#</a></h2>
@@ -479,7 +481,7 @@ or won’t use the ratio of product:internal standard to compare wells.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Installation and Run</a><ul>
-<li><a class="reference internal" href="#pre-requisite-packages">Pre-Requisite Packages</a></li>
+<li><a class="reference internal" href="#pre-requisites">Pre-Requisites</a></li>
 <li><a class="reference internal" href="#preparing-a-platemap">Preparing a Platemap</a></li>
 <li><a class="reference internal" href="#specifying-a-retention-time-in-the-platemap">Specifying a Retention Time in the Platemap</a></li>
 <li><a class="reference internal" href="#running-a-pyparse-analysis">Running a PyParse Analysis</a></li>

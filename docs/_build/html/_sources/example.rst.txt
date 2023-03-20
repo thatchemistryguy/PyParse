@@ -17,7 +17,7 @@ Using the conda environment provided, you can use the sample data to run your fi
 .. code-block::
 	:caption: Using the sample dataset provided
 	
-	python PyParse.py example_rpt.rpt example_platemap.csv -o output -r 2 -c 12 -pt Parea -moa area
+	python PyParse.py example_dataset/example_rpt.rpt example_dataset/example_platemap.csv -o example_dataset/output -r 2 -c 12 -pt Parea -moa area
 	
 The code provided uses the following options:
 
