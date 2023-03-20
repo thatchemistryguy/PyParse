@@ -14,6 +14,8 @@ other visualisations to compare and contrast different LCMS runs. It was designe
 high-throughput chemistry, and is suitable for reaction optimisations, parallel synthesis
 and library validation experiments. 
 
+See the [Waters OpenLynx™] (https://www.waters.com/nextgen/ie/en/library/application-notes/2007/openlynx-open-access-and-software-tools-for-managing-an-open-access-laboratory-environment.html) for further information about the OpenLynx™ file format. 
+
 Example Usage 
 ---------------
 ```
