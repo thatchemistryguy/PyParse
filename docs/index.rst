@@ -12,7 +12,7 @@ Authors: Joseph Mason, Francesco Rianjongdee, Harry Wilders, David Fallon
 Description
 --------------- 
 
-This script will read LCMS data in the Waters OpenLynx\ |trademark| browser report (.rpt) file
+This script will read Liquid Chromatography Mass Spectrometry (LCMS) data in the Waters OpenLynx\ |trademark| browser report (.rpt) file
 format, and assign peaks to compounds specified in  a .csv platemap. This assignment is then used to generate heatmaps and 
 other visualisations to compare and contrast different LCMS runs. It was designed specifically for the analysis of data generated from 
 high-throughput chemistry, and is suitable for reaction optimisations, parallel synthesis
