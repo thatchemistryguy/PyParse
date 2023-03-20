@@ -148,7 +148,7 @@ Use the following optional parameters to change each of these:
 	
 
 	
-
+.. |trademark|	unicode:: U+2122 .. TRADEMARK SYMBOL
 
 		
 	
