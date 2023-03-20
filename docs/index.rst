@@ -12,9 +12,9 @@ Authors: Joseph Mason, Francesco Rianjongdee, Harry Wilders, David Fallon
 Description
 --------------- 
 
-This script carries out an automated analysis of LCMS data in the Waters .rpt file 
-format, using a .csv platemap to inform which compounds are found in which well of
-a plate. It was designed specifically for the analysis of data generated from 
+This script will read LCMS data in the Waters OpenLynx\ |trademark| browser report (.rpt) file
+format, and assign peaks to compounds specified in  a .csv platemap. This assignment is then used to generate heatmaps and 
+other visualisations to compare and contrast different LCMS runs. It was designed specifically for the analysis of data generated from 
 high-throughput chemistry, and is suitable for reaction optimisations, parallel synthesis
 and library validation experiments. 
 
@@ -63,3 +63,6 @@ Contents
    faq
    add_param
    pyparse_det
+
+
+.. |trademark|	unicode:: U+2122 .. TRADEMARK SYMBOL

@@ -1,10 +1,10 @@
 Installation and Run
 ====================
 
-Pre-Requisite Packages
+Pre-Requisites
 ------------------------
 
-The following packages should be installed if not already available:
+PyParse was written for Python v3.7, and the following packages should be installed if not already available:
 
 * matplotlib: https://matplotlib.org/stable/index.html (v 3.3.2)
 * seaborn: https://seaborn.pydata.org/ (v 0.11.0)
@@ -13,6 +13,9 @@ The following packages should be installed if not already available:
 
 The suggested version of each package is provided in parentheses. A conda text/yml file is provided 
 as part of the Github repository. 
+
+PyParse is currently only capable of analysing LCMS data in the Waters OpenLynx\ |trademark| browser report (.rpt) file
+format. All data for the analysis *must* be in a *single* file of this format. 
 
 .. _preparing_a_platemap_label:
 
