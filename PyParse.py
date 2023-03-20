@@ -2415,7 +2415,7 @@ def main():
                         calc_higherions = "True",
                         
                         gen_csv = "True",
-                        gen_zip = "True",
+                        gen_zip = "False",
 
                         output = "output",
 

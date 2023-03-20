@@ -1,4 +1,4 @@
-name: cassapps2020
+name: pyparse
 channels:
   - rdkit
   - defaults
@@ -120,5 +120,5 @@ dependencies:
     - soupsieve==2.4
     - sphinx-basic-ng==1.0.0b1
     - sphinx-copybutton==0.5.1
-prefix: C:\Anaconda3\envs\cassapps2020
+prefix: C:\Anaconda3\envs\pyparse
 
