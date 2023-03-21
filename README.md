@@ -1,5 +1,5 @@
 
-Welcome to PyParse's documentation!
+Welcome to PyParse!
 ===================================
 
 Authors: Joseph Mason, Francesco Rianjongdee, Harry Wilders, David Fallon
