@@ -18,6 +18,9 @@ See the [Waters OpenLynx™](https://www.waters.com/nextgen/ie/en/library/applic
 
 Example Usage 
 ---------------
+
+For full documentation, including a walkthrough using the example data set provided, check out the [Github Pages](https://thatchemistryguy.github.io/PyParse/index.html) site!
+
 ```
 
 	python PyParse.py example_rpt.rpt example_platemap.csv -o new_output_directory -r 8 -c 12 -pt corrP/STD
