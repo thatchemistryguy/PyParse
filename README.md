@@ -2,7 +2,7 @@
 Welcome to PyParse!
 ===================================
 
-Authors: Joseph Mason, Francesco Rianjongdee, Harry Wilders, David Fallon
+Authors: Joe Mason, Francesco Rianjongdee, Harry Wilders, David Fallon
 
 
 Description
