@@ -19,7 +19,7 @@ See the [Waters OpenLynx™](https://www.waters.com/nextgen/ie/en/library/applic
 Example Usage 
 ---------------
 
-For full documentation, including a walkthrough using the example data set provided, check out the [Github Pages](https://thatchemistryguy.github.io/PyParse/index.html) site!
+Check out the [Github Pages](https://thatchemistryguy.github.io/PyParse/index.html) site! Here you'll find full documentation, including a walkthrough using the example data set provided!
 
 ```
 
