@@ -255,6 +255,7 @@ def importStructures(filename):
             if "Cl" in index or "Br" in index:
                 mw2 = round(mw1 + 2, 2)
         
+        #Append new masses to list 
         mass2.append(mw2)
         mass3.append(mw3)
 
