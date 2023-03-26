@@ -1,4 +1,4 @@
-name: pyparse_env
+name: pyparse
 channels:
   - defaults
 dependencies:
