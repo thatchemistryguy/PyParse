@@ -27,7 +27,7 @@ Check out the [Github Pages](https://thatchemistryguy.github.io/PyParse/index.ht
 
 ```
 (Used for an LCMS plate with 8 rows and 12 columns, to generate visualisations based 
-on the corrected ratio of product to internal standard. Saves all output tables/data/visualisations
+on the corrected ratio of product to internal standard. Saves all output tables, data and visualisations
 to "new_output_directory".)
 		
 		
