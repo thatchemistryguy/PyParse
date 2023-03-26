@@ -1,0 +1,23 @@
+name: pyparse_env
+channels:
+  - defaults
+dependencies:
+  - pip=22.3.1=py37haa95532_0
+  - python=3.7.15=h6244533_1
+  - pip:
+    - cycler==0.11.0
+    - fonttools==4.38.0
+    - kiwisolver==1.4.4
+    - matplotlib==3.5.3
+    - numpy==1.21.6
+    - packaging==23.0
+    - pandas==1.3.5
+    - pillow==9.4.0
+    - pyparsing==3.0.9
+    - python-dateutil==2.8.2
+    - pytz==2023.2
+    - rdkit==2022.9.5
+    - seaborn==0.12.2
+    - six==1.16.0
+    - typing-extensions==4.5.0
+prefix: E:\Installations\Anaconda\envs\pyparse_env
