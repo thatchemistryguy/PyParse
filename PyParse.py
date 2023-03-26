@@ -233,14 +233,14 @@ def importStructures(filename):
         mw3 = 0
         try:
             #Use rdkit to perform boc degradation
-            rxn1 = AllChem.ReactionFromSmarts("[NX3,n:1][C:2](=[O:3])[O:4][C:5]([CH3])([CH3])[CH3]>>[*:1][C:2](=[O:3])[O:4]")
+            rxn1 = AllChem.ReactionFromSmarts("[NX3,n:1][C:2](=[O:3])[O:4][C]([CH3])([CH3])[CH3]>>[*:1][C:2](=[O:3])[O:4]")
             new_mol1 = rxn1.RunReactants((mol, ))[0][0]
             #Sanitise the molecule to make sure that a sensible molecule was produced. 
             Chem.SanitizeMol(new_mol1)
             mw2 = round(Descriptors.ExactMolWt(new_mol1), 2)
             
             #Use rdkit again to get to fully deprotected molecule
-            rxn2 = AllChem.ReactionFromSmarts("[NX3,n:1][C:2](=[O:3])[O:4][C:5]([CH3])([CH3])[CH3]>>[*:1][H]")
+            rxn2 = AllChem.ReactionFromSmarts("[NX3,n:1][C](=[O])[O][C]([CH3])([CH3])[CH3]>>[*:1][H]")
             new_mol2 = rxn2.RunReactants((mol, ))[0][0]
             Chem.SanitizeMol(new_mol2)
             mw3 = round(Descriptors.ExactMolWt(new_mol2), 2)
