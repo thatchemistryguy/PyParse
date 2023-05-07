@@ -272,7 +272,7 @@ def importStructures(filename):
             else:
                 mass2.append(0)
                 mass3.append(0)
-    print(mass1, mass2, mass3)
+
     #Append the mass data to the dataframe
     compoundDF["mass1"] = mass1
     compoundDF["mass2"] = mass2
