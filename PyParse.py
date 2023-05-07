@@ -220,6 +220,7 @@ def importStructures(filename):
     mass2 = []
     mass3 = []
     if options.calc_boc == "True":
+
         #Use RDkit to find the isotopic mass of each compound
         #as well as likely other masses, e.g. boc deprotection and
         #halide isotopes. 
@@ -228,37 +229,37 @@ def importStructures(filename):
             mw1 = round(Descriptors.ExactMolWt(mol), 2)
             #Add the parent mass to the list
             mass1.append(mw1)
-            
-            #Use RDkit to replace Boc group with de-tertbutylated product
-            #commonly observed in ES+ 
-            pattern = Chem.MolFromSmiles("NC(=O)OC(C)(C)C")
-            replace = Chem.MolFromSmiles("NC(=O)O")
-            rm = Chem.ReplaceSubstructs(mol, pattern, replace)
-            #Convert to smiles and back to structure to add/remove protons 
-            #where necessary to get to sensible structure
-            rm_smiles = Chem.MolToSmiles(rm[0])
-            mw2 = round(Descriptors.ExactMolWt(Chem.MolFromSmiles(rm_smiles)), 2)
-            
-            #Add mass to list if the process above resulting in a new mass to find
-            if mw1 != mw2:
-                mass2.append(mw2)
-            #Look for halide isotops if no Boc group was found. 
-            else:
-                if "Cl" in index or "Br" in index:
-                    mass2.append(round(mw1 + 2, 2))
-                else:
-                    mass2.append(0)
-
-            replace2 = Chem.MolFromSmiles("N[H]")
-            rm2 = Chem.ReplaceSubstructs(mol, pattern, replace2)
-            rm2_smiles = Chem.MolToSmiles(rm2[0])
-            mw3 = round(Descriptors.ExactMolWt(Chem.MolFromSmiles(rm2_smiles)), 2)
-
-            if mw3 != mw1:
+            #Set default values for mw2 and mw3
+            mw2 = 0
+            mw3 = 0
+            try:
+                #Use rdkit to perform boc degradation
+                rxn1 = AllChem.ReactionFromSmarts("[NX3,n:1][C:2](=[O:3])[O:4][C]([CH3])([CH3])[CH3]>>[*:1][C:2](=[O:3])[O:4]")
+                new_mol1 = rxn1.RunReactants((mol, ))[0][0]
+                #Sanitise the molecule to make sure that a sensible molecule was produced. 
+                Chem.SanitizeMol(new_mol1)
+                mw2 = round(Descriptors.ExactMolWt(new_mol1), 2)
+                
+                #Use rdkit again to get to fully deprotected molecule
+                rxn2 = AllChem.ReactionFromSmarts("[NX3,n:1][C](=[O])[O][C]([CH3])([CH3])[CH3]>>[*:1][H]")
+                new_mol2 = rxn2.RunReactants((mol, ))[0][0]
+                Chem.SanitizeMol(new_mol2)
+                mw3 = round(Descriptors.ExactMolWt(new_mol2), 2)
+                
                 logging.info(f'A Boc group was found and disconnected for {row["name"]}.')
-                mass3.append(mw3)
-            else: 
-                mass3.append(0)
+                
+            except Exception as e:
+                
+                #If the boc degradation failed, either because a boc group was
+                #not found on this molecule or for other reasons, check for 
+                #halide isotope patterns. 
+                if "Cl" in index or "Br" in index:
+                    mw2 = round(mw1 + 2, 2)
+        
+        #Append new masses to list 
+        mass2.append(mw2)
+        mass3.append(mw3)
+        
     else:
         for index, row in compoundDF.iterrows():
             mol = Chem.MolFromSmiles(index)
@@ -271,7 +272,7 @@ def importStructures(filename):
             else:
                 mass2.append(0)
                 mass3.append(0)
-        
+
     #Append the mass data to the dataframe
     compoundDF["mass1"] = mass1
     compoundDF["mass2"] = mass2
