@@ -256,9 +256,9 @@ def importStructures(filename):
                 if "Cl" in index or "Br" in index:
                     mw2 = round(mw1 + 2, 2)
         
-        #Append new masses to list 
-        mass2.append(mw2)
-        mass3.append(mw3)
+            #Append new masses to list 
+            mass2.append(mw2)
+            mass3.append(mw3)
         
     else:
         for index, row in compoundDF.iterrows():
@@ -272,7 +272,7 @@ def importStructures(filename):
             else:
                 mass2.append(0)
                 mass3.append(0)
-
+    print(mass1, mass2, mass3)
     #Append the mass data to the dataframe
     compoundDF["mass1"] = mass1
     compoundDF["mass2"] = mass2
