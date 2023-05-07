@@ -204,3 +204,5 @@ Training
 Blog
 About
 
+.gitignore.bak
+*.bak
