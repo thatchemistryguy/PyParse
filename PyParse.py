@@ -219,46 +219,58 @@ def importStructures(filename):
     mass1 = []
     mass2 = []
     mass3 = []
+    if options.calc_boc == "True":
+        #Use RDkit to find the isotopic mass of each compound
+        #as well as likely other masses, e.g. boc deprotection and
+        #halide isotopes. 
+        for index, row in compoundDF.iterrows():
+            mol = Chem.MolFromSmiles(index)
+            mw1 = round(Descriptors.ExactMolWt(mol), 2)
+            #Add the parent mass to the list
+            mass1.append(mw1)
+            
+            #Use RDkit to replace Boc group with de-tertbutylated product
+            #commonly observed in ES+ 
+            pattern = Chem.MolFromSmiles("NC(=O)OC(C)(C)C")
+            replace = Chem.MolFromSmiles("NC(=O)O")
+            rm = Chem.ReplaceSubstructs(mol, pattern, replace)
+            #Convert to smiles and back to structure to add/remove protons 
+            #where necessary to get to sensible structure
+            rm_smiles = Chem.MolToSmiles(rm[0])
+            mw2 = round(Descriptors.ExactMolWt(Chem.MolFromSmiles(rm_smiles)), 2)
+            
+            #Add mass to list if the process above resulting in a new mass to find
+            if mw1 != mw2:
+                mass2.append(mw2)
+            #Look for halide isotops if no Boc group was found. 
+            else:
+                if "Cl" in index or "Br" in index:
+                    mass2.append(round(mw1 + 2, 2))
+                else:
+                    mass2.append(0)
 
-    #Use RDkit to find the isotopic mass of each compound
-    #as well as likely other masses, e.g. boc deprotection and
-    #halide isotopes. 
-    for index, row in compoundDF.iterrows():
-        mol = Chem.MolFromSmiles(index)
-        mw1 = round(Descriptors.ExactMolWt(mol), 2)
-        #Add the parent mass to the list
-        mass1.append(mw1)
-        
-        #Use RDkit to replace Boc group with de-tertbutylated product
-        #commonly observed in ES+ 
-        pattern = Chem.MolFromSmiles("NC(=O)OC(C)(C)C")
-        replace = Chem.MolFromSmiles("NC(=O)O")
-        rm = Chem.ReplaceSubstructs(mol, pattern, replace)
-        #Convert to smiles and back to structure to add/remove protons 
-        #where necessary to get to sensible structure
-        rm_smiles = Chem.MolToSmiles(rm[0])
-        mw2 = round(Descriptors.ExactMolWt(Chem.MolFromSmiles(rm_smiles)), 2)
-        
-        #Add mass to list if the process above resulting in a new mass to find
-        if mw1 != mw2:
-            mass2.append(mw2)
-        #Look for halide isotops if no Boc group was found. 
-        else:
+            replace2 = Chem.MolFromSmiles("N[H]")
+            rm2 = Chem.ReplaceSubstructs(mol, pattern, replace2)
+            rm2_smiles = Chem.MolToSmiles(rm2[0])
+            mw3 = round(Descriptors.ExactMolWt(Chem.MolFromSmiles(rm2_smiles)), 2)
+
+            if mw3 != mw1:
+                logging.info(f'A Boc group was found and disconnected for {row["name"]}.')
+                mass3.append(mw3)
+            else: 
+                mass3.append(0)
+    else:
+        for index, row in compoundDF.iterrows():
+            mol = Chem.MolFromSmiles(index)
+            mw1 = round(Descriptors.ExactMolWt(mol), 2)
+            mass1.append(mw1)
+            
             if "Cl" in index or "Br" in index:
                 mass2.append(round(mw1 + 2, 2))
+                mass3.append(0)
             else:
                 mass2.append(0)
-
-        replace2 = Chem.MolFromSmiles("N[H]")
-        rm2 = Chem.ReplaceSubstructs(mol, pattern, replace2)
-        rm2_smiles = Chem.MolToSmiles(rm2[0])
-        mw3 = round(Descriptors.ExactMolWt(Chem.MolFromSmiles(rm2_smiles)), 2)
-
-        if mw3 != mw1:
-            logging.info(f'A Boc group was found and disconnected for {row["name"]}.')
-            mass3.append(mw3)
-        else: 
-            mass3.append(0)
+                mass3.append(0)
         
     #Append the mass data to the dataframe
     compoundDF["mass1"] = mass1
@@ -2413,6 +2425,7 @@ def main():
                         mass_or_area = "mass_conf",
                         plot_type = "corrP/STD", 
                         calc_higherions = "True",
+                        calc_boc = "True",
                         
                         gen_csv = "True",
                         gen_zip = "False",
@@ -2488,6 +2501,9 @@ def main():
     parser.add_argument("-chi", "--calc_higherions", action="store", type=str, dest = "calc_higherions",
                         help = "Look for [M+2H]2+ and [M+3H]3+ to find hits and calculate the mass confidence"
                         " of a peak, True/False")
+                        
+    parser.add_argument("-cboc", "--calc_boc", action="store", type=str, dest = "calc_boc",
+                        help = "Look for Boc degradation ions, True/False")
                         
     parser.add_argument("-g", "--generate_csv", action="store", type=str, dest = "gen_csv", 
                         help = "Choose to generate and save a CSV, True/False.\n")
