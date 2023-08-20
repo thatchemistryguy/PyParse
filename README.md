@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/616543497.svg)](https://zenodo.org/badge/latestdoi/616543497)
 
 Welcome to PyParse!
 ===================================
