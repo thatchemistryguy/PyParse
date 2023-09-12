@@ -19,6 +19,11 @@
             margin-top: 2%;
         }
 
+        .carousel {
+            max-height:600px; 
+            max-width: 1200px;
+        }
+
 
 
     </style>
@@ -58,7 +63,7 @@
         
         <h2 id = "PlateAnalysis">{{ analysis_name }}</h2>
             <div class="container-fluid">
-                <div id="carouselHeatmap" class = "carousel slide carousel-dark carousel-fade" style="height:600px; width:1200px;">
+                <div id="carouselHeatmap" class = "carousel slide carousel-dark carousel-fade">
                     <ol class="carousel-indicators">
                         {% if pt == "Parea" %}
                             <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="0" class="active"></button>
