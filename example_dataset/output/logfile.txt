@@ -5,47 +5,41 @@ INFO:root:A Boc group was found and disconnected for Product14.
 INFO:root:A Boc group was found and disconnected for Product15.
 INFO:root:A Boc group was found and disconnected for Product17.
 INFO:root:A Boc group was found and disconnected for Product18.
-ERROR:root:A fatal exception occurred. Contact administrator.
-Traceback (most recent call last):
-  File "pyparse.py", line 2958, in <module>
-    main()
-  File "pyparse.py", line 2605, in main
-    [compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[0])
-  File "pyparse.py", line 278, in importStructures
-    compoundDF["mass2"] = mass2
-  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\frame.py", line 3612, in __setitem__
-    self._set_item(key, value)
-  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\frame.py", line 3784, in _set_item
-    value = self._sanitize_column(value)
-  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\frame.py", line 4509, in _sanitize_column
-    com.require_length_match(value, self.index)
-  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\common.py", line 532, in require_length_match
-    "Length of values "
-ValueError: Length of values (1) does not match length of index (24)
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
-INFO:root:The output files were saved to example_dataset/output/.
-INFO:root:A Boc group was found and disconnected for Product13.
-INFO:root:A Boc group was found and disconnected for Product14.
-INFO:root:A Boc group was found and disconnected for Product15.
-INFO:root:A Boc group was found and disconnected for Product17.
-INFO:root:A Boc group was found and disconnected for Product18.
-ERROR:root:A fatal exception occurred. Contact administrator.
-Traceback (most recent call last):
-  File "pyparse.py", line 2958, in <module>
-    main()
-  File "pyparse.py", line 2605, in main
-    [compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[0])
-  File "pyparse.py", line 278, in importStructures
-    compoundDF["mass2"] = mass2
-  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\frame.py", line 3612, in __setitem__
-    self._set_item(key, value)
-  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\frame.py", line 3784, in _set_item
-    value = self._sanitize_column(value)
-  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\frame.py", line 4509, in _sanitize_column
-    com.require_length_match(value, self.index)
-  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\common.py", line 532, in require_length_match
-    "Length of values "
-ValueError: Length of values (1) does not match length of index (24)
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.3824001 seconds.
 INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/output/.
 INFO:root:A Boc group was found and disconnected for Product13.
@@ -55,39 +49,39 @@ INFO:root:A Boc group was found and disconnected for Product17.
 INFO:root:A Boc group was found and disconnected for Product18.
 INFO:root:24 compounds were imported.
 INFO:root:24 wells were found in the rpt.
-INFO:root:Peaks were chosen for Product1 by area.
-INFO:root:Peaks were chosen for Product2 by area.
-INFO:root:Peaks were chosen for Product3 by area.
-INFO:root:Peaks were chosen for Product4 by area.
-INFO:root:Peaks were chosen for Product5 by area.
-INFO:root:Peaks were chosen for Product6 by area.
-INFO:root:Peaks were chosen for Product7 by area.
-INFO:root:Peaks were chosen for Product8 by area.
-INFO:root:Peaks were chosen for Product9 by area.
-INFO:root:Peaks were chosen for Product10 by area.
-INFO:root:Peaks were chosen for Product11 by area.
-INFO:root:Peaks were chosen for Product12 by area.
-INFO:root:Peaks were chosen for Product13 by area.
-INFO:root:Peaks were chosen for Product14 by area.
-INFO:root:Peaks were chosen for Product15 by area.
-INFO:root:Peaks were chosen for Product16 by area.
-INFO:root:Peaks were chosen for Product17 by area.
-INFO:root:Peaks were chosen for Product18 by area.
-INFO:root:Peaks were chosen for Product19 by area.
-INFO:root:Peaks were chosen for Product20 by area.
-INFO:root:Peaks were chosen for Product21 by area.
-INFO:root:Peaks were chosen for Product22 by area.
-INFO:root:Peaks were chosen for Product23 by area.
-INFO:root:Peaks were chosen for Product24 by area.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
 INFO:root:Duplicate assignments were removed.
 INFO:root:The output table was generated.
 INFO:root:Potential conflicts were searched for all compounds.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
 INFO:root:A histogram and donut chaty was generated.
 INFO:root:The HTML output was generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 5.1228384 seconds.
+INFO:root:The analysis was completed in 12.3811625 seconds.
 INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/output/.
 INFO:root:A Boc group was found and disconnected for Product13.
@@ -97,36 +91,641 @@ INFO:root:A Boc group was found and disconnected for Product17.
 INFO:root:A Boc group was found and disconnected for Product18.
 INFO:root:24 compounds were imported.
 INFO:root:24 wells were found in the rpt.
-INFO:root:Peaks were chosen for Product1 by area.
-INFO:root:Peaks were chosen for Product2 by area.
-INFO:root:Peaks were chosen for Product3 by area.
-INFO:root:Peaks were chosen for Product4 by area.
-INFO:root:Peaks were chosen for Product5 by area.
-INFO:root:Peaks were chosen for Product6 by area.
-INFO:root:Peaks were chosen for Product7 by area.
-INFO:root:Peaks were chosen for Product8 by area.
-INFO:root:Peaks were chosen for Product9 by area.
-INFO:root:Peaks were chosen for Product10 by area.
-INFO:root:Peaks were chosen for Product11 by area.
-INFO:root:Peaks were chosen for Product12 by area.
-INFO:root:Peaks were chosen for Product13 by area.
-INFO:root:Peaks were chosen for Product14 by area.
-INFO:root:Peaks were chosen for Product15 by area.
-INFO:root:Peaks were chosen for Product16 by area.
-INFO:root:Peaks were chosen for Product17 by area.
-INFO:root:Peaks were chosen for Product18 by area.
-INFO:root:Peaks were chosen for Product19 by area.
-INFO:root:Peaks were chosen for Product20 by area.
-INFO:root:Peaks were chosen for Product21 by area.
-INFO:root:Peaks were chosen for Product22 by area.
-INFO:root:Peaks were chosen for Product23 by area.
-INFO:root:Peaks were chosen for Product24 by area.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
 INFO:root:Duplicate assignments were removed.
 INFO:root:The output table was generated.
 INFO:root:Potential conflicts were searched for all compounds.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
 INFO:root:A histogram and donut chaty was generated.
 INFO:root:The HTML output was generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 5.1594213 seconds.
+INFO:root:The analysis was completed in 12.4214671 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:A Boc group was found and disconnected for Product13.
+INFO:root:A Boc group was found and disconnected for Product14.
+INFO:root:A Boc group was found and disconnected for Product15.
+INFO:root:A Boc group was found and disconnected for Product17.
+INFO:root:A Boc group was found and disconnected for Product18.
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.4597757 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:A Boc group was found and disconnected for Product13.
+INFO:root:A Boc group was found and disconnected for Product14.
+INFO:root:A Boc group was found and disconnected for Product15.
+INFO:root:A Boc group was found and disconnected for Product17.
+INFO:root:A Boc group was found and disconnected for Product18.
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.4411732 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:A Boc group was found and disconnected for Product13.
+INFO:root:A Boc group was found and disconnected for Product14.
+INFO:root:A Boc group was found and disconnected for Product15.
+INFO:root:A Boc group was found and disconnected for Product17.
+INFO:root:A Boc group was found and disconnected for Product18.
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.842568400000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:A Boc group was found and disconnected for Product13.
+INFO:root:A Boc group was found and disconnected for Product14.
+INFO:root:A Boc group was found and disconnected for Product15.
+INFO:root:A Boc group was found and disconnected for Product17.
+INFO:root:A Boc group was found and disconnected for Product18.
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.494270700000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:A Boc group was found and disconnected for Product13.
+INFO:root:A Boc group was found and disconnected for Product14.
+INFO:root:A Boc group was found and disconnected for Product15.
+INFO:root:A Boc group was found and disconnected for Product17.
+INFO:root:A Boc group was found and disconnected for Product18.
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.7956698 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:A Boc group was found and disconnected for Product13.
+INFO:root:A Boc group was found and disconnected for Product14.
+INFO:root:A Boc group was found and disconnected for Product15.
+INFO:root:A Boc group was found and disconnected for Product17.
+INFO:root:A Boc group was found and disconnected for Product18.
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2915, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2851, in main
+    plotHeatmaps(outputTable, save_dir)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2072, in plotHeatmaps
+    annot = labels, cbar_kws={"label": zvalue, ax: "xaxis"}, fmt="")
+UnboundLocalError: local variable 'ax' referenced before assignment
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:A Boc group was found and disconnected for Product13.
+INFO:root:A Boc group was found and disconnected for Product14.
+INFO:root:A Boc group was found and disconnected for Product15.
+INFO:root:A Boc group was found and disconnected for Product17.
+INFO:root:A Boc group was found and disconnected for Product18.
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.0710064 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:A Boc group was found and disconnected for Product13.
+INFO:root:A Boc group was found and disconnected for Product14.
+INFO:root:A Boc group was found and disconnected for Product15.
+INFO:root:A Boc group was found and disconnected for Product17.
+INFO:root:A Boc group was found and disconnected for Product18.
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using corrParea as the index.
+INFO:root:A set of pie-charts was generated using corrParea as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.348087 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.1267823 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2780, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2745, in main
+    buildHTML(save_dir, compoundDF, all_compounds, times = times)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2190, in buildHTML
+    template = env.get_template("html_template.html")
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 1010, in get_template
+    return self._load_template(name, globals)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 969, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 768, in compile
+    self.handle_exception(source=source_hint)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\html_template.html", line 229, in template
+    {% counter = counter + 1 %}
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'counter'. Jinja was looking for the following tags: 'elif' or 'else' or 'endif'. The innermost block that needs to be closed is 'if'.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.0053552 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.094419599999999 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2780, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2745, in main
+    buildHTML(save_dir, compoundDF, all_compounds, times = times)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2205, in buildHTML
+    pt = options.plot_type
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\html_template.html", line 236, in top-level template code
+    {% if row["comments"]|length > counter %}
+jinja2.exceptions.UndefinedError: 'counter' is undefined
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2780, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2745, in main
+    buildHTML(save_dir, compoundDF, all_compounds, times = times)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2190, in buildHTML
+    template = env.get_template("html_template.html")
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 1010, in get_template
+    return self._load_template(name, globals)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 969, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 768, in compile
+    self.handle_exception(source=source_hint)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\html_template.html", line 229, in template
+    {% counter.append("1") %}
+jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'counter'. Jinja was looking for the following tags: 'elif' or 'else' or 'endif'. The innermost block that needs to be closed is 'if'.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.0968994 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.081146800000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.0561966 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2786, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2751, in main
+    buildHTML(save_dir, compoundDF, all_compounds, options.analysis_name, times = times)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2207, in buildHTML
+    options = options
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\html_template.html", line 293, in top-level template code
+    {% for index, option in options: %}
+TypeError: 'Namespace' object is not iterable
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2786, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2751, in main
+    buildHTML(save_dir, compoundDF, all_compounds, options.analysis_name, times = times)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2207, in buildHTML
+    options = vars(options)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\html_template.html", line 293, in top-level template code
+    {% for index, option in options %}
+ValueError: too many values to unpack (expected 2)
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2786, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2751, in main
+    buildHTML(save_dir, compoundDF, all_compounds, options.analysis_name, times = times)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2207, in buildHTML
+    options = vars(options)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\html_template.html", line 293, in top-level template code
+    {% for index, option in options %}
+ValueError: too many values to unpack (expected 2)
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.023989800000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.1443181 seconds.
