@@ -1888,135 +1888,135 @@ def plotPieCharts(zvalue, outputTable, save_dir, by_products):
                 "peru", "orange", "gold", "olive", "lawngreen", "darkgreen", "lime", "aqua", 
                 "steelblue", "slategray", "navy"]
     
-    #declare new subplots
-    fig, axs = plt.subplots(options.plate_row_no, options.plate_col_no)
+    def buildPies(chart_type):
 
-    #get maximum value, so diameter of all pies can be calculated in relation
-    #to the best performing well. 
-    max_val = max([row[zvalue] for index, row in outputTable.iterrows()])
-    
-    #format data and generate pie charts
-    pies_baked = []
-    if max_val != 0:
+        #declare new subplots
+        fig, axs = plt.subplots(options.plate_row_no, options.plate_col_no)
         
-        for index, row in outputTable.iterrows():
-            pies_baked.append(index)
-            rowVal = math.floor((index-1) / options.plate_col_no)
-            colVal = int((index-1) % options.plate_col_no)
-
-            chart_size =  (row[zvalue] / max_val) * 0.95
-
-            color_tracker = 0
-            colors = []
-            sum_byprod = sum([row[f'{by_prod}area'] for by_prod in by_products])
+        #get maximum value, so diameter of all pies can be calculated in relation
+        #to the best performing well. 
+        max_val = max([row[zvalue] for index, row in outputTable.iterrows()])
+        
+        #format data and generate pie charts
+        pies_baked = []
+        if max_val != 0:
             
-            total = row["SMarea"] + row["Parea"] + row["STDarea"] + sum_byprod
-            #the LCMS machine can calculate a total area of >100% due to rounding errors
-            #this needs to be corrected before the piechart is built
-            if total > 100:
-                total = 100
-            data = []
-            if chart_size > 0: 
-                if total != 100:
-                    data.append(100-total)
-                    colors.append("grey")
+            for index, row in outputTable.iterrows():
+                pies_baked.append(index)
+                rowVal = math.floor((index-1) / options.plate_col_no)
+                colVal = int((index-1) % options.plate_col_no)
 
-                if row["SMarea"] != 0:
-                    data.append(math.floor(row["SMarea"]))
-                    colors.append("cyan")
+                if chart_type == "fixed_width":
+                    chart_size = 0.95
+                else:
+                    chart_size =  (row[zvalue] / max_val) * 0.95
 
-                if row["Parea"] != 0:
-                    data.append(math.floor(row["Parea"]))
-                    colors.append("yellow")
-
-                if row["STDarea"] != 0:
-                    data.append(math.floor(row["STDarea"]))
-                    colors.append("green")
+                color_tracker = 0
+                colors = []
+                sum_byprod = sum([row[f'{by_prod}area'] for by_prod in by_products])
                 
-                for by_prod in by_products:
-                    if math.floor(row[f'{by_prod}area']) != 0:
-                        data.append(math.floor(row[f'{by_prod}area']))
-                        colors.append(palette[color_tracker])
-                    color_tracker = color_tracker + 1
-            else:
-                #Set chart size to 0.01 to avoid a non-zero radius
-                #which causes matplotlib to fail. 
-                chart_size = 0.01
+                total = row["SMarea"] + row["Parea"] + row["STDarea"] + sum_byprod
+                #the LCMS machine can calculate a total area of >100% due to rounding errors
+                #this needs to be corrected before the piechart is built
+                if total > 100:
+                    total = 100
+                data = []
+                if chart_size > 0: 
+                    if total != 100:
+                        data.append(100-total)
+                        colors.append("grey")
+
+                    if row["SMarea"] != 0:
+                        data.append(math.floor(row["SMarea"]))
+                        colors.append("cyan")
+
+                    if row["Parea"] != 0:
+                        data.append(math.floor(row["Parea"]))
+                        colors.append("yellow")
+
+                    if row["STDarea"] != 0:
+                        data.append(math.floor(row["STDarea"]))
+                        colors.append("green")
+                    
+                    for by_prod in by_products:
+                        if math.floor(row[f'{by_prod}area']) != 0:
+                            data.append(math.floor(row[f'{by_prod}area']))
+                            colors.append(palette[color_tracker])
+                        color_tracker = color_tracker + 1
+                else:
+                    #Set chart size to 0.01 to avoid a non-zero radius
+                    #which causes matplotlib to fail. 
+                    chart_size = 0.01
+                    
                 
-            
-            if options.plate_row_no == 1:
-                axs[colVal].pie(data, 
-                        textprops={"size": "smaller"}, 
-                        colors = colors,  
-                        radius=chart_size,
-                        normalize = True)
-            elif options.plate_col_no == 1:
-                axs[rowVal].pie(data, 
-                        textprops={"size": "smaller"}, 
-                        colors = colors,  
-                        radius=chart_size,
-                        normalize = True)
-            else:
-                axs[rowVal, colVal].pie(data, 
-                        textprops={"size": "smaller"}, 
-                        colors = colors,  
-                        radius=chart_size,
-                        normalize = True)
-            
-    #Remove any unused sections of the trellised pie chart
-    #graph so that the visualisation is neater.         
-    for i in range(1, options.plate_col_no * options.plate_row_no + 1):
-        rowVal = math.floor((i-1) / options.plate_col_no)
-        colVal = int((i-1) % options.plate_col_no)
-        if i not in pies_baked:
-            
-            #matplotlib axes drop a dimension 
-            #when that dimension is length = 1. 
-            #Adjust code to match
-            if options.plate_row_no == 1:
-                plt.delaxes(axs[colVal])
-            elif options.plate_col_no == 1:
-                plt.delaxes(axs[rowVal])
-            else:
-                plt.delaxes(axs[rowVal, colVal])
-        #Add gridlines around piecharts
+                if options.plate_row_no == 1:
+                    axs[colVal].pie(data, 
+                            textprops={"size": "smaller"}, 
+                            colors = colors,  
+                            radius=chart_size,
+                            normalize = True)
+                elif options.plate_col_no == 1:
+                    axs[rowVal].pie(data, 
+                            textprops={"size": "smaller"}, 
+                            colors = colors,  
+                            radius=chart_size,
+                            normalize = True)
+                else:
+                    axs[rowVal, colVal].pie(data, 
+                            textprops={"size": "smaller"}, 
+                            colors = colors,  
+                            radius=chart_size,
+                            normalize = True)
+                
+        #Remove any unused sections of the trellised pie chart
+        #graph so that the visualisation is neater.         
+        for i in range(1, options.plate_col_no * (options.plate_row_no) + 1):
+            rowVal = math.floor((i-1) / options.plate_col_no)
+            colVal = int((i-1) % options.plate_col_no)
+            if i not in pies_baked:
+                
+                #matplotlib axes drop a dimension 
+                #when that dimension is length = 1. 
+                #Adjust code to match
+                if options.plate_row_no == 1:
+                    plt.delaxes(axs[colVal])
+                elif options.plate_col_no == 1:
+                    plt.delaxes(axs[rowVal])
+                else:
+                    plt.delaxes(axs[rowVal, colVal])
+           
+
+        #Add a key to the graph 
+        lines = [Line2D([0], [0], color="grey", lw=4), 
+                Line2D([0], [0], color="cyan", lw=4),
+                Line2D([0], [0], color="yellow", lw=4),
+                Line2D([0], [0], color="green", lw=4),]
+        labels = ["Untagged", "Reactant", "Product", "InternalSTD"]
+        for i in range(len(by_products)):
+            lines.append(Line2D([0], [0], color=palette[i], lw=4))
+            labels.append(by_products[i])
         if options.plate_row_no == 1:
-            autoaxis = axs[colVal].axis()
+            axs[options.plate_col_no-1].legend(lines,
+                    labels, loc="lower center",
+                    bbox_to_anchor=(1,1), ncol=math.ceil(len(labels)/3))
         elif options.plate_col_no == 1:
-            autoaxis = axs[rowVal].axis()
+            axs[options.plate_row_no-1].legend(lines,
+                    labels, loc="upper left",
+                    bbox_to_anchor=(1,1), ncol=math.ceil(len(labels)/3))
         else:
-            autoaxis = axs[rowVal, colVal].axis()
-        rec = plt.Rectangle((autoaxis[0], autoaxis[2]), (autoaxis[1]-autoaxis[0]), 
-                        autoaxis[3]-autoaxis[2], fill = False, lw=0.5, ls = "--")
-        rec = axs[rowVal, colVal].add_patch(rec)
-        rec.set_clip_on(False)
-
-    #Add a key to the graph 
-    lines = [Line2D([0], [0], color="grey", lw=4), 
-             Line2D([0], [0], color="cyan", lw=4),
-             Line2D([0], [0], color="yellow", lw=4),
-             Line2D([0], [0], color="green", lw=4),]
-    labels = ["Untagged", "Reactant", "Product", "InternalSTD"]
-    for i in range(len(by_products)):
-        lines.append(Line2D([0], [0], color=palette[i], lw=4))
-        labels.append(by_products[i])
-    if options.plate_row_no == 1:
-        axs[options.plate_col_no-1].legend(lines,
-                labels, loc="upper left",
-                bbox_to_anchor=(1,1))
-    elif options.plate_col_no == 1:
-        axs[options.plate_row_no-1].legend(lines,
-                labels, loc="upper left",
-                bbox_to_anchor=(1,1))
-    else:
-        axs[options.plate_row_no-1, options.plate_col_no-1].legend(lines,
-                labels, loc="upper left",
-                bbox_to_anchor=(1,1))
-    plt.tight_layout()
-
-    #Save graph to output directory
-    plt.savefig(f'{save_dir}graphs/piecharts.jpg', format="jpg")
-    plt.close()
+            axs[options.plate_row_no-1, options.plate_col_no-1].legend(lines,
+                    labels, loc="upper right",
+                    bbox_to_anchor=(1,0), ncol=math.ceil(len(labels)/3))
+        if chart_type == "fixed_width":
+            fig.suptitle("Fixed Diameter Trellised Pie Charts", y=0.9)
+        else:
+            fig.suptitle(f'Trellised Pie Charts Sized by {zvalue}', y=0.9)
+        #Save graph to output directory
+        plt.savefig(f'{save_dir}graphs/piecharts_{chart_type}.jpg', format="jpg")
+        plt.close()
+    
+    buildPies("fixed_width")
+    buildPies("variable_width")
 
 def plotHeatmaps(outputTable, save_dir):
     """

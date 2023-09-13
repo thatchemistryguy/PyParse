@@ -755,3 +755,902 @@ INFO:root:A histogram and donut chaty was generated.
 INFO:root:The HTML output was generated.
 INFO:root:The CSV outputs were generated.
 INFO:root:The analysis was completed in 7.0045249 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.771558299999999 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.8767183 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2796, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2742, in main
+    plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2028, in plotPieCharts
+    buildPies("fixed_width")
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2019, in buildPies
+    bbox_to_anchor=(1,1))
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\matplotlib\axes\_axes.py", line 305, in legend
+    self.legend_ = mlegend.Legend(self, handles, labels, **kwargs)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\matplotlib\legend.py", line 455, in __init__
+    loc = _api.check_getitem(self.codes, loc=loc)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\matplotlib\_api\__init__.py", line 190, in check_getitem
+    .format(v, k, ', '.join(map(repr, mapping)))) from None
+ValueError: 'top' is not a valid value for loc; supported values are 'best', 'upper right', 'upper left', 'lower left', 'lower right', 'right', 'center left', 'center right', 'lower center', 'upper center', 'center'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2796, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2742, in main
+    plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2028, in plotPieCharts
+    buildPies("fixed_width")
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2021, in buildPies
+    plt.legend(ncol=math.ceil(labels/3))
+TypeError: unsupported operand type(s) for /: 'list' and 'int'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2796, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2742, in main
+    plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2028, in plotPieCharts
+    buildPies("fixed_width")
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2021, in buildPies
+    plt.legend(ncol=math.ceil(labels.length/3))
+AttributeError: 'list' object has no attribute 'length'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.7685487 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.628724400000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.3731988 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.3801518 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.386542799999999 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.4122818 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.5885252 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.332076500000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.581269999999999 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2793, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2739, in main
+    plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2025, in plotPieCharts
+    buildPies("fixed_width")
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2018, in buildPies
+    plt.legend(labels, ncol=math.ceil(len(labels)/3), loc="lower center", bb_to_anchor=(1,1))
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\matplotlib\pyplot.py", line 2665, in legend
+    return gca().legend(*args, **kwargs)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\matplotlib\axes\_axes.py", line 305, in legend
+    self.legend_ = mlegend.Legend(self, handles, labels, **kwargs)
+TypeError: __init__() got an unexpected keyword argument 'bb_to_anchor'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.5898887 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.5025812 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.568658900000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.540695700000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.6591433 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.605685499999999 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.3098357 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.9101102999999995 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.6094777 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.5965738 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.7460431 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.468331200000002 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2796, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2742, in main
+    plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2028, in plotPieCharts
+    buildPies("fixed_width")
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2017, in buildPies
+    axs[options.plate_row_no-1, options.plate_col_no].legend(lines,
+IndexError: index 12 is out of bounds for axis 1 with size 12
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.5729053 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.7096336 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.6429698 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.652313 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.574205300000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.5553345 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.6277458 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2796, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2742, in main
+    plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2028, in plotPieCharts
+    buildPies("fixed_width")
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 1986, in buildPies
+    plt.delaxes(axs[rowVal, colVal])
+IndexError: index 4 is out of bounds for axis 0 with size 4
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.3725355 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.3391265 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.6357191 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 9.331657400000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 9.3833483 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.4723904 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 9.0386564 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.265153100000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.3958065 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.3970154 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.385768200000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.6514463 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.2794385 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.3555019 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 13.1089829 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.6438361 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.4404113 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.5729394 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 9.402438700000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.6941878 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 8.7357466 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.8968873 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2786, in <module>
+    main()
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2732, in main
+    plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2018, in plotPieCharts
+    buildPies("fixed_width")
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 2011, in buildPies
+    fig.title("Fixed Diameter Trellised Pie Charts")
+AttributeError: 'Figure' object has no attribute 'title'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.7374291 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:4 compounds were imported.
+INFO:root:48 wells were found in the rpt.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.7825681 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/output/.
+INFO:root:A Boc group was found and disconnected for Product13.
+INFO:root:A Boc group was found and disconnected for Product14.
+INFO:root:A Boc group was found and disconnected for Product15.
+INFO:root:A Boc group was found and disconnected for Product17.
+INFO:root:A Boc group was found and disconnected for Product18.
+INFO:root:24 compounds were imported.
+INFO:root:24 wells were found in the rpt.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product2 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product9 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Peaks were chosen for Product16 by mass_conf.
+INFO:root:Peaks were chosen for Product17 by mass_conf.
+INFO:root:Peaks were chosen for Product18 by mass_conf.
+INFO:root:Peaks were chosen for Product19 by mass_conf.
+INFO:root:Peaks were chosen for Product20 by mass_conf.
+INFO:root:Peaks were chosen for Product21 by mass_conf.
+INFO:root:Peaks were chosen for Product22 by mass_conf.
+INFO:root:Peaks were chosen for Product23 by mass_conf.
+INFO:root:Peaks were chosen for Product24 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:Heatmaps were generated successfully.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chaty was generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.690178199999998 seconds.
