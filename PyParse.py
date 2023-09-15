@@ -1888,7 +1888,16 @@ def plotPieCharts(zvalue, outputTable, save_dir, by_products):
                 "peru", "orange", "gold", "olive", "lawngreen", "darkgreen", "lime", "aqua", 
                 "steelblue", "slategray", "navy"]
     
+    
     def buildPies(chart_type):
+        """
+        Define function to build a trellised pie chart. 
+
+        :param chart_type: String defining whether this set of pie charts has fixed or variable 
+                            diameters
+        
+        :return: jpg of trellised pie chart saved to output folder
+        """
 
         #declare new subplots
         fig, axs = plt.subplots(options.plate_row_no, options.plate_col_no)
@@ -2007,10 +2016,13 @@ def plotPieCharts(zvalue, outputTable, save_dir, by_products):
             axs[options.plate_row_no-1, options.plate_col_no-1].legend(lines,
                     labels, loc="upper right",
                     bbox_to_anchor=(1,0), ncol=math.ceil(len(labels)/3))
+            
+        #Add titles to the graphs
         if chart_type == "fixed_width":
             fig.suptitle("Fixed Diameter Trellised Pie Charts", y=0.9)
         else:
             fig.suptitle(f'Trellised Pie Charts Sized by {zvalue}', y=0.9)
+        
         #Save graph to output directory
         plt.savefig(f'{save_dir}graphs/piecharts_{chart_type}.jpg', format="jpg")
         plt.close()
