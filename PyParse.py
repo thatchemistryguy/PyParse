@@ -2511,6 +2511,10 @@ def main():
     
     parser.add_argument("-z", "--generate_zip", action="store", type=str, dest = "gen_zip", 
                         help = "Choose to generate and save a zip file, True/False.\n")
+    
+    parser.add_argument("-f", "--filter_by_rt", action="store", type=str, dest = "reprocess_by_rt",
+                        htlp = "Provide a list of retention times ranges to ignore. PyParse will recalculate"
+                        " UV peak percentage area to take into account the smaller set of peaks.")
 
 
     #Set options to global and parse arguments        
@@ -2656,6 +2660,12 @@ def main():
         for peak in well:
             if index in total_area_abs:
                 total_area_abs[index] = total_area_abs[index] + peak["areaAbs"]
+        
+        #If the reprocess_by_rt parameter was used, recalculate the percentage peak area for each peak
+        if options.reprocess_by_rt != "":
+            for peak in well:    
+                peak["area"] = (peak["areaAbs"]*100) / total_area_abs[index]
+
 
     #For each compound, find all hits using the dataTable, validate them, and append 
     #them to a list ready for insertion into the compoundDF pandas dataframe
