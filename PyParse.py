@@ -2579,10 +2579,6 @@ def main():
     parser.add_argument("-z", "--generate_zip", action="store", type=str, dest = "gen_zip", 
                         help = "Choose to generate and save a zip file, True/False.\n")
 
-    
-    parser.add_argument("-n", "--name", action="store", type=str, dest = "analysis_name", 
-                        help = "Choose a name for the analysis.\n")
-                        
     parser.add_argument("-d", "--detector", action="store", type=str, dest = "detector",
                         help = "Choose which detector to use, UV or ELSD")
 
