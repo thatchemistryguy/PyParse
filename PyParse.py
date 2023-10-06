@@ -2259,7 +2259,7 @@ def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
     """
 
 
-    #Add key data for each compound out of the compoundDF
+    
     env = Environment(
         loader = FileSystemLoader("templates")
     )
@@ -2416,6 +2416,9 @@ def main():
     
     parser.add_argument("-z", "--generate_zip", action="store", type=str, dest = "gen_zip", 
                         help = "Choose to generate and save a zip file, True/False.\n")
+
+    parser.add_argument("-n", "--name", action="store", type=str, dest = "analysis_name", 
+                        help = "Choose a name for the analysis.\n")
 
     parser.add_argument("-d", "--detector", action="store", type=str, dest = "detector",
                         help = "Choose which detector to use, UV or ELSD")
@@ -2799,7 +2802,7 @@ def main():
 
     #Return a heatmap to the user
     pre_heatmap = time.perf_counter()
-    plotHeatmap(options.plot_type, outputTable, save_dir)
+    plotHeatmaps(outputTable, save_dir)
     times["Generate Heatmap"] = time.perf_counter() - pre_heatmap
     logging.info(f'A heatmap was generated using {options.plot_type} '
                 f'as the index.')
@@ -2828,7 +2831,8 @@ def main():
 
     #Generate the HTML output. 
     times["Total time"] = time.perf_counter() - pre_donut
-    buildHTML(save_dir, compoundDF, all_compounds, times = times)
+    buildHTML(save_dir, compoundDF, all_compounds, options.analysis_name, times = times)
+    save_dir, compoundDF, all_compounds, analysis_name, times = {}
     logging.info('The HTML output was generated.')
 
     #Generate an csv of the output table.
