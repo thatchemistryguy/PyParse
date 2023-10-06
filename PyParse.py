@@ -37,7 +37,7 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import Descriptors
 from rdkit.Chem import Draw
 import zipfile
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, PackageLoader
 
 
 
@@ -2196,7 +2196,7 @@ def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
 
     #Add key data for each compound out of the compoundDF
     env = Environment(
-        loader = FileSystemLoader("templates")
+        loader = PackageLoader("PyParse", "templates")
     )
 
     template = env.get_template("html_template.html")
