@@ -42,7 +42,7 @@ import zipfile
 
 
 
-def importStructures(filename):
+def importStructures(filename, save_dir):
     """
     From a given CSV, with defined header names, and one row per well, 
     deconvolute the information to give a dataframe of one compound 
@@ -448,6 +448,25 @@ def convertRPT2Dict(filename):
         wellno = -1
         functions = well.split("[FUNCTION]") #Split data by function (Prelude, MS+, MS- or UV)
         
+        #Get the plate dimensions from the first sample
+        #Data sample: #Plate	01TL,XY,SD,1: 8,2:12,3: 90.0...
+        #where number of rows is 8 and number of columns in 12
+        #Overwrite the default option, but ensure that the user retains control
+        #such that empty rows can be removed from the heatmap. 
+        if i == 0 and (options.plate_row_no == 0 or options.plate_col_no == 0):
+            options.plate_row_no = int(functions[0].split("Plate")[1].split(",")[3].split(":")[1])
+            options.plate_col_no = int(functions[0].split("Plate")[1].split(",")[4].split(":")[1])
+            plate_rows_for_extraction = options.plate_row_no
+            plate_cols_for_extraction = options.plate_col_no
+        elif i == 0:
+            plate_rows_for_extraction = int(functions[0].split("Plate")[1].split(",")[3].split(":")[1])
+            plate_cols_for_extraction = int(functions[0].split("Plate")[1].split(",")[4].split(":")[1])
+
+        if i == 0:
+            #Find from rpt file whether each well is specified 
+            #Data sample: #Plate	01TL,XY,SD,1: 8,2:12,3: 90.0...
+            row_col_order = functions[0].split("Plate")[1].split(",")[1]
+
         #Get the well no from the specific point in the prelude section
         #There are numerous ways for an .rpt file to describe the well
         #Each method is tried in turn to account for these differences
@@ -456,31 +475,38 @@ def convertRPT2Dict(filename):
             #Single line function to trim full string to just the well number used
             wellno = int(functions[0].split("Well")[1].split("\n")[0].split(":")[1].strip()) 
         except:
-            column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
-            row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
+            
+            if row_col_order.find("X") < row_col_order.find("Y"):
+                column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
+                row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
+            else: 
+                column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
+                row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
+            
+            
             try:
                 #If the well is a combination of two integers designating column and row
-                wellno = (int(row)-1) * options.plate_col_no + int(column) 
+                wellno = (int(row)-1) * plate_cols_for_extraction + int(column) 
             except:
                 #If the well is a combination of an integer for the column and a letter 
                 #for the row
                 
                 try:
                     row_to_int = ord(row) - 64
-                    wellno = (row_to_int-1) * options.plate_col_no + int(column)
+                    wellno = (row_to_int-1) * plate_cols_for_extraction + int(column)
                 except:
                     #If that fails, try a combination of letter for the column and 
                     #a letter for the row
                     try:
                         row_to_int = ord(row) - 64
                         col_to_int = ord(column) - 64
-                        wellno = (row_to_int-1) * options.plate_col_no + col_to_int
+                        wellno = (row_to_int-1) * plate_cols_for_extraction + col_to_int
                     except:
                         #If that fails, try a combination of letter for the column and 
                         #an integer for the row. 
                         try:
                             col_to_int = ord(column) - 64
-                            wellno = (int(row)-1) * options.plate_col_no + col_to_int
+                            wellno = (int(row)-1) * plate_cols_for_extraction + col_to_int
                         except:
 
                             logging.info("Unable to get well number. Terminating program.")
@@ -2417,9 +2443,11 @@ def main():
                         uv_cluster_threshold = 0.5,
                         massconf_threshold = 0.5,
                         cluster_size_threshold = 0.8,
-                           
-                        plate_col_no = 12,
-                        plate_row_no = 8,
+
+                        #Default values are set to 0, to easily monitor
+                        #if the user has manually specified them.    
+                        plate_col_no = 0,
+                        plate_row_no = 0,
 
                         points_per_trace = 500,
                         
@@ -2599,10 +2627,34 @@ def main():
 
     times["Initialise Script"] = time.perf_counter() - time_start 
 
+    #Convert the .rpt file into a useful format. The output is a dictionary,
+    #indexed by the well on the plate, and each value is a list. 
+    #each value in the list is a dictionary corresponding to each 
+    #peak in the well. 
+    #chroma is a list of lists containing the information required to 
+    #generate the LCMS trace. 
+    #This function also determines the number of columns and rows in the plate
+    #and writes this info to the global options. 
+    
+    pre_rpt = time.perf_counter()
+    [dataTable, chroma, sample_IDs] = convertRPT2Dict(root_names[1])
+    times["Import RPT File"] = time.perf_counter() - pre_rpt 
+    logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
+
+    #Determine the total areaAbs for each well, so that these values can be added to the outputTable
+    total_area_abs = {}
+    for i in range(1, options.plate_row_no * options.plate_col_no + 1):
+        total_area_abs[i] = 0
+    for index, well in dataTable.items():
+        for peak in well:
+            if index in total_area_abs:
+                total_area_abs[index] = total_area_abs[index] + peak["areaAbs"]
+    
+
     #Import the structure data from the comma-separated values platemap file provided
     #by the user to initiate the compoundDF. 
     pre_import = time.perf_counter()            
-    [compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[0])
+    [compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[0], save_dir)
 
     #Check that an internal standard was provided if the plot_type expects one
     if options.plot_type in ["P/STD", "corrP/STD"] and internalSTD == "":
@@ -2635,27 +2687,6 @@ def main():
     times["Import Compound File"] = time.perf_counter() - pre_import
     logging.info(f'{len(compoundDF.index)} compounds were imported.')
 
-    
-    #Convert the .rpt file into a useful format. The output is a dictionary,
-    #indexed by the well on the plate, and each value is a list. 
-    #each value in the list is a dictionary corresponding to each 
-    #peak in the well. 
-    #chroma is a list of lists containing the information required to 
-    #generate the LCMS trace. 
-    
-    pre_rpt = time.perf_counter()
-    [dataTable, chroma, sample_IDs] = convertRPT2Dict(root_names[1])
-    times["Import RPT File"] = time.perf_counter() - pre_rpt 
-    logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
-
-    #Determine the total areaAbs for each well, so that these values can be added to the outputTable
-    total_area_abs = {}
-    for i in range(1, options.plate_row_no * options.plate_col_no + 1):
-        total_area_abs[i] = 0
-    for index, well in dataTable.items():
-        for peak in well:
-            if index in total_area_abs:
-                total_area_abs[index] = total_area_abs[index] + peak["areaAbs"]
 
     #For each compound, find all hits using the dataTable, validate them, and append 
     #them to a list ready for insertion into the compoundDF pandas dataframe
