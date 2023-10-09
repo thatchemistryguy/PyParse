@@ -2832,7 +2832,6 @@ def main():
     #Generate the HTML output. 
     times["Total time"] = time.perf_counter() - pre_donut
     buildHTML(save_dir, compoundDF, all_compounds, options.analysis_name, times = times)
-    save_dir, compoundDF, all_compounds, analysis_name, times = {}
     logging.info('The HTML output was generated.')
 
     #Generate an csv of the output table.
