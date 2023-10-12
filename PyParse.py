@@ -562,6 +562,9 @@ def convertRPT2Dict(filename):
                             peaks[retTime]["pStart"] = float(peakWidth[0])
                             peaks[retTime]["pEnd"] = float(peakWidth[1])
 
+            #Add additional section to search for and use the ELSD data
+            #as opposed to the UV data. Note that the two detectors cannot currently
+            #be used in parallel. 
             if lines[3].strip() == "Description\tANALOG" and options.detector == "ELSD":
                 chromatograms = function.split("[CHROMATOGRAM]")[1:]
                 for chromatogram in chromatograms:
