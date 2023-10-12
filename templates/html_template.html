@@ -69,43 +69,64 @@
             <div class="container-fluid">
                 <div id="carouselHeatmap" class = "carousel slide carousel-dark carousel-fade">
                     <ol class="carousel-indicators">
-                        {% if pt == "Parea" %}
+
+                        {% if pt == "SMarea" %}
                             <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="0" class="active"></button>
                         {% else %}
                             <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="0"></button>
                         {% endif %}
-        
-                        {% if pt == "P/SM+P" %}
-                        <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="1" class="active"></button>
+
+                        {% if pt == "Parea" %}
+                            <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="1" class="active"></button>
                         {% else %}
                             <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="1"></button>
                         {% endif %}
         
-                        {% if pt == "P/STD" %}
+                        {% if pt == "P/SM+P" %}
                             <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="2" class="active"></button>
                         {% else %}
                             <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="2"></button>
                         {% endif %}
         
-                        {% if pt == "corrParea" %}
-                        <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="3" class="active"></button>
+                        {% if pt == "P/STD" %}
+                            <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="3" class="active"></button>
                         {% else %}
                             <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="3"></button>
                         {% endif %}
-        
-                        {% if pt == "corrP/SM+P" %}
-                        <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="4" class="active"></button>
+                        
+                        {% if pt == "corrSMarea" %}
+                            <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="4" class="active"></button>
                         {% else %}
                             <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="4"></button>
                         {% endif %}
-        
-                        {% if pt == "corrP/STD" %}
-                        <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="5" class="active"></button>
+
+                        {% if pt == "corrParea" %}
+                            <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="5" class="active"></button>
                         {% else %}
                             <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="5"></button>
                         {% endif %}
+        
+                        {% if pt == "corrP/SM+P" %}
+                            <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="6" class="active"></button>
+                        {% else %}
+                            <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="6"></button>
+                        {% endif %}
+        
+                        {% if pt == "corrP/STD" %}
+                            <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="7" class="active"></button>
+                        {% else %}
+                            <button type="button" data-bs-target="#carouselHeatmap" data-bs-slide-to="7"></button>
+                        {% endif %}
                     </ol>
                     <div class="carousel-inner">
+                        {% if pt == "SMarea" %}
+                            <div class="carousel-item active">
+                        {% else %}
+                            <div class="carousel-item">
+                        {% endif %}
+                            <img src="graphs/heatmap_SMarea.jpg" class="d-block w-100 heatmap">
+                        </div>
+
                         {% if pt == "Parea" %}
                             <div class="carousel-item active">
                         {% else %}
@@ -113,6 +134,7 @@
                         {% endif %}
                             <img src="graphs/heatmap_Parea.jpg" class="d-block w-100 heatmap">
                         </div>
+
                         {% if pt == "P/SM+P" %}
                             <div class="carousel-item active">
                         {% else %}
@@ -120,6 +142,7 @@
                         {% endif %}
                             <img src="graphs/heatmap_conversion.jpg" class="d-block w-100 heatmap">
                         </div>
+
                         {% if pt == "P/STD" %}
                             <div class="carousel-item active">
                         {% else %}
@@ -127,6 +150,15 @@
                         {% endif %}
                             <img src="graphs/heatmap_ratio_to_IS.jpg" class="d-block w-100 heatmap">
                         </div>
+                        
+                        {% if pt == "corrSMarea" %}
+                            <div class="carousel-item active">
+                        {% else %}
+                            <div class="carousel-item">
+                        {% endif %}
+                            <img src="graphs/heatmap_corrSMarea.jpg" class="d-block w-100 heatmap">
+                        </div>
+
                         {% if pt == "corrParea" %}
                             <div class="carousel-item active">
                         {% else %}

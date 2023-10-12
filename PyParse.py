@@ -2042,9 +2042,11 @@ def plotHeatmaps(outputTable, save_dir):
 
     
     zvalues = {
+        "SMarea": "SMarea",
         "Parea": "Parea", 
         "conversion": "P/SM+P", 
         "ratio_to_IS": "P/STD",
+        "corrSMarea": "corrSMarea",
         "corrParea": "corrParea", 
         "corrected_conversion": "corrP/SM+P",
         "corrected_ratio_to_IS": "corrP/STD"
