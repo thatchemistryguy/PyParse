@@ -2332,6 +2332,8 @@ def main():
                         validate = "True",
                         verbose = "False",
 
+                        analysis_name = "PyParse Analysis",
+
                         mass_abs_tol = 0.5,
                         time_abs_tol = 0.025,
                         uv_abs_tol = 10,
