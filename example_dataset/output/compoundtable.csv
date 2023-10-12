@@ -1,5 +1,5 @@
 name,g_smiles,mass1,mass2,mass3,time,mass-,mass+,best_well,best_purity,overlaps,conflicts
-Product1,OCC1=COC(C2=CC(C=CC=C3)=C3N=C2)=N1,226.07,0.0,0,0.73,-,227.24,C12,39.06,No peak overlap detected.,No potential conflicts found.
+Product1,OCC1=COC(C2=CC(C=CC=C3)=C3N=C2)=N1,226.07,0.0,0,0.71,225.1,227.24,D6,70.51,No peak overlap detected.,No potential conflicts found.
 Byproduct1,OCC1=C(C2=CN=C(C=CC=C3)C3=C2)OC(C4=CC5=C(N=C4)C=CC=C5)=N1,353.12,0.0,0,1.01,352.11,354.32,C7,61.77,No peak overlap detected.,No potential conflicts found.
 Reactant1,BrC1=CC2=CC=CC=C2N=C1,206.97,208.97,0,1.04,206.29,208.11,C10,61.89,No peak overlap detected.,No potential conflicts found.
 InternalSTD,C1(N(CC2=CC=CC=C2)CC3=CC=CC=C3)=CC=CC=C1,273.15,0.0,0,1.49,-,274.28,D10,23.31,No peak overlap detected.,No potential conflicts found.
