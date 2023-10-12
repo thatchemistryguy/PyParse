@@ -190,6 +190,20 @@ cython_debug/
 
 # notepad++
 .bak
+
+# vscode
+.vscode
+launch.json
+
+#conda
+.conda
+
+#pycache
+__pycache__
+
+#example PyParse output
+example_dataset/output/
+
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
