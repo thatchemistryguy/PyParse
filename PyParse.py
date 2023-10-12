@@ -456,7 +456,8 @@ def convertRPT2Dict(filename):
             #Single line function to trim full string to just the well number used
             wellno = int(functions[0].split("Well")[1].split("\n")[0].split(":")[1].strip()) 
         except:
-            xy_section = functions[0].split("Plate")[1].split(",")[1]
+            
+            xy_section = functions[0].split("\n")[17].split(",")[1]
             if xy_section.find("X") <  xy_section.find("Y"):
                 column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
                 row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
