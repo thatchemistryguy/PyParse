@@ -1,4 +1,5 @@
 [![DOI](https://zenodo.org/badge/616543497.svg)](https://zenodo.org/badge/latestdoi/616543497)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Welcome to PyParse!
 ===================================
