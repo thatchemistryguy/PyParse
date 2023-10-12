@@ -454,18 +454,18 @@ def convertRPT2Dict(filename):
         #Overwrite the default option, but ensure that the user retains control
         #such that empty rows can be removed from the heatmap. 
         if i == 0 and (options.plate_row_no == 0 or options.plate_col_no == 0):
-            options.plate_row_no = int(functions[0].split("Plate")[1].split(",")[3].split(":")[1])
-            options.plate_col_no = int(functions[0].split("Plate")[1].split(",")[4].split(":")[1])
+            options.plate_row_no = int(functions[0].split("\n")[17].split(",")[3].split(":")[1])
+            options.plate_col_no = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
             plate_rows_for_extraction = options.plate_row_no
             plate_cols_for_extraction = options.plate_col_no
         elif i == 0:
-            plate_rows_for_extraction = int(functions[0].split("Plate")[1].split(",")[3].split(":")[1])
-            plate_cols_for_extraction = int(functions[0].split("Plate")[1].split(",")[4].split(":")[1])
+            plate_rows_for_extraction = int(functions[0].split("\n")[17].split(",")[3].split(":")[1])
+            plate_cols_for_extraction = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
 
         if i == 0:
             #Find from rpt file whether each well is specified 
             #Data sample: #Plate	01TL,XY,SD,1: 8,2:12,3: 90.0...
-            row_col_order = functions[0].split("Plate")[1].split(",")[1]
+            row_col_order = functions[0].split("\n")[17].split(",")[1]
 
         #Get the well no from the specific point in the prelude section
         #There are numerous ways for an .rpt file to describe the well
@@ -482,30 +482,30 @@ def convertRPT2Dict(filename):
             else: 
                 column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
                 row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
-            
-            
+
             try:
                 #If the well is a combination of two integers designating column and row
-                wellno = (int(row)-1) * plate_cols_for_extraction + int(column) 
+                wellno = (int(row.capat)-1) * plate_cols_for_extraction + int(column) 
             except:
                 #If the well is a combination of an integer for the column and a letter 
                 #for the row
                 
                 try:
-                    row_to_int = ord(row) - 64
+                    row_to_int = ord(row.capitalize()) - 64
                     wellno = (row_to_int-1) * plate_cols_for_extraction + int(column)
                 except:
                     #If that fails, try a combination of letter for the column and 
                     #a letter for the row
                     try:
-                        row_to_int = ord(row) - 64
-                        col_to_int = ord(column) - 64
+                        row_to_int = ord(row.capitalize()) - 64
+                        col_to_int = ord(column.capitalize()) - 64
                         wellno = (row_to_int-1) * plate_cols_for_extraction + col_to_int
+                        
                     except:
                         #If that fails, try a combination of letter for the column and 
                         #an integer for the row. 
                         try:
-                            col_to_int = ord(column) - 64
+                            col_to_int = ord(column.capitalize()) - 64
                             wellno = (int(row)-1) * plate_cols_for_extraction + col_to_int
                         except:
 
@@ -524,7 +524,7 @@ def convertRPT2Dict(filename):
             spectra = function.split("[SPECTRUM]")[1:] #split by spectrum (i.e. each peak)
             
             #get peakarea for this peak
-            if lines[4] == "Type\tDAD ":
+            if lines[4] == "Type\tDAD " and options.detector == "UV":
                 chromatograms = function.split("[CHROMATOGRAM]")[1:]
                 for chromatogram in chromatograms:
                     c_lines = chromatogram.split("\n")
@@ -582,7 +582,70 @@ def convertRPT2Dict(filename):
                             peaks[retTime]["areaAbs"] = peakAreaAbs
                             peaks[retTime]["pStart"] = float(peakWidth[0])
                             peaks[retTime]["pEnd"] = float(peakWidth[1])
-                    
+
+            #Add additional section to search for and use the ELSD data
+            #as opposed to the UV data. Note that the two detectors cannot currently
+            #be used in parallel. 
+            if lines[3].strip() == "Description\tANALOG" and options.detector == "ELSD":
+                chromatograms = function.split("[CHROMATOGRAM]")[1:]
+                for chromatogram in chromatograms:
+                    c_lines = chromatogram.split("\n")
+                    if c_lines[3].strip() == "Description\t (3) ELSD Signal":
+                        chroma[wellno] = getChromatogram(chromatogram.split("[TRACE]")[1]) #get chromatogram for this well
+                        wellpeaks = chromatogram.split("[PEAK]")[1:]
+                        for peak in wellpeaks:
+                            
+                            retTime = float(peak.split("Time")[1].split("\n")[0].strip())
+                            peakWidth = peak.split("Peak\t")[1].split("\n")[0].split("\t")
+                            peakArea = float(peak.split("Area %Total")[1].split("\n")[0].strip())
+                            peakAreaAbs = float(peak.split("AreaAbs")[1].split("\n")[0].strip())
+                            peakID = int(peak.split("Peak ID")[1].split("\n")[0].strip())
+
+                            peak_index = False
+                            if len(list(peaks)) > 0:
+                                peak_index = findDataEntry(peaks, peakID)
+                            
+                            if peak_index == False:
+                                peaks[retTime] = {
+                                        "MS+": [], 
+                                        "MS-": [], 
+                                        "area": 0,
+                                        "areaAbs": 0, 
+                                        "UV": [],
+                                        "time": retTime,
+                                        "pStart": 0,
+                                        "pEnd": 0, 
+                                        "peakID": peakID
+                                        }
+                            elif peak_index != retTime:
+                                #If data has already been entered for this peak by a different
+                                #function (i.e. MS+, MS-) using a slightly different retention time,
+                                #copy this data over to a new entry
+                                #which uses the retention time observed in the chromatogram 
+                                #i.e. we don't want some retention times from the MS+, and others
+                                #from the chromatogram - we want a standard output
+                                peaks[retTime] = {
+                                        "MS+": peaks[peak_index]["MS+"], 
+                                        "MS-": peaks[peak_index]["MS-"], 
+                                        "area": peaks[peak_index]["area"], 
+                                        "areaAbs": peaks[peak_index]["areaAbs"],
+                                        "UV": peaks[peak_index]["UV"],
+                                        "time": retTime,
+                                        "pStart": peaks[peak_index]["pStart"],
+                                        "pEnd": peaks[peak_index]["pEnd"], 
+                                        "peakID": peaks[peak_index]["peakID"],
+
+                                        }
+                                #Delete the old entry now the data has been copied over
+                                #to use the correct retention time. 
+                                del peaks[peak_index]
+                                
+                            peaks[retTime]["area"] = peakArea
+                            peaks[retTime]["areaAbs"] = peakAreaAbs
+                            peaks[retTime]["pStart"] = float(peakWidth[0])
+                            peaks[retTime]["pEnd"] = float(peakWidth[1])
+
+
             for spectrum in spectra:
                 peakID = int(spectrum.split("Peak ID")[1].split("\n")[0].strip())
                 retTime = float(spectrum.split("Time")[1].split("\n")[0].strip())
@@ -1055,7 +1118,7 @@ def validateHits(cpname, peakList, expected_rt):
     
     for i in range(len(clusters)):
         avg_time = sum([j["time"] for j in clusters[i]]) / len(clusters[i])
-        cluster_bands.append(round(avg_time,2))
+        cluster_bands.append(round(avg_time,5))
         
         for peak in clusters[i]:
             peak["cluster"] = i
@@ -2222,7 +2285,7 @@ def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
     """
 
 
-    #Add key data for each compound out of the compoundDF
+    
     env = Environment(
         loader = PackageLoader("PyParse", "templates")
     )
@@ -2248,7 +2311,7 @@ def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
             )
         )
     fo.close()
-
+  
 
 def main():
     """ 
@@ -2268,12 +2331,13 @@ def main():
     parser.set_defaults(
                         validate = "True",
                         verbose = "False",
-                        analysis_name = "PyParse Analysis",
 
                         mass_abs_tol = 0.5,
                         time_abs_tol = 0.025,
                         uv_abs_tol = 10,
-                       
+
+                        detector = "UV",
+
                         min_peak_area = 0.5,
                         min_massconf_threshold = 10,
                         min_uv_threshold = 20,
@@ -2293,12 +2357,12 @@ def main():
                         points_per_trace = 500,
                         
                         mass_or_area = "mass_conf",
-                        plot_type = "Parea", 
+                        plot_type = "corrP/STD", 
                         calc_higherions = "True",
                         calc_boc = "True",
                         
                         gen_csv = "True",
-                        gen_zip = "False",
+                        gen_zip = "True",
 
                         output = "output",
 
@@ -2364,7 +2428,9 @@ def main():
     
     parser.add_argument("-pt", "--plot_type", action="store", type=str, dest = "plot_type",
                         help = "Choose what to plot in the heatmap and piechart "
-                               "from the following options: Parea, corrParea, P/SM+P, P/STD, corrP/STD, corrP/SM+P.\n")
+                               "from the following options: SMarea, Parea, STDarea, "
+                               "corrSMarea, corrParea, corrSTDarea, P/SM+P, P/STD, "
+                               "corrP/STD, corrP/SM+P.\n")
     
     parser.add_argument("-chi", "--calc_higherions", action="store", type=str, dest = "calc_higherions",
                         help = "Look for [M+2H]2+ and [M+3H]3+ to find hits and calculate the mass confidence"
@@ -2378,10 +2444,10 @@ def main():
     
     parser.add_argument("-z", "--generate_zip", action="store", type=str, dest = "gen_zip", 
                         help = "Choose to generate and save a zip file, True/False.\n")
-    
+
     parser.add_argument("-n", "--name", action="store", type=str, dest = "analysis_name", 
                         help = "Choose a name for the analysis.\n")
-                        
+
     parser.add_argument("-d", "--detector", action="store", type=str, dest = "detector",
                         help = "Choose which detector to use, UV or ELSD")
 
@@ -2407,7 +2473,6 @@ def main():
                 name = os.getcwd() + "/" + name    
     
     #Create the save directory if one isn't already present.
-    global save_dir
     save_dir = root_names[2]
     if not save_dir.endswith("/"):
         save_dir = save_dir + "/"
@@ -2590,7 +2655,7 @@ def main():
     #Generate the output table using validated hits
     pre_output_table = time.perf_counter()
     outputTable = generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, total_area_abs)
-    
+
     #Insert blanks in sample_IDs to match length of datatable
     for i in range(1, options.plate_row_no * options.plate_col_no +1):
         if i not in sample_IDs:
@@ -2604,7 +2669,7 @@ def main():
     #if the plot_type requires the internalSTD to be present, 
     #check to ensure a non-zero area of internalSTD is present in all wells
     warn_for_std = False
-    if internalSTD != "":
+    if options.plot_type == "P/STD" or options.plot_type == "corrP/STD":
         min_std = outputTable["STDarea"].min()
         if min_std == 0:
             warn_for_std = True
@@ -2768,9 +2833,10 @@ def main():
 
     #Return a heatmap to the user
     pre_heatmap = time.perf_counter()
-    plotHeatmaps(outputTable, save_dir)  
+    plotHeatmaps(outputTable, save_dir)
     times["Generate Heatmap"] = time.perf_counter() - pre_heatmap
-    logging.info(f'Heatmaps were generated successfully.')
+    logging.info(f'A heatmap was generated using {options.plot_type} '
+                f'as the index.')
 
     #Return a series of piecharts to the user, as long as it's not larger than
     #a 96 well plate. For larger plates, the piecharts become too small to be
