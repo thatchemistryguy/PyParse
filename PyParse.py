@@ -2359,7 +2359,7 @@ def main():
                         points_per_trace = 500,
                         
                         mass_or_area = "mass_conf",
-                        plot_type = "corrP/STD", 
+                        plot_type = "Parea", 
                         calc_higherions = "True",
                         calc_boc = "True",
                         
