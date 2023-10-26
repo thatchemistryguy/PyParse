@@ -1,4 +1,4 @@
-well,well-index,target-SMILES
+well,well-index,desired product smiles
 A1,0,Cc1cc(-c2ccc(O)cc2C)n[nH]1
 B1,1,Cc1cc(-c2ccccc2C)n[nH]1
 C1,2,COc1ccccc1-c1cc(C)[nH]n1

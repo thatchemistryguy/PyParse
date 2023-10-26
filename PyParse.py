@@ -38,8 +38,9 @@ from rdkit.Chem import Descriptors
 from rdkit.Chem import Draw
 import zipfile
 from jinja2 import Environment, PackageLoader
+import base64
 
-
+import getShimadzuData
 
 
 def importStructures(filename, save_dir):
@@ -1515,7 +1516,7 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
             goingIn[name_std] = 0   
 
         outputTable[i] = goingIn  
-
+    print(compoundDF)
     for index, row in compoundDF.iterrows():
         #Add the product SMILES to the outputTable
         if row["name"] in products:
@@ -1837,7 +1838,7 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
     :return: jpg of the chromatogram saved to output directory
     """
     fig, (a0, a1, a2) = plt.subplots(3, 1, gridspec_kw={'height_ratios': [2, 2, 6]})
-    
+    #print(trace)
     #Function to plot the mass spectrometric data
     def plotMS(axes, data, title):
         x = []
@@ -1953,7 +1954,7 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
     #Set the number of tick points for each axis. 
     a2.locator_params(axis='y', nbins=6)
     a2.locator_params(axis='x', nbins=20)
-
+    print(save_dir, cpname)
     #Save graph to output directory. 
     plt.savefig(f'{save_dir}graphs/chroma-{cpname}-best.jpg', format="jpg")
     plt.close()
@@ -2367,7 +2368,8 @@ def main():
                         gen_zip = "True",
 
                         output = "output",
-
+                        
+                        instrument = "Waters"
                         )
     
     parser.add_argument("input_rpt", help = "Input .rpt file for analysis")
@@ -2453,6 +2455,8 @@ def main():
     parser.add_argument("-d", "--detector", action="store", type=str, dest = "detector",
                         help = "Choose which detector to use, UV or ELSD")
 
+    parser.add_argument("-i", "--instrument", action="store", type=str, dest = "instrument",
+                        help = "Select the data originated from, Waters or Shimadzu")
 
     #Set options to global and parse arguments        
     times = {}
@@ -2514,14 +2518,15 @@ def main():
     except OSError as error:
         logging.debug("Structures directory already exists.")
 
+    if options.instrument == "Waters":
     #Check to ensure the root names of the rpt and csv files are correct, i.e. the files exist
-    for name in [root_names[0], root_names[1]]:
-        if not os.access(name,os.R_OK) or not os.path.isfile(name):
-            logging.error(f'Input file {name} does not exist. Please use an appropriate root name.')
-            with open(f'{save_dir}html_output.html', 'w') as f:
-                f.write(f'Input file {name} does not exist. Please use an appropriate root name.')
-                f.close()
-            sys.exit(2)
+        for name in [root_names[0], root_names[1]]:
+            if not os.access(name,os.R_OK) or not os.path.isfile(name):
+                logging.error(f'Input file {name} does not exist. Please use an appropriate root name.')
+                with open(f'{save_dir}html_output.html', 'w') as f:
+                    f.write(f'Input file {name} does not exist. Please use an appropriate root name.')
+                    f.close()
+                sys.exit(2)
 
     #Check to make sure the input files are in the .csv and .rpt format. 
     if options.input_csv[-4:].lower() != ".csv":
@@ -2531,12 +2536,13 @@ def main():
             f.close()
         sys.exit(2)
 
-    if options.input_rpt[-4:].lower() != ".rpt":
-        logging.error(f'LCMS data is not in the .rpt format. Please use a .rpt file format.')
-        with open(f'{save_dir}html_output.html', 'w') as f:
-            f.write(f'LCMS data is not in the .rpt format. Please use a .rpt file format.')
-            f.close()
-        sys.exit(2)
+    if options.instrument == "Waters":
+        if options.input_rpt[-4:].lower() != ".rpt":
+            logging.error(f'LCMS data is not in the .rpt format. Please use a .rpt file format.')
+            with open(f'{save_dir}html_output.html', 'w') as f:
+                f.write(f'LCMS data is not in the .rpt format. Please use a .rpt file format.')
+                f.close()
+            sys.exit(2)
 
     times["Initialise Script"] = time.perf_counter() - time_start 
 
@@ -2550,10 +2556,18 @@ def main():
     #and writes this info to the global options. 
     
     pre_rpt = time.perf_counter()
-    [dataTable, chroma, sample_IDs] = convertRPT2Dict(root_names[1])
-    times["Import RPT File"] = time.perf_counter() - pre_rpt 
-    logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
 
+    if options.instrument == "Waters":
+        [dataTable, chroma, sample_IDs] = convertRPT2Dict(root_names[1])
+        times["Import RPT File"] = time.perf_counter() - pre_rpt 
+        logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
+    elif options.instrument == "Shimadzu":
+        [dataTable, chroma, sample_IDs] = getShimadzuData.getData(options.input_rpt)
+    else:
+        logging.error("This instrument is not currently supported by PyParse")
+        sys.exit(2)
+
+    
     #Determine the total areaAbs for each well, so that these values can be added to the outputTable
     total_area_abs = {}
     for i in range(1, options.plate_row_no * options.plate_col_no + 1):
@@ -2662,6 +2676,7 @@ def main():
     for i in range(1, options.plate_row_no * options.plate_col_no +1):
         if i not in sample_IDs:
             sample_IDs[i] = "No Data."
+    #print(sample_IDs.items())
     sorted_IDs = [value for key, value in sorted(sample_IDs.items(), key = lambda x: x[0])]
     outputTable.insert(1, "SampleID", sorted_IDs)
     logging.info(f'The output table was generated.')
@@ -2896,9 +2911,9 @@ def main():
     print(f'The analysis was completed in {round(total_time, 2)} seconds.')
 
 if __name__ == "__main__":
-    try:
-        print("")
-        print("Running analysis....")
-        main()
-    except Exception:
-        logging.exception("A fatal exception occurred. Contact administrator.")
+    #try:
+    print("")
+    print("Running analysis....")
+    main()
+    #except Exception:
+    #    logging.exception("A fatal exception occurred. Contact administrator.")
