@@ -23,22 +23,23 @@ Example Usage
 
 Check out the [Github Pages](https://thatchemistryguy.github.io/PyParse/index.html) site! Here you'll find full documentation, including a walkthrough using the example data set provided!
 
-You can also find our published user-guide for chemists at [ChemRxiv](https://doi.org/10.26434/chemrxiv-2023-1x288).
+You can also find our published user-guide for chemists at our peer-reviewed article at [Digital Discovery](https://doi.org/10.1039/D3DD00167A)
 
 ```
 
-	python PyParse.py example_rpt.rpt example_platemap.csv -o new_output_directory -r 8 -c 12 -pt corrP/STD
+	python PyParse.py example_rpt.rpt example_platemap.csv -o new_output_directory
 
 ```
-(Used for an LCMS plate with 8 rows and 12 columns, to generate visualisations based 
-on the corrected ratio of product to internal standard. Saves all output tables, data and visualisations
-to "new_output_directory".)
+(Saves all output tables, data and visualisations to "new_output_directory".)
 
 Citation
 -----------
 
-Publications which make use of PyParse to aid analysis of high-throughput LC-MS data should cite the above ChemRxiv article:
-Mason J., Wilders H., Fallon D.J., Thomas R.P., Bush J.T., Tomkinson N.C.O., Rianjongdee, F.; Automated LC-MS Analysis and Data Extraction for High-Throughput Chemistry; ChemRxiv (**2023**), DOI: 10.26434/chemrxiv-2023-1x288
+Publications which make use of PyParse to aid analysis of high-throughput LC-MS data should cite the peer-reviewed article:
+
+Mason J., Wilders H., Fallon D.J., Thomas R.P., Bush J.T., Tomkinson N.C.O., Rianjongdee, F.; Automated LC-MS Analysis and Data Extraction for High-Throughput Chemistry; Digital Discovery (**2023**), Advance Article
+
+(An earlier version of this manuscript was published on ChemRxiv (**2023**), https://doi.org/10.26434/chemrxiv-2023-1x288)
 		
 License
 ---------------
