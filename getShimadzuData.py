@@ -1,6 +1,23 @@
+"""
+The .daml files provided by Shimadzu come in an xml format
+where key data pieces (chromatogram, observed m/z ratios 
+with their corresponding intensity and UV traces) are 
+encoded in base64 format. 
+
+The following script extracts the data relevant to PyParse, and reformats
+it into a common structure. 
+
+"""
+
 import xml.etree.ElementTree as ET
 import base64
 import glob
+
+
+def init(args):
+    global options
+    options = args
+
 
 def getData(input_dir):
     wellData = []
@@ -9,15 +26,31 @@ def getData(input_dir):
     sample_IDs = {}
 
     input_files = glob.glob(input_dir + '/*.daml')
-    #print(input_files)
+
     for filename in input_files:
         #Open the .daml file, which is structured as an xml
         tree = ET.parse(filename)
         root = tree.getroot()
+
+        #If the number of rows or number of columns has not yet been 
+        #specified, determine these values from the .daml file
+        if options.plate_col_no == 0 or options.plate_row_no == 0:
+            vessels = root.find("datafile_attribs").find("Plate").find("Vessels")
+            #determine the number of columns/rows by how many times 
+            #a well has the y-value = 0 or x-val = 0 respectively
+
+            for vessel in vessels.findall("Vessel"):
+                if int(vessel.get("x")) == 0:
+                    options.plate_row_no += 1
+                if int(vessel.get("y")) == 0:
+                    options.plate_col_no += 1
+
+        #get the well number
         wellno = int(root.find("datafile_attribs").find("vial").text)
+
+        #get the sampleID
         sample_IDs[wellno] = str(root.find("datafile_attribs").find("desc").text)
-        #print(wellno)
-        #print(root.tag)
+
         results = root.find("results")
 
         peaks = {}
@@ -56,10 +89,7 @@ def getData(input_dir):
         for i in range(0, len(trace_list), 2):
             xval.append(float(trace_list[i])/60000)
             yval.append(float(trace_list[i+1])/10000)
-        print(filename)
-        print(xval)
-        print(" ")
-        print(yval)
+
         chroma[wellno] = [xval, yval]
 
         #next, get the mass spec data for each peak, and match it to the UV peaks
@@ -92,10 +122,6 @@ def getData(input_dir):
                     peaks[peakID]["MS+"] = refined_masses
                 else:
                     peaks[peakID]["MS-"] = refined_masses
-
-        
-
-
 
         masterTable[wellno] = peaks.values()
 
