@@ -38,7 +38,7 @@ from rdkit.Chem import Descriptors
 from rdkit.Chem import Draw
 import zipfile
 from jinja2 import Environment, PackageLoader
-import base64
+import glob
 
 #Import local scripts
 import getShimadzuData
@@ -1985,7 +1985,7 @@ def main():
                         instrument = "Waters"
                         )
     
-    parser.add_argument("input_rpt", help = "Input .rpt file for analysis")
+    parser.add_argument("input_data", help = "Input file/folder for analysis")
     
     parser.add_argument("input_csv", help="Input .csv file containing compounds in plate")
     
@@ -2080,7 +2080,7 @@ def main():
     plt.rcParams["figure.figsize"] = (12, 6)
     
     #Ensure all required input options have a valid address
-    root_names = [options.input_csv, options.input_rpt, options.output]
+    root_names = [options.input_data, options.input_csv, options.output]
     
     for name in root_names:
         if name.startswith("/"):
@@ -2115,7 +2115,7 @@ def main():
     logging.info(f'PyParse was run from the following directory: {os.getcwd()}.')
     logging.info(f'The output files were saved to {save_dir}.')
 
-    #Generate a generic HTML output file so that Pipeline Pilot displays
+    #Generate a generic HTML output file so that PyParse displays
     #the log file even in cases of uncaught errors. 
     with open(f'{save_dir}html_output.html', 'w') as f:
         f.write(f'Unspecified error occurred. See logfile for details.')
@@ -2131,18 +2131,18 @@ def main():
     except OSError as error:
         logging.debug("Structures directory already exists.")
 
-    if options.instrument == "Waters":
-    #Check to ensure the root names of the rpt and csv files are correct, i.e. the files exist
-        for name in [root_names[0], root_names[1]]:
-            if not os.access(name,os.R_OK) or not os.path.isfile(name):
-                logging.error(f'Input file {name} does not exist. Please use an appropriate root name.')
-                with open(f'{save_dir}html_output.html', 'w') as f:
-                    f.write(f'Input file {name} does not exist. Please use an appropriate root name.')
-                    f.close()
-                sys.exit(2)
+    
+    #Check to ensure the root names of the data file/folder and csv file are correct, i.e. they exist
+    for name in [root_names[0], root_names[1]]:
+        if not os.access(name,os.R_OK) or not os.path.exists(name):
+            logging.error(f'Input file/folder {name} does not exist. Please use an appropriate input file/folder.')
+            with open(f'{save_dir}html_output.html', 'w') as f:
+                f.write(f'Input file/folder {name} does not exist. Please use an appropriate input file/folder.')
+                f.close()
+            sys.exit(2)
 
-    #Check to make sure the input files are in the .csv and .rpt format. 
-    if options.input_csv[-4:].lower() != ".csv":
+    #Check to make sure the platemap is in the .csv format. 
+    if root_names[1][-4:].lower() != ".csv":
         logging.error(f'Plate map is not in the .csv format. Please use a .csv file format.')
         with open(f'{save_dir}html_output.html', 'w') as f:
             f.write(f'Plate map is not in the .csv format. Please use a .csv file format.')
@@ -2150,12 +2150,24 @@ def main():
         sys.exit(2)
 
     if options.instrument == "Waters":
-        if options.input_rpt[-4:].lower() != ".rpt":
+        if root_names[0][-4:].lower() != ".rpt":
             logging.error(f'LCMS data is not in the .rpt format. Please use a .rpt file format.')
             with open(f'{save_dir}html_output.html', 'w') as f:
                 f.write(f'LCMS data is not in the .rpt format. Please use a .rpt file format.')
                 f.close()
             sys.exit(2)
+
+    if options.instrument == "Shimadzu":
+        if not root_names[0].endswith("/"):
+            root_names[0] = root_names[0] + "/"
+
+        if len(glob.glob(root_names[0] + '*.daml')) == 0:
+            logging.error('No .daml files found. Please specify alternative directory with .daml files present.')
+            with open(f'{save_dir}html_output.html', 'w') as f:
+                f.write(f'No .daml files found. Please specify a directory with .daml files present.')
+                f.close()
+            sys.exit(2)
+
 
     times["Initialise Script"] = time.perf_counter() - time_start 
 
@@ -2174,17 +2186,17 @@ def main():
     #correct format. 
     if options.instrument == "Waters":
         getWatersData.init(options)
-        [dataTable, chroma, sample_IDs] = getWatersData.getData(root_names[1])
+        [dataTable, chroma, sample_IDs] = getWatersData.getData(root_names[0])
         times["Import RPT File"] = time.perf_counter() - pre_rpt 
         logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
     elif options.instrument == "Shimadzu":
         getShimadzuData.init(options)
-        [dataTable, chroma, sample_IDs] = getShimadzuData.getData(options.input_rpt)
-        logging.info(f'{len(dataTable.items())} data sources were found in the folder specified.')
+        [dataTable, chroma, sample_IDs] = getShimadzuData.getData(root_names[0])
+        logging.info(f'{len(dataTable.items())} .daml data sources were found in the folder specified.')
     else:
         logging.error("This instrument is not currently supported by PyParse")
         sys.exit(2)
-    
+
     #Determine the total areaAbs for each well, so that these values can be added to the outputTable
     total_area_abs = {}
     for i in range(1, options.plate_row_no * options.plate_col_no + 1):
@@ -2198,7 +2210,7 @@ def main():
     #Import the structure data from the comma-separated values platemap file provided
     #by the user to initiate the compoundDF. 
     pre_import = time.perf_counter()            
-    [compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[0], save_dir)
+    [compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[1], save_dir)
 
     #Check that an internal standard was provided if the plot_type expects one
     if options.plot_type in ["P/STD", "corrP/STD"] and internalSTD == "":

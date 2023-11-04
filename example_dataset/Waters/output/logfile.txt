@@ -39,4 +39,4 @@ INFO:root:A set of pie-charts was generated using Parea as the index.
 INFO:root:A histogram and donut chart were generated.
 INFO:root:The HTML output was generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 6.255934999999999 seconds.
+INFO:root:The analysis was completed in 7.726913 seconds.

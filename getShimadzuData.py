@@ -12,6 +12,7 @@ it into a common structure.
 import xml.etree.ElementTree as ET
 import base64
 import glob
+import math
 
 
 def init(args):
@@ -25,7 +26,7 @@ def getData(input_dir):
     chroma = {}
     sample_IDs = {}
 
-    input_files = glob.glob(input_dir + '/*.daml')
+    input_files = glob.glob(input_dir + '*.daml')
 
     for filename in input_files:
         #Open the .daml file, which is structured as an xml
@@ -51,21 +52,21 @@ def getData(input_dir):
         #get the sampleID
         sample_IDs[wellno] = str(root.find("datafile_attribs").find("desc").text)
 
+        #Get to the results secton of the .daml file
         results = root.find("results")
 
         peaks = {}
         #start by getting the peaks observed in the UV spectrum
         raw_UV = results.find("lc_chros").find("chro")
-        #print(raw_UV)
 
         for peak in raw_UV.findall("peak"):
-
+            #Fetch all data about a peak from the details section
             new_entry = {}
             for detail in peak.get("details").split(","):
                 name = detail.strip().split("=")[0]
                 value = detail.strip().split("=")[1]
                 if name == "Peak#":
-                    new_entry["peakID"] = value
+                    new_entry["peakID"] = int(value)
                 elif name == "RT":
                     new_entry["time"] = float(value.split("mins")[0].strip())
                     new_entry["pStart"] = float(value.split("(")[1].split("-")[0])
@@ -74,8 +75,11 @@ def getData(input_dir):
                     new_entry["areaAbs"] = float(value)
                 elif name == "Area%":
                     new_entry["area"] = float(value)
-                    #Add a placeholder entry for UV data
-                    new_entry["UV"] = []
+            #Add placeholders for the correct data structure
+            new_entry["MS+"] = [[]]
+            new_entry["MS-"] = [[]]
+
+            #Add the new entry to the peaks dictionary
             peaks[new_entry["peakID"]] = new_entry
 
         #get the chromatographic trace for this well
@@ -88,15 +92,19 @@ def getData(input_dir):
         yval = []
         for i in range(0, len(trace_list), 2):
             xval.append(float(trace_list[i])/60000)
-            yval.append(float(trace_list[i+1])/10000)
+            yval.append(float(trace_list[i+1]))
 
-        chroma[wellno] = [xval, yval]
+        #Normalise the heights of the peaks so that they plot correctly
+
+        max_y_val = max(yval)
+        normalised_yval = [100*i/max_y_val for i in yval]
+        chroma[wellno] = [xval, normalised_yval]
 
         #next, get the mass spec data for each peak, and match it to the UV peaks
 
         raw_ms = results.find("spectra")
         for spec in raw_ms.findall("spec"):
-            peakID = spec.find("peak_num").text
+            peakID = int(spec.find("peak_num").text)
             if peakID in peaks.keys():
                 msdata = spec.find("data").text
                 decoded = base64.b64decode(msdata)
@@ -112,17 +120,56 @@ def getData(input_dir):
                 total = 0
                 for i in range(0, len(decoded_list), 2):
                     datapair = [float(decoded_list[i])/10000, float(decoded_list[i+1])]
-                    total = total + float(decoded_list[i+1])
                     masses.append(datapair)
                 
                 #normalise the intensities 
-                refined_masses = [[i[0], round(i[1]*100/total, 3)] for i in masses]
+                max_intensity = max(masses, key = lambda x: x[1])[1]
+                normalised_masses = [[i[0], round(i[1]*100/max_intensity, 3)] for i in masses]
+                
+                #Remove any masses which are so small as to be negligable
+                total = sum([i[1] for i in normalised_masses])
+                refined_masses = [i for i in normalised_masses if math.floor(i[1]*100/total) > 0]
 
                 if ms_type == "MS+":
                     peaks[peakID]["MS+"] = refined_masses
                 else:
                     peaks[peakID]["MS-"] = refined_masses
 
+        #finally, fetch the UV absorption maxima values
+
+        raw_UV_ads = results.find("pda_spectra")
+        for pda_spec in raw_UV_ads.findall("pda_spec"):
+            #Get the peakID so the pda data is matched to the correct peaks
+            peakID = int(pda_spec.find("peak_num").text)
+            if peakID in peaks.keys():
+                
+                UV_maxima = []
+
+                #Decode the base64 data, and group the data into pairs of x/y values
+                UV_pairs = []
+                pda_data = base64.b64decode(pda_spec.find("data").text)
+                decoded_list = str(pda_data).split(";;;")[1].split("'")[0].split(";")
+                for i in range(0, len(decoded_list), 2):
+                        datapair = [float(decoded_list[i])/100, float(decoded_list[i+1])]
+                        UV_pairs.append(datapair)
+
+                #Tag the very first value as a maxima if required
+                if UV_pairs[0][1] > UV_pairs[1][1] and UV_pairs[0][1] > options.min_uv_threshold:
+                    UV_maxima.append(UV_pairs[0][0])
+                
+                #Iterate through all other n-1/n/n+1 comparisons to find all other maxima
+                for i in range(1, len(UV_pairs)-1):
+                    if (UV_pairs[i][1] > UV_pairs[i-1][1] and UV_pairs[i][1] > UV_pairs[i+1][1] 
+                        and UV_pairs[i][1] > options.min_uv_threshold):
+                        UV_maxima.append(UV_pairs[i][0])
+                
+                if UV_pairs[-1][1] > UV_pairs[-2][1] and UV_pairs[-1][1] > options.min_uv_threshold:
+                    UV_maxima.append(UV_pairs[-1][0])
+                #Store these maxima values with the peak 
+                peaks[peakID]["UV"] = UV_maxima
+
+
+        #Append the peaks to the specific well
         masterTable[wellno] = peaks.values()
 
     return [masterTable, chroma, sample_IDs]

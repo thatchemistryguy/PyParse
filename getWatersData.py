@@ -75,6 +75,8 @@ def getMSData(spectrum):
             masses.append(floatData)
             
             total = total + floatData[1]
+    #Remove any masses which, as a percentage, round to 0 
+    #to remove unnecessary baseline ions
     refined_masses = []
     for i in masses:
         if math.floor((i[1]/total)*100) > 0:
