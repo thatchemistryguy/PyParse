@@ -456,11 +456,10 @@ def convertRPT2Dict(filename):
         if i == 0 and (options.plate_row_no == 0 or options.plate_col_no == 0):
             options.plate_row_no = int(functions[0].split("\n")[17].split(",")[3].split(":")[1])
             options.plate_col_no = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
-            plate_rows_for_extraction = options.plate_row_no
             plate_cols_for_extraction = options.plate_col_no
         elif i == 0:
-            plate_rows_for_extraction = int(functions[0].split("\n")[17].split(",")[3].split(":")[1])
             plate_cols_for_extraction = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
+            
 
         if i == 0:
             #Find from rpt file whether each well is specified 
@@ -474,6 +473,12 @@ def convertRPT2Dict(filename):
             #If the well is simply an integer between 1 and infinity
             #Single line function to trim full string to just the well number used
             wellno = int(functions[0].split("Well")[1].split("\n")[0].split(":")[1].strip()) 
+            
+            #If the column number specified by the user is different to that found in the rpt file, 
+            #this is the result of the user looking to trim off blank columns. Wells described by 
+            #an integer only need to be modified to take this into account. 
+            if options.plate_col_no != plate_cols_for_extraction:
+                wellno = math.floor(wellno / plate_cols_for_extraction)*options.plate_col_no + (wellno % plate_cols_for_extraction)
         except:
             
             if row_col_order.find("X") < row_col_order.find("Y"):
@@ -485,28 +490,28 @@ def convertRPT2Dict(filename):
 
             try:
                 #If the well is a combination of two integers designating column and row
-                wellno = (int(row.capat)-1) * plate_cols_for_extraction + int(column) 
+                wellno = (int(row.capat)-1) * options.plate_col_no + int(column) 
             except:
                 #If the well is a combination of an integer for the column and a letter 
                 #for the row
                 
                 try:
                     row_to_int = ord(row.capitalize()) - 64
-                    wellno = (row_to_int-1) * plate_cols_for_extraction + int(column)
+                    wellno = (row_to_int-1) * options.plate_col_no + int(column)
                 except:
                     #If that fails, try a combination of letter for the column and 
                     #a letter for the row
                     try:
                         row_to_int = ord(row.capitalize()) - 64
                         col_to_int = ord(column.capitalize()) - 64
-                        wellno = (row_to_int-1) * plate_cols_for_extraction + col_to_int
+                        wellno = (row_to_int-1) * options.plate_col_no + col_to_int
                         
                     except:
                         #If that fails, try a combination of letter for the column and 
                         #an integer for the row. 
                         try:
                             col_to_int = ord(column.capitalize()) - 64
-                            wellno = (int(row)-1) * plate_cols_for_extraction + col_to_int
+                            wellno = (int(row)-1) * options.plate_col_no + col_to_int
                         except:
 
                             logging.info("Unable to get well number. Terminating program.")
