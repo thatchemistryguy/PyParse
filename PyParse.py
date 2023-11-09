@@ -473,7 +473,6 @@ def convertRPT2Dict(filename):
             #If the well is simply an integer between 1 and infinity
             #Single line function to trim full string to just the well number used
             wellno = int(functions[0].split("Well")[1].split("\n")[0].split(":")[1].strip()) 
-            
             #If the column number specified by the user is different to that found in the rpt file, 
             #this is the result of the user looking to trim off blank columns. Wells described by 
             #an integer only need to be modified to take this into account. 
@@ -516,11 +515,11 @@ def convertRPT2Dict(filename):
 
                             logging.info("Unable to get well number. Terminating program.")
                             sys.exit(2)
-
+        
                 
         #get the sample id, and load it into a list
         #This list will be added as a column to the outputTable
-        well_ID = functions[0].split("SampleID")[1].split("\n")[0].strip()  
+        well_ID = functions[0].split("SampleID")[1].split("\n")[0].strip()
         sample_IDs[wellno] = well_ID
          
         peaks = {}
@@ -2274,6 +2273,45 @@ def generateMol(smiles, name, save_dir):
     _discard = AllChem.Compute2DCoords(mol)
     Draw.MolToFile(mol, f'{save_dir}structures/{name}.png', size=(200, 150))
 
+def genLocationHeatmaps(cptable, save_dir):
+    """
+    Generate a heatmap type graph to visualise the 
+    expected locations of each compound, based on the platemap that was provided. 
+
+    :param cptable: Pandas dataframe containing compounds
+    :param save_dir: string describing the location of the output folder
+    :output: Heatmaps saved to the output folder. 
+    """
+    
+    for index, row in cptable.iterrows():
+
+        location_data = []
+        labels = []
+        for i in range(options.plate_col_no * options.plate_row_no):
+            rowVal = int(math.floor(i / options.plate_col_no))
+            colVal = int(i % options.plate_col_no)
+            
+            if colVal == 0:
+                location_data.append([])
+                labels.append([])
+            if i+1 in row["locations"]:
+                location_data[rowVal].append(1)
+                labels[rowVal].append(u'\u2713')
+            else:
+                location_data[rowVal].append(0)
+                labels[rowVal].append("")
+                
+
+        pdTable = pd.DataFrame(location_data)
+        xLabels = [i for i in range(1, options.plate_col_no+1)]
+        yLabels = [chr(ord('@')+i) for i in range(1, options.plate_row_no+1)]
+        
+        ax = sns.heatmap(pdTable, xticklabels=xLabels, yticklabels=yLabels, cmap = "viridis", annot = labels, fmt="")
+        ax.xaxis.set_ticks_position("top")
+        
+        #Save heatmap to output directory
+        plt.savefig(f'{save_dir}graphs/loc_heatmap_{row["name"]}.jpg', format="jpg")
+        plt.close()   
 
 def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
     """
@@ -2315,8 +2353,9 @@ def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
             options = vars(options)
             )
         )
-    fo.close()
-  
+    fo.close() 
+
+
 
 def main():
     """ 
@@ -2899,6 +2938,9 @@ def main():
     total_time = time.perf_counter() - time_start
     logging.info(f'The analysis was completed in {total_time} seconds.')
     print(f'The analysis was completed in {round(total_time, 2)} seconds.')
+
+    #Generate location heatmaps based on the provided heatmap
+    genLocationHeatmaps(compoundDF, save_dir)
 
 if __name__ == "__main__":
     try:
