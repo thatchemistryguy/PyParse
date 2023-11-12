@@ -2877,6 +2877,9 @@ def main():
     times["Find Potential Conlicts"] = time.perf_counter() - pre_checks
     logging.info('Potential conflicts were searched for all compounds.')
 
+    #Generate location heatmaps based on the provided heatmap
+    genLocationHeatmaps(compoundDF, save_dir)
+
     #Return a heatmap to the user
     pre_heatmap = time.perf_counter()
     plotHeatmaps(outputTable, save_dir)
@@ -2889,9 +2892,16 @@ def main():
     #useful. 
     if options.plate_row_no * options.plate_col_no < 97:
         pre_pie = time.perf_counter()
-        plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
-        logging.info(f'A set of pie-charts was generated using {options.plot_type} '
-                    f'as the index.')
+        #Alter the piechart output depending on whether an internalSTD was specified
+        #in the platemap or not. 
+        if internalSTD != "":
+            plotPieCharts("corrP/STD", outputTable, save_dir, by_products)
+            logging.info(f'A set of pie-charts was generated using corrP/STD '
+                        f'as the index.')
+        else:
+            plotPieCharts("Parea", outputTable, save_dir, by_products)
+            logging.info(f'A set of pie-charts was generated using Parea '
+                        f'as the index.')
         times["Generate Piechart"] = time.perf_counter() - pre_pie
 
     #Plot a histogram and donut chart of Parea as a measure of plate success. 
@@ -2939,8 +2949,7 @@ def main():
     logging.info(f'The analysis was completed in {total_time} seconds.')
     print(f'The analysis was completed in {round(total_time, 2)} seconds.')
 
-    #Generate location heatmaps based on the provided heatmap
-    genLocationHeatmaps(compoundDF, save_dir)
+    
 
 if __name__ == "__main__":
     try:
