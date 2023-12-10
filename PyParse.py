@@ -1852,10 +1852,10 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
         
         axes.bar(x, y, width = 2)
         axes.set_title(title)
-        axes.set_xlim(0, 1000)
         axes.set_ylim(0, 200)
         
         last_annotation = 0
+        highest_mass = 0
         for peak in data:
             if peak[1] > 20:
                 if math.isclose(peak[0], last_annotation, abs_tol = 3):
@@ -1866,6 +1866,16 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
                     axes.annotate(peak[0], [peak[0]+1, peak[1]], ha="center", 
                                   va="bottom", rotation=90, size = 8)
                 last_annotation = peak[0]
+                if peak[0] > highest_mass:
+                    highest_mass = peak[0]
+        
+        #Configure mass spec axis to reach at least 1000, but higher if necessary
+        #With some additional headroom so that peaks are not obscured by the edge
+        #of the plot
+        if highest_mass > 950:
+            axes.set_xlim(0, math.ceil((highest_mass + 100)/100)*100) 
+        else:
+            axes.set_xlim(0, 1000)
     
     #Plot both MS- and MS+    
     plotMS(a0, ms_minus, "MS-")
