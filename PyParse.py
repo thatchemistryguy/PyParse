@@ -553,7 +553,8 @@ def convertRPT2Dict(filename):
                                         "time": retTime,
                                         "pStart": 0,
                                         "pEnd": 0, 
-                                        "peakID": peakID
+                                        "peakID": peakID,
+                                        "well": wellno
                                         }
                             elif peak_index != retTime:
                                 #If data has already been entered for this peak by a different
@@ -572,7 +573,7 @@ def convertRPT2Dict(filename):
                                         "pStart": peaks[peak_index]["pStart"],
                                         "pEnd": peaks[peak_index]["pEnd"], 
                                         "peakID": peaks[peak_index]["peakID"],
-
+                                        "well": wellno
                                         }
                                 #Delete the old entry now the data has been copied over
                                 #to use the correct retention time. 
@@ -615,7 +616,8 @@ def convertRPT2Dict(filename):
                                         "time": retTime,
                                         "pStart": 0,
                                         "pEnd": 0, 
-                                        "peakID": peakID
+                                        "peakID": peakID,
+                                        "well": wellno
                                         }
                             elif peak_index != retTime:
                                 #If data has already been entered for this peak by a different
@@ -634,7 +636,7 @@ def convertRPT2Dict(filename):
                                         "pStart": peaks[peak_index]["pStart"],
                                         "pEnd": peaks[peak_index]["pEnd"], 
                                         "peakID": peaks[peak_index]["peakID"],
-
+                                        "well": wellno
                                         }
                                 #Delete the old entry now the data has been copied over
                                 #to use the correct retention time. 
@@ -663,7 +665,8 @@ def convertRPT2Dict(filename):
                             "time": retTime,
                             "pStart": 0,
                             "pEnd": 0,
-                            "peakID": peakID
+                            "peakID": peakID,
+                            "well": wellno
                             }
                 else:
                     retTime = peak_index
@@ -1462,6 +1465,147 @@ def removeDupAssigns(compoundDF, internalSTD, SMs, products, by_products):
         }
         compoundDF.at[index, "comments"] = new_comments 
     return compoundDF
+
+def find_impurities(dataTable, compoundDF, save_dir):
+    """
+    The goal of this function is to find impurities that the program wasn't explicitly
+    asked to find. It will do this by searching for commonly appearing peaks, that have a 
+    clear ionisation pattern, that haven't already been assigned. 
+
+    """
+
+    #First, find commonly observed peaks
+    """
+    #cluster the peaks by retention time into groups to better
+    #classify which hits are likely to be genuine and which
+    #are false positives. 
+    for i in range(len(peakList)):
+        
+        if len(clusters) == 0:
+            clusters.append([peakList[i]])
+        else:
+            clusterFound = False
+            for cluster in clusters:
+                mean_rt = mean([i["time"] for i in cluster])
+                
+                if math.isclose(mean_rt, peakList[i]["time"], abs_tol=options.time_abs_tol):
+                    cluster.append(peakList[i])
+                    clusterFound = True
+                    break
+            if not clusterFound:
+                clusters.append([peakList[i]])
+                
+    comment_text.append(f'{len(clusters)} clusters were found for {cpname}.')
+    
+    #find the average retention time for each cluster, and store in cluster_bands
+    #use this to label the hit validation graph and to refine by expected_rt.  
+    
+    for i in range(len(clusters)):
+        avg_time = sum([j["time"] for j in clusters[i]]) / len(clusters[i])
+        cluster_bands.append(round(avg_time,5))
+        
+        for peak in clusters[i]:
+            peak["cluster"] = i
+
+    for index, row in compoundDF.iterrows():
+
+    """
+    #Index all peaks in plate by their well and retention time
+    peakList = {}
+    
+    for index, well in dataTable.items():
+        peakList[index] = {}
+        for peak in well:
+            peakList[index][peak["time"]] = peak
+    
+    #Remove any peaks which have already been assigned to a compound
+    for index, row in compoundDF.iterrows():
+        for hit in row["hits"]["green"]:
+            del peakList[hit["well"]][hit["time"]]
+
+    all_peaks = []
+    for wellID, well in peakList.items():
+        #print(wellID)
+        for time, peak in well.items():
+            all_peaks.append(peak)
+
+    sorted(all_peaks, key = lambda x: x["time"])
+
+    clusters = []
+
+    for i in range(len(all_peaks)):
+        
+        if len(clusters) == 0:
+            clusters.append([all_peaks[i]])
+        else:
+            clusterFound = False
+            for cluster in clusters:
+                mean_rt = mean([i["time"] for i in cluster])
+                
+                if math.isclose(mean_rt, all_peaks[i]["time"], abs_tol=options.time_abs_tol):
+                    cluster.append(all_peaks[i])
+                    clusterFound = True
+                    break
+            if not clusterFound:
+                clusters.append([all_peaks[i]])
+                
+    print(f'{len(clusters)} clusters were found.')
+    
+    def findCommonIons(cluster):
+        ions_plus = {}
+        ions_minus = {}
+       # print(cluster)
+        for peak in cluster:
+
+            sorted_MS_plus = sorted(peak["MS+"], key = lambda x: x[1])
+            sorted_MS_minus = sorted(peak["MS-"], key = lambda x: x[1])
+
+
+            for ms in sorted_MS_plus:
+                latest_keys = ions_plus.keys()
+                overlap = [i for i in latest_keys if math.isclose(ms[0], i, abs_tol = options.mass_abs_tol)]
+                if len(overlap) > 0:
+                    ions_plus[overlap[0]].append(ms[0])
+                else:
+                    ions_plus[ms[0]] = [ms[0]]
+            for ms in sorted_MS_minus:
+                latest_keys = ions_minus.keys()
+                overlap = [i for i in latest_keys if math.isclose(ms[0], i, abs_tol = options.mass_abs_tol)]
+                if len(overlap) > 0:
+                    ions_plus[overlap[0]].append(ms[0])
+                else:
+                    ions_plus[ms[0]] = [ms[0]]
+        
+        
+
+    import numpy as np
+
+    import matplotlib.cm as cm
+    palette = colors = cm.rainbow(np.linspace(0, 1, len(clusters)))
+    for i, cluster in enumerate(clusters):
+        x = []
+        y = []
+        for peak in cluster:
+            x.append(peak["well"])
+            y.append(peak["time"])
+        
+        
+        plt.scatter(x, y, color = palette[i])
+    plt.savefig(f'{save_dir}impuritychart.jpg', format = "jpg")
+
+    
+    findCommonIons(clusters[0])
+
+
+
+
+"""
+    for i, well in peakList.items():
+        for j, peak in well.items():
+            x.append(i)
+            y.append(peak["time"])
+
+"""
 
 def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, total_area_abs):
     """
@@ -2654,6 +2798,9 @@ def main():
     logging.info(f'Duplicate assignments were removed.')
     times["Remove Duplicate Assignments"] = time.perf_counter() - pre_rem_dup
 
+    #Search for impurities that haven't been specified
+    find_impurities(dataTable, compoundDF, save_dir)
+    
     #Generate the output table using validated hits
     pre_output_table = time.perf_counter()
     outputTable = generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, total_area_abs)
@@ -2896,9 +3043,9 @@ def main():
     print(f'The analysis was completed in {round(total_time, 2)} seconds.')
 
 if __name__ == "__main__":
-    try:
-        print("")
-        print("Running analysis....")
-        main()
-    except Exception:
-        logging.exception("A fatal exception occurred. Contact administrator.")
+    #try:
+    print("")
+    print("Running analysis....")
+    main()
+    #except Exception:
+    #    logging.exception("A fatal exception occurred. Contact administrator.")
