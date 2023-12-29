@@ -179,14 +179,11 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-#conda
-.conda/
 
-#vscode
-.vscode/
 
 # notepad++
 .bak
+
 
 # vscode
 .vscode

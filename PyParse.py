@@ -411,13 +411,14 @@ def convertRPT2Dict(filename):
     :param filename: Address of the input file
     
     :return: List comprising: [a dictionary of all peaks in all wells, a list containing each chromatogram,
-                a list of the sample IDs for each well] 
+                a list of the sample IDs for each well, a list of total_area_abs for each well] 
     """
     
     wellData = []
     masterTable = {}
     chroma = {}
     sample_IDs = {}
+    total_area_abs = {}
 
     with open(filename, errors = "ignore") as f:
         fullText = f.read()
@@ -479,7 +480,7 @@ def convertRPT2Dict(filename):
             if options.plate_col_no != plate_cols_for_extraction:
                 wellno = math.floor(wellno / plate_cols_for_extraction)*options.plate_col_no + (wellno % plate_cols_for_extraction)
         except:
-            
+ 
             if row_col_order.find("X") < row_col_order.find("Y"):
                 column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
                 row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
@@ -688,10 +689,44 @@ def convertRPT2Dict(filename):
                     peaks[retTime]["UV"] = data
             
         logging.debug(f'{len(peaks)} peaks found in well {wellno}.')             
-    
+
+        #Filter out any peaks within retention times specified by the user
+        #Expected uses: remove solvent peaks from consideration
+        #Expected format is a list of specified ranges, e.g.
+        #[min_time1-max_time1, min_time2-max_time2]
+        #where the start of the range appears first and is separated from 
+        #the end of the range with a hyphen
+
+        if len(options.filter_by_rt) > 0:
+            to_remove = []
+            for filter_range in options.filter_by_rt:
+                min_time = float(filter_range.split("-")[0].strip())
+                max_time = float(filter_range.split("-")[1].strip())
+
+                for index in peaks.keys():
+                    if float(index) > min_time and index < max_time:
+                        to_remove.append(index)
+
+            for index in to_remove:
+                del peaks[index]
+        
+        #If the reprocess_by_rt parameter was used, recalculate the percentage peak area for each peak
+        if len(options.filter_by_rt) > 0:
+            total_area_abs[wellno] = 0
+            for peak in peaks.values():
+                total_area_abs[wellno] = total_area_abs[wellno] + peak["areaAbs"]
+
+        #Recalculate the peak area percentages now that the total absolute area 
+        #for that well has been calculated. 
+
+        if len(options.filter_by_rt) > 0: 
+            for index in peaks.keys():
+                peaks[index]["area"] = round((peaks[index]["areaAbs"]*100) / total_area_abs[wellno], 2)
+
+        #Store the peaks into the mastertable, indexed by the well
         masterTable[wellno] = peaks.values()
 
-    return [masterTable, chroma, sample_IDs]
+    return [masterTable, chroma, sample_IDs, total_area_abs]
     
     
 def findHits(compound, dataTable):
@@ -1567,8 +1602,11 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
     for i in range(1, options.plate_row_no * options.plate_col_no + 1):
 
         well = outputTable[i]
-        if well["Uarea"] < 0: 
+        #reset any non-sensical values that arise as a result of miniscule rounding errors
+        #for the unidentified area (Uarea, UareaAbs)
+        if round(well["Uarea"]) <= 0 or round(well["UareaAbs"]) <= 0: 
             well["Uarea"] = 0
+            well["UareaAbs"] = 0
         if well["PareaAbs"] != 0 or well["SMareaAbs"] != 0:
             well["P/SM+P"] = round(well["PareaAbs"] / (well["SMareaAbs"] + well["PareaAbs"]), 2)
 
@@ -1959,6 +1997,27 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
     #Set axis limits
     a2.set_ylim(min_y - 10, 130)
     a2.set_xlim(-0.1, max_x+0.1)
+
+    #plot a hatched region if the filter_by_rt option 
+    #has been used
+    if len(options.filter_by_rt) > 0:
+        
+        #Set default yvalues to match that of chromatogram trace
+        hatched_ymin, hatched_ymax = [],[]
+        for i in trace[1]:
+            hatched_ymin.append(i)
+            hatched_ymax.append(i)
+
+        for new_range in options.filter_by_rt:
+            minx = float(new_range.split("-")[0].strip())
+            maxx = float(new_range.split("-")[1].strip())
+            for i, j in enumerate(trace[0]):
+                #Amend any values such between specified ranges
+                if j > minx and j < maxx:
+                    hatched_ymax[i] = 130
+                    hatched_ymin[i] = min_y - 10
+        #fill between on graph, using traceparency = 0.3
+        a2.fill_between(trace[0], hatched_ymin, hatched_ymax, hatch = "/", alpha = 0.3)
 
     #Fill to highlight the peak of interest 
     if pStart != 0 and pEnd != 0:
@@ -2392,6 +2451,9 @@ def main():
                         time_abs_tol = 0.025,
                         uv_abs_tol = 10,
 
+                        filter_by_rt = [],
+
+
                         detector = "UV",
 
                         min_peak_area = 0.5,
@@ -2500,6 +2562,10 @@ def main():
     
     parser.add_argument("-z", "--generate_zip", action="store", type=str, dest = "gen_zip", 
                         help = "Choose to generate and save a zip file, True/False.\n")
+    
+    parser.add_argument("-f", "--filter_by_rt", nargs = "+", action="store", type=str, dest = "filter_by_rt",
+                        help = "Provide retention time ranges to ignore, in the form 'mintime-maxtime'"
+                        " where the two times are separated by a hyphen. Multiple ranges (separated by a space) are excepted. ")
 
     parser.add_argument("-n", "--name", action="store", type=str, dest = "analysis_name", 
                         help = "Choose a name for the analysis.\n")
@@ -2515,7 +2581,7 @@ def main():
     
     #Set standard matplotlib graph size
     plt.rcParams["figure.figsize"] = (12, 6)
-    
+
     #Ensure all required input options have a valid address
     root_names = [options.input_csv, options.input_rpt, options.output]
     
@@ -2600,22 +2666,17 @@ def main():
     #peak in the well. 
     #chroma is a list of lists containing the information required to 
     #generate the LCMS trace. 
-    #This function also determines the number of columns and rows in the plate
-    #and writes this info to the global options. 
     
     pre_rpt = time.perf_counter()
-    [dataTable, chroma, sample_IDs] = convertRPT2Dict(root_names[1])
+    [dataTable, chroma, sample_IDs, total_area_abs] = convertRPT2Dict(root_names[1])
+
     times["Import RPT File"] = time.perf_counter() - pre_rpt 
     logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
 
-    #Determine the total areaAbs for each well, so that these values can be added to the outputTable
-    total_area_abs = {}
+    #Add blank values to wells in total_area_abs for which no data was found. 
     for i in range(1, options.plate_row_no * options.plate_col_no + 1):
-        total_area_abs[i] = 0
-    for index, well in dataTable.items():
-        for peak in well:
-            if index in total_area_abs:
-                total_area_abs[index] = total_area_abs[index] + peak["areaAbs"]
+        if i not in total_area_abs:
+            total_area_abs[i] = 0
     
 
     #Import the structure data from the comma-separated values platemap file provided
@@ -2653,7 +2714,6 @@ def main():
     #Log the time taken to complete these actions
     times["Import Compound File"] = time.perf_counter() - pre_import
     logging.info(f'{len(compoundDF.index)} compounds were imported.')
-
 
     #For each compound, find all hits using the dataTable, validate them, and append 
     #them to a list ready for insertion into the compoundDF pandas dataframe
@@ -2962,9 +3022,9 @@ def main():
     
 
 if __name__ == "__main__":
-    try:
+    #try:
         print("")
         print("Running analysis....")
         main()
-    except Exception:
-        logging.exception("A fatal exception occurred. Contact administrator.")
+    #except Exception:
+    #    logging.exception("A fatal exception occurred. Contact administrator.")
