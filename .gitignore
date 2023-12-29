@@ -98,9 +98,6 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 .pybuilder/
 target/
@@ -182,17 +179,24 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-#conda
-.conda
 
-#vscode
-.vscode
-
-#example_dataset
-**/example_dataset/
 
 # notepad++
 .bak
+
+
+# vscode
+.vscode
+launch.json
+
+#conda
+.conda
+
+#pycache
+__pycache__
+
+#example PyParse output
+example_dataset/output/
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
@@ -207,7 +211,7 @@ Terms
 Privacy
 Security
 Status
-Docs
+#Docs
 Contact GitHub
 Pricing
 API

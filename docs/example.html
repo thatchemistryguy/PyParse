@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Frequently Asked Questions" href="faq.html" /><link rel="prev" title="PyParse Outputs" href="output_desc.html" />
 
-    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Using the Example Dataset - PyParse 2023.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=dc19f415" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -198,9 +198,9 @@
         </div>
         <article role="main">
           <section id="using-the-example-dataset">
-<h1>Using the Example Dataset<a class="headerlink" href="#using-the-example-dataset" title="Permalink to this heading">#</a></h1>
+<h1>Using the Example Dataset<a class="headerlink" href="#using-the-example-dataset" title="Link to this heading">#</a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>To help you get started, an example dataset is provided in the repository
 under the folder “example_dataset”.</p>
 <dl class="simple">
@@ -213,8 +213,8 @@ under the folder “example_dataset”.</p>
 </dl>
 <p>Using the conda environment provided, you can use the sample data to run your first PyParse analysis!</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Using the sample dataset provided</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">PyParse</span><span class="o">.</span><span class="n">py</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">example_rpt</span><span class="o">.</span><span class="n">rpt</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">example_platemap</span><span class="o">.</span><span class="n">csv</span> <span class="o">-</span><span class="n">o</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">output</span> <span class="o">-</span><span class="n">r</span> <span class="mi">2</span> <span class="o">-</span><span class="n">c</span> <span class="mi">12</span> <span class="o">-</span><span class="n">pt</span> <span class="n">Parea</span> <span class="o">-</span><span class="n">moa</span> <span class="n">area</span>
+<div class="code-block-caption"><span class="caption-text">Using the sample dataset provided</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">PyParse</span><span class="o">.</span><span class="n">py</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">example_rpt</span><span class="o">.</span><span class="n">rpt</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">example_platemap</span><span class="o">.</span><span class="n">csv</span> <span class="o">-</span><span class="n">o</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">output</span> <span class="o">-</span><span class="n">r</span> <span class="mi">2</span> <span class="o">-</span><span class="n">c</span> <span class="mi">12</span> <span class="o">-</span><span class="n">moa</span> <span class="n">area</span>
 </pre></div>
 </div>
 </div>
@@ -223,24 +223,23 @@ under the folder “example_dataset”.</p>
 <div><ul class="simple">
 <li><p>“-r 2” specifies that the data is split over two rows on the analysis plate</p></li>
 <li><p>“-c 12” specifies that there are 12 columns in the analysis plate</p></li>
-<li><p>“-pt Parea” specifies that the heatmap should be shaded by the percentage area of the product</p></li>
 <li><p>“-moa area” specifies that where there are two peaks that could correspond to the product, choose the one with the larger percentage peak area.</p></li>
 </ul>
 </div></blockquote>
 </section>
 <section id="expected-output">
-<h2>Expected Output<a class="headerlink" href="#expected-output" title="Permalink to this heading">#</a></h2>
+<h2>Expected Output<a class="headerlink" href="#expected-output" title="Link to this heading">#</a></h2>
 <p>Once the analysis is complete, navigate to the folder, where you should find a new sub-folder called output.
 Open this folder, and double-click on the “html_output” file. The HTML report will open, and contain the following
 visualisations.</p>
 <p>You can also find these visualisations, and the underlying processed data, in the same subfolder.</p>
 </section>
 <section id="heatmap">
-<h2>Heatmap<a class="headerlink" href="#heatmap" title="Permalink to this heading">#</a></h2>
+<h2>Heatmap<a class="headerlink" href="#heatmap" title="Link to this heading">#</a></h2>
 <figure class="align-default" id="id2">
 <img alt="An example heatmap." src="_images/example_heatmap.jpg" />
 <figcaption>
-<p><span class="caption-text">Example Heatmap</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Example Heatmap</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Check to make sure that your heatmap looks the same as the one shown above. If so, you are ready to begin your own
@@ -318,13 +317,11 @@ analyses!!</p>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/scripts/furo.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+</div><script src="_static/documentation_options.js?v=07445e93"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

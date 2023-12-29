@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="PyParse Outputs" href="output_desc.html" /><link rel="prev" title="Welcome to PyParse’s documentation!" href="index.html" />
 
-    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>Installation and Run - PyParse 2023.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=dc19f415" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -198,9 +198,9 @@
         </div>
         <article role="main">
           <section id="installation-and-run">
-<h1>Installation and Run<a class="headerlink" href="#installation-and-run" title="Permalink to this heading">#</a></h1>
+<h1>Installation and Run<a class="headerlink" href="#installation-and-run" title="Link to this heading">#</a></h1>
 <section id="pre-requisites">
-<h2>Pre-Requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this heading">#</a></h2>
+<h2>Pre-Requisites<a class="headerlink" href="#pre-requisites" title="Link to this heading">#</a></h2>
 <p>PyParse was written for Python v3.7, and the following packages should be installed if not already available:</p>
 <ul class="simple">
 <li><p>matplotlib: <a class="reference external" href="https://matplotlib.org/stable/index.html">https://matplotlib.org/stable/index.html</a> (v 3.3.2)</p></li>
@@ -214,14 +214,14 @@ as part of the Github repository.</p>
 format. All data for the analysis <em>must</em> be in a <em>single</em> file of this format.</p>
 </section>
 <section id="preparing-a-platemap">
-<span id="preparing-a-platemap-label"></span><h2>Preparing a Platemap<a class="headerlink" href="#preparing-a-platemap" title="Permalink to this heading">#</a></h2>
+<span id="preparing-a-platemap-label"></span><h2>Preparing a Platemap<a class="headerlink" href="#preparing-a-platemap" title="Link to this heading">#</a></h2>
 <p>To run the analysis correctly, PyParse requires a platemap detailing the
 structures of the materials that are expected in each well. This platemap should be provided as
 Comma-Separated-Values (.csv) file.</p>
 <p>As a minimum, the structure of the desired product expected in each well is required, provided as a SMILES string:</p>
 <div class="table-wrapper docutils container" id="id1">
 <table class="docutils align-default" id="id1">
-<caption><span class="caption-text">Table 1. Example Platemap</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<caption><span class="caption-text">Table 1. Example Platemap</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Well</p></th>
 <th class="head"><p>Desired product SMILES</p></th>
@@ -290,7 +290,7 @@ in the column header, e.g.</p>
 </div>
 <div class="table-wrapper docutils container" id="id2">
 <table class="docutils align-default" id="id2">
-<caption><span class="caption-text">Table 2. Fully Elaborated Platemap</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<caption><span class="caption-text">Table 2. Fully Elaborated Platemap</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Well</p></th>
 <th class="head"><p>Desired Product SMILES</p></th>
@@ -371,7 +371,7 @@ in the column header, e.g.</p>
 </div>
 </section>
 <section id="specifying-a-retention-time-in-the-platemap">
-<span id="adding-a-rt-label"></span><h2>Specifying a Retention Time in the Platemap<a class="headerlink" href="#specifying-a-retention-time-in-the-platemap" title="Permalink to this heading">#</a></h2>
+<span id="adding-a-rt-label"></span><h2>Specifying a Retention Time in the Platemap<a class="headerlink" href="#specifying-a-retention-time-in-the-platemap" title="Link to this heading">#</a></h2>
 <p>By specifying a retention time in the platemap, PyParse can be guided to use only the peaks which are present
 close to that time.</p>
 <p>In a typical analysis, there may be many sets of peaks which contain the m/z which corresponds to that compound. In the below example,
@@ -379,7 +379,7 @@ a retention time of 0.73 min is provided in the platemap, which forces PyParse t
 <figure class="align-default" id="id3">
 <img alt="A diagram describing the change in output when a retention time is specified." src="_images/rt_refinement.png" />
 <figcaption>
-<p><span class="caption-text">Figure 1. Hit validation graph before and after a retention time is specified</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Figure 1. Hit validation graph before and after a retention time is specified</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="admonition tip">
@@ -389,19 +389,19 @@ about Hit Validation Graphs.</p>
 </div>
 </section>
 <section id="running-a-pyparse-analysis">
-<span id="running-an-analysis-label"></span><h2>Running a PyParse Analysis<a class="headerlink" href="#running-a-pyparse-analysis" title="Permalink to this heading">#</a></h2>
+<span id="running-an-analysis-label"></span><h2>Running a PyParse Analysis<a class="headerlink" href="#running-a-pyparse-analysis" title="Link to this heading">#</a></h2>
 <p>PyParse has been written as a standalone script and called from the command line,
 to carry out the automated analysis of a single reaction plate at a time.</p>
 <p>Each analysis should specify, at a minimum, the locations of the LCMS .rpt file and the platemap.</p>
 <div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">Standard Analysis for a 96-Well Plate</span><a class="headerlink" href="#id4" title="Permalink to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-text">Standard Analysis for a 96-Well Plate</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">PyParse</span><span class="o">.</span><span class="n">py</span> <span class="n">example_rpt</span><span class="o">.</span><span class="n">rpt</span> <span class="n">example_platemap</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
 </div>
 </div>
 </section>
 <section id="commonly-used-optional-parameters">
-<h2>Commonly Used Optional Parameters<a class="headerlink" href="#commonly-used-optional-parameters" title="Permalink to this heading">#</a></h2>
+<h2>Commonly Used Optional Parameters<a class="headerlink" href="#commonly-used-optional-parameters" title="Link to this heading">#</a></h2>
 <p>Many analyses will use an alternative plate size, will require an alternative output directory,
 or won’t use the ratio of product:internal standard to compare wells.</p>
 <p>Use the following optional parameters to change each of these:</p>
@@ -497,13 +497,11 @@ or won’t use the ratio of product:internal standard to compare wells.</p>
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/scripts/furo.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+</div><script src="_static/documentation_options.js?v=07445e93"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

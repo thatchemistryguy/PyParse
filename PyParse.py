@@ -37,12 +37,12 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import Descriptors
 from rdkit.Chem import Draw
 import zipfile
+from jinja2 import Environment, PackageLoader
 
 
 
 
-
-def importStructures(filename):
+def importStructures(filename, save_dir):
     """
     From a given CSV, with defined header names, and one row per well, 
     deconvolute the information to give a dataframe of one compound 
@@ -449,6 +449,24 @@ def convertRPT2Dict(filename):
         wellno = -1
         functions = well.split("[FUNCTION]") #Split data by function (Prelude, MS+, MS- or UV)
         
+        #Get the plate dimensions from the first sample
+        #Data sample: #Plate	01TL,XY,SD,1: 8,2:12,3: 90.0...
+        #where number of rows is 8 and number of columns in 12
+        #Overwrite the default option, but ensure that the user retains control
+        #such that empty rows can be removed from the heatmap. 
+        if i == 0 and (options.plate_row_no == 0 or options.plate_col_no == 0):
+            options.plate_row_no = int(functions[0].split("\n")[17].split(",")[3].split(":")[1])
+            options.plate_col_no = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
+            plate_cols_for_extraction = options.plate_col_no
+        elif i == 0:
+            plate_cols_for_extraction = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
+            
+
+        if i == 0:
+            #Find from rpt file whether each well is specified 
+            #Data sample: #Plate	01TL,XY,SD,1: 8,2:12,3: 90.0...
+            row_col_order = functions[0].split("\n")[17].split(",")[1]
+
         #Get the well no from the specific point in the prelude section
         #There are numerous ways for an .rpt file to describe the well
         #Each method is tried in turn to account for these differences
@@ -456,41 +474,53 @@ def convertRPT2Dict(filename):
             #If the well is simply an integer between 1 and infinity
             #Single line function to trim full string to just the well number used
             wellno = int(functions[0].split("Well")[1].split("\n")[0].split(":")[1].strip()) 
+            #If the column number specified by the user is different to that found in the rpt file, 
+            #this is the result of the user looking to trim off blank columns. Wells described by 
+            #an integer only need to be modified to take this into account. 
+            if options.plate_col_no != plate_cols_for_extraction:
+                wellno = math.floor(wellno / plate_cols_for_extraction)*options.plate_col_no + (wellno % plate_cols_for_extraction)
         except:
-            column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
-            row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
+ 
+            if row_col_order.find("X") < row_col_order.find("Y"):
+                column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
+                row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
+            else: 
+                column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
+                row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
+
             try:
                 #If the well is a combination of two integers designating column and row
-                wellno = (int(row)-1) * options.plate_col_no + int(column) 
+                wellno = (int(row.capat)-1) * options.plate_col_no + int(column) 
             except:
                 #If the well is a combination of an integer for the column and a letter 
                 #for the row
                 
                 try:
-                    row_to_int = ord(row) - 64
+                    row_to_int = ord(row.capitalize()) - 64
                     wellno = (row_to_int-1) * options.plate_col_no + int(column)
                 except:
                     #If that fails, try a combination of letter for the column and 
                     #a letter for the row
                     try:
-                        row_to_int = ord(row) - 64
-                        col_to_int = ord(column) - 64
+                        row_to_int = ord(row.capitalize()) - 64
+                        col_to_int = ord(column.capitalize()) - 64
                         wellno = (row_to_int-1) * options.plate_col_no + col_to_int
+                        
                     except:
                         #If that fails, try a combination of letter for the column and 
                         #an integer for the row. 
                         try:
-                            col_to_int = ord(column) - 64
+                            col_to_int = ord(column.capitalize()) - 64
                             wellno = (int(row)-1) * options.plate_col_no + col_to_int
                         except:
 
                             logging.info("Unable to get well number. Terminating program.")
                             sys.exit(2)
-
+        
                 
         #get the sample id, and load it into a list
         #This list will be added as a column to the outputTable
-        well_ID = functions[0].split("SampleID")[1].split("\n")[0].strip()  
+        well_ID = functions[0].split("SampleID")[1].split("\n")[0].strip()
         sample_IDs[wellno] = well_ID
          
         peaks = {}
@@ -499,7 +529,7 @@ def convertRPT2Dict(filename):
             spectra = function.split("[SPECTRUM]")[1:] #split by spectrum (i.e. each peak)
             
             #get peakarea for this peak
-            if lines[4] == "Type\tDAD ":
+            if lines[4] == "Type\tDAD " and options.detector == "UV":
                 chromatograms = function.split("[CHROMATOGRAM]")[1:]
                 for chromatogram in chromatograms:
                     c_lines = chromatogram.split("\n")
@@ -557,7 +587,70 @@ def convertRPT2Dict(filename):
                             peaks[retTime]["areaAbs"] = peakAreaAbs
                             peaks[retTime]["pStart"] = float(peakWidth[0])
                             peaks[retTime]["pEnd"] = float(peakWidth[1])
-                    
+
+            #Add additional section to search for and use the ELSD data
+            #as opposed to the UV data. Note that the two detectors cannot currently
+            #be used in parallel. 
+            if lines[3].strip() == "Description\tANALOG" and options.detector == "ELSD":
+                chromatograms = function.split("[CHROMATOGRAM]")[1:]
+                for chromatogram in chromatograms:
+                    c_lines = chromatogram.split("\n")
+                    if c_lines[3].strip() == "Description\t (3) ELSD Signal":
+                        chroma[wellno] = getChromatogram(chromatogram.split("[TRACE]")[1]) #get chromatogram for this well
+                        wellpeaks = chromatogram.split("[PEAK]")[1:]
+                        for peak in wellpeaks:
+                            
+                            retTime = float(peak.split("Time")[1].split("\n")[0].strip())
+                            peakWidth = peak.split("Peak\t")[1].split("\n")[0].split("\t")
+                            peakArea = float(peak.split("Area %Total")[1].split("\n")[0].strip())
+                            peakAreaAbs = float(peak.split("AreaAbs")[1].split("\n")[0].strip())
+                            peakID = int(peak.split("Peak ID")[1].split("\n")[0].strip())
+
+                            peak_index = False
+                            if len(list(peaks)) > 0:
+                                peak_index = findDataEntry(peaks, peakID)
+                            
+                            if peak_index == False:
+                                peaks[retTime] = {
+                                        "MS+": [], 
+                                        "MS-": [], 
+                                        "area": 0,
+                                        "areaAbs": 0, 
+                                        "UV": [],
+                                        "time": retTime,
+                                        "pStart": 0,
+                                        "pEnd": 0, 
+                                        "peakID": peakID
+                                        }
+                            elif peak_index != retTime:
+                                #If data has already been entered for this peak by a different
+                                #function (i.e. MS+, MS-) using a slightly different retention time,
+                                #copy this data over to a new entry
+                                #which uses the retention time observed in the chromatogram 
+                                #i.e. we don't want some retention times from the MS+, and others
+                                #from the chromatogram - we want a standard output
+                                peaks[retTime] = {
+                                        "MS+": peaks[peak_index]["MS+"], 
+                                        "MS-": peaks[peak_index]["MS-"], 
+                                        "area": peaks[peak_index]["area"], 
+                                        "areaAbs": peaks[peak_index]["areaAbs"],
+                                        "UV": peaks[peak_index]["UV"],
+                                        "time": retTime,
+                                        "pStart": peaks[peak_index]["pStart"],
+                                        "pEnd": peaks[peak_index]["pEnd"], 
+                                        "peakID": peaks[peak_index]["peakID"],
+
+                                        }
+                                #Delete the old entry now the data has been copied over
+                                #to use the correct retention time. 
+                                del peaks[peak_index]
+                                
+                            peaks[retTime]["area"] = peakArea
+                            peaks[retTime]["areaAbs"] = peakAreaAbs
+                            peaks[retTime]["pStart"] = float(peakWidth[0])
+                            peaks[retTime]["pEnd"] = float(peakWidth[1])
+
+
             for spectrum in spectra:
                 peakID = int(spectrum.split("Peak ID")[1].split("\n")[0].strip())
                 retTime = float(spectrum.split("Time")[1].split("\n")[0].strip())
@@ -1797,10 +1890,10 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
         
         axes.bar(x, y, width = 2)
         axes.set_title(title)
-        axes.set_xlim(0, 1000)
         axes.set_ylim(0, 200)
         
         last_annotation = 0
+        highest_mass = 0
         for peak in data:
             if peak[1] > 20:
                 if math.isclose(peak[0], last_annotation, abs_tol = 3):
@@ -1811,6 +1904,16 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
                     axes.annotate(peak[0], [peak[0]+1, peak[1]], ha="center", 
                                   va="bottom", rotation=90, size = 8)
                 last_annotation = peak[0]
+                if peak[0] > highest_mass:
+                    highest_mass = peak[0]
+        
+        #Configure mass spec axis to reach at least 1000, but higher if necessary
+        #With some additional headroom so that peaks are not obscured by the edge
+        #of the plot
+        if highest_mass > 950:
+            axes.set_xlim(0, math.ceil((highest_mass + 100)/100)*100) 
+        else:
+            axes.set_xlim(0, 1000)
     
     #Plot both MS- and MS+    
     plotMS(a0, ms_minus, "MS-")
@@ -1947,185 +2050,207 @@ def plotPieCharts(zvalue, outputTable, save_dir, by_products):
                 "peru", "orange", "gold", "olive", "lawngreen", "darkgreen", "lime", "aqua", 
                 "steelblue", "slategray", "navy"]
     
-    #declare new subplots
-    fig, axs = plt.subplots(options.plate_row_no, options.plate_col_no)
-
-    #get maximum value, so diameter of all pies can be calculated in relation
-    #to the best performing well. 
-    max_val = max([row[zvalue] for index, row in outputTable.iterrows()])
     
-    #format data and generate pie charts
-    pies_baked = []
-    if max_val != 0:
+    def buildPies(chart_type):
+        """
+        Define function to build a trellised pie chart. 
+
+        :param chart_type: String defining whether this set of pie charts has fixed or variable 
+                            diameters
         
-        for index, row in outputTable.iterrows():
-            pies_baked.append(index)
-            rowVal = math.floor((index-1) / options.plate_col_no)
-            colVal = int((index-1) % options.plate_col_no)
+        :return: jpg of trellised pie chart saved to output folder
+        """
 
-            chart_size =  (row[zvalue] / max_val) * 0.95
-
-            color_tracker = 0
-            colors = []
-            sum_byprod = sum([row[f'{by_prod}area'] for by_prod in by_products])
+        #declare new subplots
+        fig, axs = plt.subplots(options.plate_row_no, options.plate_col_no)
+        
+        #get maximum value, so diameter of all pies can be calculated in relation
+        #to the best performing well. 
+        max_val = max([row[zvalue] for index, row in outputTable.iterrows()])
+        
+        #format data and generate pie charts
+        pies_baked = []
+        if max_val != 0:
             
-            total = row["SMarea"] + row["Parea"] + row["STDarea"] + sum_byprod
-            #the LCMS machine can calculate a total area of >100% due to rounding errors
-            #this needs to be corrected before the piechart is built
-            if total > 100:
-                total = 100
-            data = []
-            if chart_size > 0: 
-                if total != 100:
-                    data.append(100-total)
-                    colors.append("grey")
+            for index, row in outputTable.iterrows():
+                pies_baked.append(index)
+                rowVal = math.floor((index-1) / options.plate_col_no)
+                colVal = int((index-1) % options.plate_col_no)
 
-                if row["SMarea"] != 0:
-                    data.append(math.floor(row["SMarea"]))
-                    colors.append("cyan")
+                if chart_type == "fixed_width":
+                    chart_size = 0.95
+                else:
+                    chart_size =  (row[zvalue] / max_val) * 0.95
 
-                if row["Parea"] != 0:
-                    data.append(math.floor(row["Parea"]))
-                    colors.append("yellow")
-
-                if row["STDarea"] != 0:
-                    data.append(math.floor(row["STDarea"]))
-                    colors.append("green")
+                color_tracker = 0
+                colors = []
+                sum_byprod = sum([row[f'{by_prod}area'] for by_prod in by_products])
                 
-                for by_prod in by_products:
-                    if math.floor(row[f'{by_prod}area']) != 0:
-                        data.append(math.floor(row[f'{by_prod}area']))
-                        colors.append(palette[color_tracker])
-                    color_tracker = color_tracker + 1
-            else:
-                #Set chart size to 0.01 to avoid a non-zero radius
-                #which causes matplotlib to fail. 
-                chart_size = 0.01
+                total = row["SMarea"] + row["Parea"] + row["STDarea"] + sum_byprod
+                #the LCMS machine can calculate a total area of >100% due to rounding errors
+                #this needs to be corrected before the piechart is built
+                if total > 100:
+                    total = 100
+                data = []
+                if chart_size > 0: 
+                    if total != 100:
+                        data.append(100-total)
+                        colors.append("grey")
+
+                    if row["SMarea"] != 0:
+                        data.append(math.floor(row["SMarea"]))
+                        colors.append("cyan")
+
+                    if row["Parea"] != 0:
+                        data.append(math.floor(row["Parea"]))
+                        colors.append("yellow")
+
+                    if row["STDarea"] != 0:
+                        data.append(math.floor(row["STDarea"]))
+                        colors.append("green")
+                    
+                    for by_prod in by_products:
+                        if math.floor(row[f'{by_prod}area']) != 0:
+                            data.append(math.floor(row[f'{by_prod}area']))
+                            colors.append(palette[color_tracker])
+                        color_tracker = color_tracker + 1
+                else:
+                    #Set chart size to 0.01 to avoid a non-zero radius
+                    #which causes matplotlib to fail. 
+                    chart_size = 0.01
+                    
                 
-            
-            if options.plate_row_no == 1:
-                axs[colVal].pie(data, 
-                        textprops={"size": "smaller"}, 
-                        colors = colors,  
-                        radius=chart_size,
-                        normalize = True)
-            elif options.plate_col_no == 1:
-                axs[rowVal].pie(data, 
-                        textprops={"size": "smaller"}, 
-                        colors = colors,  
-                        radius=chart_size,
-                        normalize = True)
-            else:
-                axs[rowVal, colVal].pie(data, 
-                        textprops={"size": "smaller"}, 
-                        colors = colors,  
-                        radius=chart_size,
-                        normalize = True)
-            
-    #Remove any unused sections of the trellised pie chart
-    #graph so that the visualisation is neater.         
-    for i in range(1, options.plate_col_no * options.plate_row_no + 1):
-        rowVal = math.floor((i-1) / options.plate_col_no)
-        colVal = int((i-1) % options.plate_col_no)
-        if i not in pies_baked:
-            
-            #matplotlib axes drop a dimension 
-            #when that dimension is length = 1. 
-            #Adjust code to match
-            if options.plate_row_no == 1:
-                plt.delaxes(axs[colVal])
-            elif options.plate_col_no == 1:
-                plt.delaxes(axs[rowVal])
-            else:
-                plt.delaxes(axs[rowVal, colVal])
-        #Add gridlines around piecharts
+                if options.plate_row_no == 1:
+                    axs[colVal].pie(data, 
+                            textprops={"size": "smaller"}, 
+                            colors = colors,  
+                            radius=chart_size,
+                            normalize = True)
+                elif options.plate_col_no == 1:
+                    axs[rowVal].pie(data, 
+                            textprops={"size": "smaller"}, 
+                            colors = colors,  
+                            radius=chart_size,
+                            normalize = True)
+                else:
+                    axs[rowVal, colVal].pie(data, 
+                            textprops={"size": "smaller"}, 
+                            colors = colors,  
+                            radius=chart_size,
+                            normalize = True)
+                
+        #Remove any unused sections of the trellised pie chart
+        #graph so that the visualisation is neater.         
+        for i in range(1, options.plate_col_no * (options.plate_row_no) + 1):
+            rowVal = math.floor((i-1) / options.plate_col_no)
+            colVal = int((i-1) % options.plate_col_no)
+            if i not in pies_baked:
+                
+                #matplotlib axes drop a dimension 
+                #when that dimension is length = 1. 
+                #Adjust code to match
+                if options.plate_row_no == 1:
+                    plt.delaxes(axs[colVal])
+                elif options.plate_col_no == 1:
+                    plt.delaxes(axs[rowVal])
+                else:
+                    plt.delaxes(axs[rowVal, colVal])
+           
+
+        #Add a key to the graph 
+        lines = [Line2D([0], [0], color="grey", lw=4), 
+                Line2D([0], [0], color="cyan", lw=4),
+                Line2D([0], [0], color="yellow", lw=4),
+                Line2D([0], [0], color="green", lw=4),]
+        labels = ["Untagged", "Reactant", "Product", "InternalSTD"]
+        for i in range(len(by_products)):
+            lines.append(Line2D([0], [0], color=palette[i], lw=4))
+            labels.append(by_products[i])
         if options.plate_row_no == 1:
-            autoaxis = axs[colVal].axis()
+            axs[options.plate_col_no-1].legend(lines,
+                    labels, loc="lower center",
+                    bbox_to_anchor=(1,1), ncol=math.ceil(len(labels)/3))
         elif options.plate_col_no == 1:
-            autoaxis = axs[rowVal].axis()
+            axs[options.plate_row_no-1].legend(lines,
+                    labels, loc="upper left",
+                    bbox_to_anchor=(1,1), ncol=math.ceil(len(labels)/3))
         else:
-            autoaxis = axs[rowVal, colVal].axis()
-        rec = plt.Rectangle((autoaxis[0], autoaxis[2]), (autoaxis[1]-autoaxis[0]), 
-                        autoaxis[3]-autoaxis[2], fill = False, lw=0.5, ls = "--")
-        rec = axs[rowVal, colVal].add_patch(rec)
-        rec.set_clip_on(False)
-
-    #Add a key to the graph 
-    lines = [Line2D([0], [0], color="grey", lw=4), 
-             Line2D([0], [0], color="cyan", lw=4),
-             Line2D([0], [0], color="yellow", lw=4),
-             Line2D([0], [0], color="green", lw=4),]
-    labels = ["Untagged", "Reactant", "Product", "InternalSTD"]
-    for i in range(len(by_products)):
-        lines.append(Line2D([0], [0], color=palette[i], lw=4))
-        labels.append(by_products[i])
-    if options.plate_row_no == 1:
-        axs[options.plate_col_no-1].legend(lines,
-                labels, loc="upper left",
-                bbox_to_anchor=(1,1))
-    elif options.plate_col_no == 1:
-        axs[options.plate_row_no-1].legend(lines,
-                labels, loc="upper left",
-                bbox_to_anchor=(1,1))
-    else:
-        axs[options.plate_row_no-1, options.plate_col_no-1].legend(lines,
-                labels, loc="upper left",
-                bbox_to_anchor=(1,1))
-    plt.tight_layout()
-
-    #Save graph to output directory
-    plt.savefig(f'{save_dir}graphs/piecharts.jpg', format="jpg")
-    plt.close()
-
-def plotHeatmap(zvalue, outputTable, save_dir):
-    """
-    Plots and saves a heatmap given the full dataset and the parameter to plot
-    by, e.g. Parea, P/STD, P/SM, etc
+            axs[options.plate_row_no-1, options.plate_col_no-1].legend(lines,
+                    labels, loc="upper right",
+                    bbox_to_anchor=(1,0), ncol=math.ceil(len(labels)/3))
+            
+        #Add titles to the graphs
+        if chart_type == "fixed_width":
+            fig.suptitle("Fixed Diameter Trellised Pie Charts", y=0.9)
+        else:
+            fig.suptitle(f'Trellised Pie Charts Sized by {zvalue}', y=0.9)
+        
+        #Save graph to output directory
+        plt.savefig(f'{save_dir}graphs/piecharts_{chart_type}.jpg', format="jpg")
+        plt.close()
     
-    :param zvalue: a string corresponding to the desired output metric (e.g. P/STD)
+    buildPies("fixed_width")
+    buildPies("variable_width")
+
+def plotHeatmaps(outputTable, save_dir):
+    """
+    Plots and saves heatmaps for the full dataset
+    
     :param outputTable: a pandas datatable
     :param save_dir: a string for the output directory
     
     :return: jpg of the heatmap saved to output directory
     """
 
-    returnVal = []
-    labels = []
-
-    #convert output table to 2-D list that can be used to plot heatmap. 
-    for index, row in outputTable.iterrows():
-        rowVal = int(math.floor((index-1) / options.plate_col_no))
-        colVal = int((index-1) % options.plate_col_no)
-        if colVal == 0:
-            returnVal.append([])
-            labels.append([])
-        if row["SampleID"] == "No Data.":
-            labels[rowVal].append("-")
-            returnVal[rowVal].append(0)
-        else:
-            if row[zvalue] > 1:
-                labels[rowVal].append(math.floor(row[zvalue]))
-            elif row[zvalue] >= 100:
-                labels[rowVal].append(100)
-            elif row[zvalue] == 0:
-                labels[rowVal].append("0")
+    
+    zvalues = {
+        "SMarea": "SMarea",
+        "Parea": "Parea", 
+        "conversion": "P/SM+P", 
+        "ratio_to_IS": "P/STD",
+        "corrSMarea": "corrSMarea",
+        "corrParea": "corrParea", 
+        "corrected_conversion": "corrP/SM+P",
+        "corrected_ratio_to_IS": "corrP/STD"
+    }
+    for key, zvalue in zvalues.items():
+        
+        returnVal = []
+        labels = []
+        #convert output table to 2-D list that can be used to plot heatmap. 
+        for index, row in outputTable.iterrows():
+            rowVal = int(math.floor((index-1) / options.plate_col_no))
+            colVal = int((index-1) % options.plate_col_no)
+            if colVal == 0:
+                returnVal.append([])
+                labels.append([])
+            if row["SampleID"] == "No Data.":
+                labels[rowVal].append("-")
+                returnVal[rowVal].append(0)
             else:
-                labels[rowVal].append(round(row[zvalue],2))
+                if row[zvalue] > 1:
+                    labels[rowVal].append(math.floor(row[zvalue]))
+                elif row[zvalue] >= 100:
+                    labels[rowVal].append(100)
+                elif row[zvalue] == 0:
+                    labels[rowVal].append("0")
+                else:
+                    labels[rowVal].append(round(row[zvalue],2))
 
-            returnVal[rowVal].append(row[zvalue])
+                returnVal[rowVal].append(row[zvalue])
 
-    #Configure heatmap
-    pdTable = pd.DataFrame(returnVal)
-    xLabels = [i for i in range(1, options.plate_col_no+1)]
-    yLabels = [chr(ord('@')+i) for i in range(1, options.plate_row_no+1)]
-    
-    ax = sns.heatmap(pdTable, xticklabels=xLabels, yticklabels=yLabels, cmap = "viridis",
-                    annot = labels, cbar_kws={"label": zvalue}, fmt="")
-    ax.xaxis.set_ticks_position("top")
-    
-    #Save heatmap to output directory
-    plt.savefig(f'{save_dir}graphs/heatmap.jpg', format="jpg")
-    plt.close()
+        #Configure heatmap
+        pdTable = pd.DataFrame(returnVal)
+        xLabels = [i for i in range(1, options.plate_col_no+1)]
+        yLabels = [chr(ord('@')+i) for i in range(1, options.plate_row_no+1)]
+        
+        ax = sns.heatmap(pdTable, xticklabels=xLabels, yticklabels=yLabels, cmap = "viridis",
+                        annot = labels, cbar_kws={"label": zvalue}, fmt="")
+        ax.xaxis.set_ticks_position("top")
+        
+        #Save heatmap to output directory
+        plt.savefig(f'{save_dir}graphs/heatmap_{key}.jpg', format="jpg")
+        plt.close()
 
 def plotHistogram(dataframe, save_dir):
     """
@@ -2217,12 +2342,50 @@ def generateMol(smiles, name, save_dir):
     _discard = AllChem.Compute2DCoords(mol)
     Draw.MolToFile(mol, f'{save_dir}structures/{name}.png', size=(200, 150))
 
-
-def buildHTML(save_dir, compoundDF, all_compounds, times = {}):
+def genLocationHeatmaps(cptable, save_dir):
     """
-    Build a HTML output file line by line with links to all plots generated, 
-    and output key columns of the compoundDF. Includes minimal javascript
-    to enable certain parts of user interface. 
+    Generate a heatmap type graph to visualise the 
+    expected locations of each compound, based on the platemap that was provided. 
+
+    :param cptable: Pandas dataframe containing compounds
+    :param save_dir: string describing the location of the output folder
+    :output: Heatmaps saved to the output folder. 
+    """
+    
+    for index, row in cptable.iterrows():
+
+        location_data = []
+        labels = []
+        for i in range(options.plate_col_no * options.plate_row_no):
+            rowVal = int(math.floor(i / options.plate_col_no))
+            colVal = int(i % options.plate_col_no)
+            
+            if colVal == 0:
+                location_data.append([])
+                labels.append([])
+            if i+1 in row["locations"]:
+                location_data[rowVal].append(1)
+                labels[rowVal].append(u'\u2713')
+            else:
+                location_data[rowVal].append(0)
+                labels[rowVal].append("")
+                
+
+        pdTable = pd.DataFrame(location_data)
+        xLabels = [i for i in range(1, options.plate_col_no+1)]
+        yLabels = [chr(ord('@')+i) for i in range(1, options.plate_row_no+1)]
+        
+        ax = sns.heatmap(pdTable, xticklabels=xLabels, yticklabels=yLabels, cmap = "viridis", annot = labels, fmt="")
+        ax.xaxis.set_ticks_position("top")
+        
+        #Save heatmap to output directory
+        plt.savefig(f'{save_dir}graphs/loc_heatmap_{row["name"]}.jpg', format="jpg")
+        plt.close()   
+
+def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
+    """
+    Build a HTML output file using jinja2 and a html_template
+    that is stored in the directory "templates". 
     
     :param save_dir: A string designating the output directory
     :param compoundDF: Pandas datatable containing all information on 
@@ -2233,215 +2396,35 @@ def buildHTML(save_dir, compoundDF, all_compounds, times = {}):
     :return: HTML file saved to save_dir 
     """
 
-    #Initiate the filetext variable
-    filetext = ["<html>"]
+
     
-    #link to Bootstrap library
-    csslink = ('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"'
-                ' integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">')
-    jslink = ('<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" '
-                'integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>')
-    filetext.append('<head>')
-    filetext.append(f'{csslink}')
-    filetext.append(f'{jslink}')
+    env = Environment(
+        loader = PackageLoader("PyParse", "templates")
+    )
 
-    #Setup additional styling/spacing
-    filetext.append("<style>")
-    filetext.append(".container-fluid {")
-    filetext.append("\tdisplay: flex;")
-    filetext.append("\tjustify-content: center;")
-    filetext.append("}")
+    template = env.get_template("html_template.html")
 
-    filetext.append("h1, h3, table, p, h2:not(.no-margin) {")
-    filetext.append("\tmargin-left: 2%;")
-    filetext.append("\tmargin-top: 2%;")
-    filetext.append("}")
-
-    filetext.append(".logs {")
-    filetext.append("\tmargin-left: 2%;")
-    filetext.append("\tmargin-top: 2%;")
-    filetext.append("}")
-
-    filetext.append("</style>")
-
-    filetext.append('</head>')
-
-    #Add navigation bar
-    filetext.append('<body data-bs-scroll="scroll" data-bs-target="navbar">')
-    filetext.append('<nav id="navbar" class="navbar bg-light sticky-top">'
-                        '<a style="margin-left: 1%;" class="navbar-brand" href="#">PyParse</a>'
-                        '<ul class="nav navbar-pills">'
-                            
-                            '<li class="nav-item">'
-                                '<a class="nav-link" href="#PlateAnalysis">Plate Analysis</a>'
-                            '</li>'
-                            '<li class="nav-item">'
-                                '<a class="nav-link" href="#CompoundSummary">Compound Summary</a>'
-                            '</li>'
-                            '<li class="nav-item">'
-                                '<a class="nav-link" href="#CompoundDetail">Compound Detail</a>'
-                            '</li>'
-                            '<li class="nav-item">'
-                                '<a class="nav-link" href="#PlateSummary">Plate Summary</a>'
-                            '</li>'
-                            '<li class="nav-item">'
-                                '<input id="cp_search" class="form-control" type="search" placeholder="Search for Compound" aria-label="Search for Compound">'
-                                '<ul id="search_options" class="downdown-menu"></ul>'
-                            '</li>'
-                        '</ul>'
-                    '</nav>')
-    
-    #Append the heatmap and piechart images
-    filetext.append("<h1>Analysis Output</h1>") 
-    
-    filetext.append(f'<h2 id = "PlateAnalysis">Plate Analysis</h2>')
-    if path.exists(f'{save_dir}/graphs/heatmap.jpg'):
-        filetext.append('<div class="container-fluid"><img class="graph" src="graphs/heatmap.jpg"></img></div>')
-    if path.exists(f'{save_dir}/graphs/piecharts.jpg'):
-        filetext.append('<div class="container-fluid"><img class="graph" src="graphs/piecharts.jpg"></img></div>')
-    
-    #Add headers for the output table
-    filetext.append(f'<h2 id = "CompoundSummary">Compound Summary</h2>')
-    filetext.append('<div class="table-responsive">')
-    filetext.append('<table class="table table-hover"><tr><th>Name</th><th>SMILES</th><th>Mass 1</th><th>Mass 2</th><th>Mass 3</th>'
-                    '<th>Retention Time</th><th>m/z-</th><th>m/z+</th>'
-                    '<th>Best Well</th><th>Purity of Best Well</th>'
-                    '<th>Overlap Detection</th><th>Potential Conflicts</th></tr>')
-    #Add key data for each compound out of the compoundDF
+    cptablerows = []
     for index, row in compoundDF.iterrows():
-        if row["overlaps"] != "No peak overlap detected." or row["conflicts"] != "No potential conflicts found.":
-            filetext.append('<tr class="table-warning">')
-        else:
-            filetext.append('<tr>')
-        filetext.append(f'<td><a href="#header_{row["name"]}">{row["name"]}</a></td>')
-        filetext.append(f'<td><img src="structures/{row["name"]}.png"></img></td>')
-        filetext.append(f'<td>{row["mass1"]}</td>')
-        filetext.append(f'<td>{row["mass2"]}</td>')
-        filetext.append(f'<td>{row["mass3"]}</td>')
-        filetext.append(f'<td>{row["time"]}</td>')
-        filetext.append(f'<td>{row["mass-"]}</td>')
-        filetext.append(f'<td>{row["mass+"]}</td>')
-        filetext.append(f'<td>{row["best_well"]}</td>')
-        filetext.append(f'<td>{row["best_purity"]}</td>')
-        filetext.append(f'<td>{row["overlaps"]}</td>')
-        filetext.append(f'<td>{row["conflicts"]}</td>')
-        filetext.append("</tr>")
-    filetext.append("</table></div>") 
+        cptablerows.append(row)
     
-    filetext.append('<h2 id = "CompoundDetail">Compound Detail</h2>')
-    
-    #Append links to each plot file per compound to the html file, as well as accordions to show
-    #the log files for each compound
-    for cpindex, row in compoundDF.iterrows():
-        filetext.append(f'<h3 id = "header_{row["name"]}">{row["name"]}</h3>')
 
-        imp_comm = [comment for comment in row["comments"] if "<strong>" in comment or "were found for" in comment or "Validation" in comment]
-        other_comm = [comment for comment in row["comments"] if comment not in imp_comm]
-        filetext.append('<div class="container-lg logs">')
-        filetext.append(f'<div class="accordion" id="accordion-{row["name"]}">')
+    with open(f'{save_dir}/html_output.html', "w") as fo:
+        fo.write(template.render(
+            cpnames = all_compounds,
+            cptablerows = cptablerows, 
+            save_dir = save_dir,
+            path = path,
+            times = times,
+            round = round,
+            pt = options.plot_type, 
+            analysis_name = analysis_name,
+            options = vars(options)
+            )
+        )
+    fo.close() 
 
-        filetext.append('<div class="accordion-item">')
-        filetext.append(f'<h2 class="accordion-header no-margin" id="heading1-{row["name"]}">')
-        filetext.append(f'<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-{row["name"]}"'
-                        f'aria-expanded="true" aria-controls="collapse1-{row["name"]}">Key Logs</button>')
-        filetext.append('</h2>')
-        filetext.append(f'<div id="collapse1-{row["name"]}" class="accordion-collapse collapse show" aria-labelledby="heading1-{row["name"]}">')
-        filetext.append('<div class="accordion-body">')
-        for comment in imp_comm:
-            filetext.append(f'{comment}<br>')
-        filetext.append('</div>')
-        filetext.append('</div>')
-        filetext.append('</div>')
 
-        if len(other_comm) != 0:
-            filetext.append('<div class="accordion-item">')
-            filetext.append(f'<h2 class="accordion-header no-margin" id="heading2-{row["name"]}">')
-            filetext.append(f'<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-{row["name"]}"'
-                            f'aria-expanded="false" aria-controls="collapse2-{row["name"]}">Additional Logs</button>')
-            filetext.append('</h2>')
-            filetext.append(f'<div id="collapse2-{row["name"]}" class="accordion-collapse collapse" aria-labelledby="heading2-{row["name"]}"'
-                            f'data-bs-parent="#accordion-{row["name"]}">')
-            filetext.append('<div class="accordion-body">')
-            for comment in other_comm:
-                filetext.append(f'{comment}<br>')
-            filetext.append('</div>')
-            filetext.append('</div>')
-            filetext.append('</div>')
-
-        filetext.append('</div>')
-        filetext.append('</div>')
-
-        #Append the hit validation graph and chromatogram for the compound
-        f_name = f'graphs/hits-{row["name"]}.jpg'
-        name = f'graphs/chroma-{row["name"]}-best.jpg'
-
-        if path.exists(f'{save_dir}{f_name}'):
-            filetext.append(f'<div class="container-fluid"><img class="graph" src="{f_name}"></img></div>')
-        if path.exists(f'{save_dir}{name}'):
-            filetext.append(f'<div class="container-fluid"><img class="graph" src="{name}"></img></div>')
-    
-    #Add plate summary graphs
-    filetext.append("<h2 id= 'PlateSummary'>Plate Summary</h2><br>")
-    if path.exists(f'{save_dir}graphs/histogram.jpg'):
-            filetext.append(f'<div class="container-fluid"><img class="graph" src="graphs/histogram.jpg"></img></div>')
-    if path.exists(f'{save_dir}graphs/donut.jpg'):
-        filetext.append(f'<div class="container-fluid"><img class="graph" src="graphs/donut.jpg"></img></div>')
-    
-    #If process time data was provided, append this to the html file.
-    if len(times) > 0:
-        filetext.append("<h2>Process Summary</h2><br>")
-        filetext.append("<table><tr><th>Process</th><th>Time Taken</th></tr>")
-        for index, value in times.items():
-            filetext.append(f'<tr><td>{index}</td><td>{round(value, 2)} s</td></tr>')
-        
-        filetext.append("</table><br><br>")
-    
-    #Add javascript to control simple search functionality in the navigation bar
-    search_options = '["' + '","'.join(all_compounds) + '"]'
-
-    filetext.append('<script>\n'
-                        'const search = document.querySelector("#cp_search")\n'
-                        'const optionsUl = document.querySelector("#search_options")\n'
-                        f'const search_options = {search_options}\n'
-                        'let innerText = ""\n'
-                        'search_options.forEach(x => {\n'
-                            'innerText += "<li id = \'" + x + "\'><a onclick=\'clearList()\' href=\'#header_" + x + "\'>" + x + "</a></li>"\n'
-                        '})\n'
-                        'optionsUl.innerHTML=innerText\n'
-                        'let lis = document.querySelectorAll("#search_options li")\n'
-                        'lis.forEach(x => {\n'
-                            'x.setAttribute("style", "display:none")\n' 
-                        '})\n'
-                        'search.onkeyup = function(e) {\n'
-                            
-                            'lis.forEach(x => {\n'
-                                'x.setAttribute("style", "display:none")\n' 
-                            '})\n'
-                            'if(search.value != "") {\n'
-                                'let myregex = new RegExp(search.value.toLowerCase())\n'
-                                'let matches = search_options.filter(x => myregex.test(x.toLowerCase()))\n'
-                                'matches.forEach(x => {\n'
-                                    'let docObject = document.querySelector("#"+x)\n'
-                                    'docObject.setAttribute("style", "display:block")\n'
-                                '})\n'
-                            '}\n'
-                        '}\n'
-                        'function clearList() {\n'
-                            'lis.forEach(x => {\n'
-                                'x.setAttribute("style", "display:none")\n' 
-                            '})\n'
-                        '}\n'
-                    '</script>\n'
-                    )
-    filetext.append('</body>')
-    filetext.append('</html>')
-    
-    #write and save HTML file to the output directory
-    with open(f'{save_dir}html_output.html', 'w') as f:
-        text = "\n".join(filetext)
-        f.write(text)
-        f.close()
-  
 
 def main():
     """ 
@@ -2462,11 +2445,17 @@ def main():
                         validate = "True",
                         verbose = "False",
 
+                        analysis_name = "PyParse Analysis",
+
                         mass_abs_tol = 0.5,
                         time_abs_tol = 0.025,
                         uv_abs_tol = 10,
+
                         filter_by_rt = [],
-                       
+
+
+                        detector = "UV",
+
                         min_peak_area = 0.5,
                         min_massconf_threshold = 10,
                         min_uv_threshold = 20,
@@ -2477,19 +2466,21 @@ def main():
                         uv_cluster_threshold = 0.5,
                         massconf_threshold = 0.5,
                         cluster_size_threshold = 0.8,
-                           
-                        plate_col_no = 12,
-                        plate_row_no = 8,
+
+                        #Default values are set to 0, to easily monitor
+                        #if the user has manually specified them.    
+                        plate_col_no = 0,
+                        plate_row_no = 0,
 
                         points_per_trace = 500,
                         
                         mass_or_area = "mass_conf",
-                        plot_type = "corrP/STD", 
+                        plot_type = "Parea", 
                         calc_higherions = "True",
                         calc_boc = "True",
                         
                         gen_csv = "True",
-                        gen_zip = "False",
+                        gen_zip = "True",
 
                         output = "output",
 
@@ -2575,6 +2566,12 @@ def main():
     parser.add_argument("-f", "--filter_by_rt", nargs = "+", action="store", type=str, dest = "filter_by_rt",
                         help = "Provide retention time ranges to ignore, in the form 'mintime-maxtime'"
                         " where the two times are separated by a hyphen. Multiple ranges (separated by a space) are excepted. ")
+
+    parser.add_argument("-n", "--name", action="store", type=str, dest = "analysis_name", 
+                        help = "Choose a name for the analysis.\n")
+
+    parser.add_argument("-d", "--detector", action="store", type=str, dest = "detector",
+                        help = "Choose which detector to use, UV or ELSD")
 
 
     #Set options to global and parse arguments        
@@ -2663,10 +2660,29 @@ def main():
 
     times["Initialise Script"] = time.perf_counter() - time_start 
 
+    #Convert the .rpt file into a useful format. The output is a dictionary,
+    #indexed by the well on the plate, and each value is a list. 
+    #each value in the list is a dictionary corresponding to each 
+    #peak in the well. 
+    #chroma is a list of lists containing the information required to 
+    #generate the LCMS trace. 
+    
+    pre_rpt = time.perf_counter()
+    [dataTable, chroma, sample_IDs, total_area_abs] = convertRPT2Dict(root_names[1])
+
+    times["Import RPT File"] = time.perf_counter() - pre_rpt 
+    logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
+
+    #Add blank values to wells in total_area_abs for which no data was found. 
+    for i in range(1, options.plate_row_no * options.plate_col_no + 1):
+        if i not in total_area_abs:
+            total_area_abs[i] = 0
+    
+
     #Import the structure data from the comma-separated values platemap file provided
     #by the user to initiate the compoundDF. 
     pre_import = time.perf_counter()            
-    [compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[0])
+    [compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[0], save_dir)
 
     #Check that an internal standard was provided if the plot_type expects one
     if options.plot_type in ["P/STD", "corrP/STD"] and internalSTD == "":
@@ -2698,25 +2714,6 @@ def main():
     #Log the time taken to complete these actions
     times["Import Compound File"] = time.perf_counter() - pre_import
     logging.info(f'{len(compoundDF.index)} compounds were imported.')
-
-    
-    #Convert the .rpt file into a useful format. The output is a dictionary,
-    #indexed by the well on the plate, and each value is a list. 
-    #each value in the list is a dictionary corresponding to each 
-    #peak in the well. 
-    #chroma is a list of lists containing the information required to 
-    #generate the LCMS trace. 
-    
-    pre_rpt = time.perf_counter()
-    [dataTable, chroma, sample_IDs, total_area_abs] = convertRPT2Dict(root_names[1])
-
-    times["Import RPT File"] = time.perf_counter() - pre_rpt 
-    logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
-
-    #Add blank values to wells in total_area_abs for which no data was found. 
-    for i in range(1, options.plate_row_no * options.plate_col_no + 1):
-        if i not in total_area_abs:
-            total_area_abs[i] = 0
 
     #For each compound, find all hits using the dataTable, validate them, and append 
     #them to a list ready for insertion into the compoundDF pandas dataframe
@@ -2774,7 +2771,7 @@ def main():
     #Generate the output table using validated hits
     pre_output_table = time.perf_counter()
     outputTable = generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, total_area_abs)
-    
+
     #Insert blanks in sample_IDs to match length of datatable
     for i in range(1, options.plate_row_no * options.plate_col_no +1):
         if i not in sample_IDs:
@@ -2950,9 +2947,12 @@ def main():
     times["Find Potential Conlicts"] = time.perf_counter() - pre_checks
     logging.info('Potential conflicts were searched for all compounds.')
 
+    #Generate location heatmaps based on the provided heatmap
+    genLocationHeatmaps(compoundDF, save_dir)
+
     #Return a heatmap to the user
     pre_heatmap = time.perf_counter()
-    plotHeatmap(options.plot_type, outputTable, save_dir)  
+    plotHeatmaps(outputTable, save_dir)
     times["Generate Heatmap"] = time.perf_counter() - pre_heatmap
     logging.info(f'A heatmap was generated using {options.plot_type} '
                 f'as the index.')
@@ -2962,9 +2962,16 @@ def main():
     #useful. 
     if options.plate_row_no * options.plate_col_no < 97:
         pre_pie = time.perf_counter()
-        plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
-        logging.info(f'A set of pie-charts was generated using {options.plot_type} '
-                    f'as the index.')
+        #Alter the piechart output depending on whether an internalSTD was specified
+        #in the platemap or not. 
+        if internalSTD != "":
+            plotPieCharts("corrP/STD", outputTable, save_dir, by_products)
+            logging.info(f'A set of pie-charts was generated using corrP/STD '
+                        f'as the index.')
+        else:
+            plotPieCharts("Parea", outputTable, save_dir, by_products)
+            logging.info(f'A set of pie-charts was generated using Parea '
+                        f'as the index.')
         times["Generate Piechart"] = time.perf_counter() - pre_pie
 
     #Plot a histogram and donut chart of Parea as a measure of plate success. 
@@ -2981,7 +2988,7 @@ def main():
 
     #Generate the HTML output. 
     times["Total time"] = time.perf_counter() - pre_donut
-    buildHTML(save_dir, compoundDF, all_compounds, times = times)
+    buildHTML(save_dir, compoundDF, all_compounds, options.analysis_name, times = times)
     logging.info('The HTML output was generated.')
 
     #Generate an csv of the output table.
@@ -3011,6 +3018,8 @@ def main():
     total_time = time.perf_counter() - time_start
     logging.info(f'The analysis was completed in {total_time} seconds.')
     print(f'The analysis was completed in {round(total_time, 2)} seconds.')
+
+    
 
 if __name__ == "__main__":
     #try:
