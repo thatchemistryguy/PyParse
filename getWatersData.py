@@ -176,61 +176,58 @@ def getData(filename):
         if i == 0 and (options.plate_row_no == 0 or options.plate_col_no == 0):
             options.plate_row_no = int(functions[0].split("\n")[17].split(",")[3].split(":")[1])
             options.plate_col_no = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
-            plate_rows_for_extraction = options.plate_row_no
             plate_cols_for_extraction = options.plate_col_no
         elif i == 0:
-            plate_rows_for_extraction = int(functions[0].split("\n")[17].split(",")[3].split(":")[1])
             plate_cols_for_extraction = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
-
-        if i == 0:
-            #Find from rpt file whether each well is specified 
-            #Data sample: #Plate	01TL,XY,SD,1: 8,2:12,3: 90.0...
-            row_col_order = functions[0].split("\n")[17].split(",")[1]
-
-        #Get the well no from the specific point in the prelude section
-        #There are numerous ways for an .rpt file to describe the well
-        #Each method is tried in turn to account for these differences
-        try:
-            #If the well is simply an integer between 1 and infinity
-            #Single line function to trim full string to just the well number used
-            wellno = int(functions[0].split("Well")[1].split("\n")[0].split(":")[1].strip()) 
-        except:
             
-            if row_col_order.find("X") < row_col_order.find("Y"):
-                column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
-                row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
-            else: 
-                column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
-                row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
 
-            try:
-                #If the well is a combination of two integers designating column and row
-                wellno = (int(row.capat)-1) * plate_cols_for_extraction + int(column) 
-            except:
-                #If the well is a combination of an integer for the column and a letter 
-                #for the row
+        
+        #Find from rpt file how each well is specified 
+        #Data sample: #Plate	01TL,XY,SD,1: 8,2:12,3: 90.0...
+        row_col_order = functions[0].split("\n")[17].split(",")[1]
+        well_type = functions[0].split("\n")[17].split(",")[2]
+
+        try: 
+            #If the well type is just a Single Digit...
+            if well_type == "SD":
+                #If the well is simply an integer between 1 and infinity
+                #Single line function to trim full string to just the well number used
+                wellno = int(functions[0].split("Well")[1].split("\n")[0].split(":")[1].strip()) 
+                #If the column number specified by the user is different to that found in the rpt file, 
+                #this is the result of the user looking to trim off blank columns. Only wells described by 
+                #a single digit need to be modified to take this into account. 
+                if options.plate_col_no != plate_cols_for_extraction:
+                    wellno = math.floor(wellno / plate_cols_for_extraction)*options.plate_col_no + (wellno % plate_cols_for_extraction)
+            
+            #If the well type is a combination of letters/numbers...
+            else:
+                #Find if the well  
+                if row_col_order == "XY":
+                    column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
+                    row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
+                else: 
+                    column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
+                    row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
                 
+                #Convert the column to integer, either by direct
+                #conversion, or by finding position in the alphabet
                 try:
-                    row_to_int = ord(row.capitalize()) - 64
-                    wellno = (row_to_int-1) * plate_cols_for_extraction + int(column)
+                    col_as_int = int(column)
                 except:
-                    #If that fails, try a combination of letter for the column and 
-                    #a letter for the row
-                    try:
-                        row_to_int = ord(row.capitalize()) - 64
-                        col_to_int = ord(column.capitalize()) - 64
-                        wellno = (row_to_int-1) * plate_cols_for_extraction + col_to_int
-                        
-                    except:
-                        #If that fails, try a combination of letter for the column and 
-                        #an integer for the row. 
-                        try:
-                            col_to_int = ord(column.capitalize()) - 64
-                            wellno = (int(row)-1) * plate_cols_for_extraction + col_to_int
-                        except:
+                    col_as_int = ord(column.capitalize()) - 64
+                
+                #Convert the row to integer, either by direct
+                #conversion, or by finding position in the alphabet
+                try: 
+                    row_as_int = int(row)
+                except: 
+                    row_as_int = ord(row.capitalize()) - 64
 
-                            logging.info("Unable to get well number. Terminating program.")
-                            sys.exit(2)
+                #Calculate the wellno as a single integer
+                wellno = (row_as_int - 1) * options.plate_col_no + col_as_int
+        except:
+            logging.info("Unable to get well number. Terminating program.")
+            sys.exit(2)
                 
         #get the sample id, and load it into a list
         #This list will be added as a column to the outputTable
@@ -272,7 +269,8 @@ def getData(filename):
                                         "time": retTime,
                                         "pStart": 0,
                                         "pEnd": 0, 
-                                        "peakID": peakID
+                                        "peakID": peakID,
+                                        "wellno": wellno,
                                         }
                             elif peak_index != retTime:
                                 #If data has already been entered for this peak by a different
@@ -291,6 +289,7 @@ def getData(filename):
                                         "pStart": peaks[peak_index]["pStart"],
                                         "pEnd": peaks[peak_index]["pEnd"], 
                                         "peakID": peaks[peak_index]["peakID"],
+                                        "wellno": wellno,
 
                                         }
                                 #Delete the old entry now the data has been copied over
@@ -334,7 +333,8 @@ def getData(filename):
                                         "time": retTime,
                                         "pStart": 0,
                                         "pEnd": 0, 
-                                        "peakID": peakID
+                                        "peakID": peakID,
+                                        "wellno": wellno,
                                         }
                             elif peak_index != retTime:
                                 #If data has already been entered for this peak by a different
@@ -353,7 +353,7 @@ def getData(filename):
                                         "pStart": peaks[peak_index]["pStart"],
                                         "pEnd": peaks[peak_index]["pEnd"], 
                                         "peakID": peaks[peak_index]["peakID"],
-
+                                        "wellno": wellno,
                                         }
                                 #Delete the old entry now the data has been copied over
                                 #to use the correct retention time. 
@@ -382,7 +382,8 @@ def getData(filename):
                             "time": retTime,
                             "pStart": 0,
                             "pEnd": 0,
-                            "peakID": peakID
+                            "peakID": peakID,
+                            "wellno": wellno,
                             }
                 else:
                     retTime = peak_index
