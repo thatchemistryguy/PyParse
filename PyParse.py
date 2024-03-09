@@ -1540,11 +1540,22 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
                     ions_minus[overlap[0]].append(ms[0])
                 else:
                     ions_minus[ms[0]] = [ms[0]]
-        #Filter the ions down to those which appear in at least 80% of the peaks
-        filtered_plus = [i for i, j in ions_plus.items() if len(j) > len(cluster)*0.8]
-        filtered_minus = [i for i, j in ions_minus.items() if len(j) > len(cluster)*0.8]
 
-        return [filtered_plus, filtered_minus]
+        #Filter the ions down to those which appear in at least 80% of the peaks
+        filtered_plus = [[i,j] for i, j in ions_plus.items() if len(j) > len(cluster)*0.8]
+        filtered_minus = [[i,j] for i, j in ions_minus.items() if len(j) > len(cluster)*0.8]
+
+        #Filter to just the top 5 most commonly observed peaks, to guarantee a maximum
+        #number of 5 mass ions reported. 
+        if len(filtered_plus) > 4:
+            filtered_plus = sorted(filtered_plus, key = lambda x: x[1], reverse = True)[0:5]
+        if len(filtered_minus) > 4:
+            filtered_minus = sorted(filtered_minus, key = lambda x: x[1], reverse = True)[0:5]
+
+        return_plus = [i[0] for i in filtered_plus]
+        return_minus = [i[0] for i in filtered_minus]
+
+        return [return_plus, return_minus]
 
     def getWells(cluster):
         wells = []
@@ -2746,6 +2757,7 @@ def main():
 
                         output = "output",
 
+                        find_freq_imp = "True",
                         )
     
     parser.add_argument("input_rpt", help = "Input .rpt file for analysis")
@@ -2834,6 +2846,8 @@ def main():
 
     parser.add_argument("-d", "--detector", action="store", type=str, dest = "detector",
                         help = "Choose which detector to use, UV or ELSD")
+    parser.add_argument("-ffi", "--find_freq_imp", action="store", type=str, dest = "find_freq_imp",
+                        help = "Choose whether to search for and report frequently observed impurities. ")
 
 
     #Set options to global and parse arguments        
@@ -3211,9 +3225,6 @@ def main():
     times["Find Potential Conlicts"] = time.perf_counter() - pre_checks
     logging.info('Potential conflicts were searched for all compounds.')
 
-    #Generate location heatmaps based on the provided heatmap
-    genLocationHeatmaps(compoundDF, save_dir)
-
     #Return a heatmap to the user
     pre_heatmap = time.perf_counter()
     plotHeatmaps(outputTable, save_dir)
@@ -3250,7 +3261,13 @@ def main():
         generateMol(row["g_smiles"], row["name"], save_dir)
 
     #Search for impurities that haven't been specified
-    impurities = findImpurities(dataTable, compoundDF, save_dir, chroma)
+    if options.find_freq_imp == "True":
+        impurities = findImpurities(dataTable, compoundDF, save_dir, chroma)
+    else:
+        impurities = []
+
+    #Generate location heatmaps based on the provided heatmap
+    genLocationHeatmaps(compoundDF, save_dir)
 
     #Generate the HTML output. 
     times["Total time"] = time.perf_counter() - pre_donut

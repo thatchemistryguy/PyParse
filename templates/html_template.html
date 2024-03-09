@@ -205,37 +205,40 @@
                 </div>
             </div>
 
+        {% set pc1name = save_dir ~ "graphs/piecharts_fixed_width.jpg" %}
+        {% set pc2name = save_dir ~ "graphs/piecharts_variable_width.jpg" %}
+        {% if path.exists(pc1name) and path.exists(pc2name) %}
+            <div class="container-fluid">
+                
+                <div id="carouselPieCharts" class = "carousel slide carousel-dark carousel-fade">
+                    <ol class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselPieCharts" data-bs-slide-to="0" class="active"></button>
 
-        <div class="container-fluid">
-            
-            <div id="carouselPieCharts" class = "carousel slide carousel-dark carousel-fade">
-                <ol class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselPieCharts" data-bs-slide-to="0" class="active"></button>
+                            <button type="button" data-bs-target="#carouselPieCharts" data-bs-slide-to="1"></button>
+                    </ol>
 
-                        <button type="button" data-bs-target="#carouselPieCharts" data-bs-slide-to="1"></button>
-                </ol>
-
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="graphs/piecharts_fixed_width.jpg" class="d-block w-100 heatmap">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="graphs/piecharts_fixed_width.jpg" class="d-block w-100 heatmap">
+                        </div>
+                        
+                        <div class="carousel-item">
+                            <img src="graphs/piecharts_variable_width.jpg" class="d-block w-100 heatmap">
+                        </div>
                     </div>
-                    
-                    <div class="carousel-item">
-                        <img src="graphs/piecharts_variable_width.jpg" class="d-block w-100 heatmap">
-                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPieCharts" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselPieCharts" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselPieCharts" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselPieCharts" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
-        </div>
-        
+        {% endif %}
+
         <h2 id = "CompoundSummary">Compound Summary</h2>
         <div class="table-responsive">
         <table class="table table-hover">
@@ -255,38 +258,6 @@
             </tr>
             {% for row in cptablerows %}
                 {% if row["type"] != "Impurity" %}
-                    {% if row["overlaps"] != "No peak overlap detected." or row["conflicts"] != "No potential conflicts found." %}
-                        <tr class = "table-warning">
-                            <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
-                            <td><img src="structures/{{ row["name"] }}.png"></img></td>
-                            <td>{{ row["mass1"] }}</td>
-                            <td>{{ row["mass2"] }}</td>
-                            <td>{{ row["mass3"] }}</td>
-                            <td>{{ row["time"] }}</td>
-                            <td>{{ row["mass-"] }}</td>
-                            <td>{{ row["mass+"] }}</td>
-                            <td>{{ row["best_well"] }}</td>
-                            <td>{{ row["best_purity"] }}</td>
-                            <td>{{ row["overlaps"] }}</td>
-                            <td>{{ row["conflicts"] }}</td>
-                        </tr>
-                    
-                    {% else %}
-                        <tr>
-                            <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
-                            <td><img src="structures/{{ row["name"] }}.png"></img></td>
-                            <td>{{ row["mass1"] }}</td>
-                            <td>{{ row["mass2"] }}</td>
-                            <td>{{ row["mass3"] }}</td>
-                            <td>{{ row["time"] }}</td>
-                            <td>{{ row["mass-"] }}</td>
-                            <td>{{ row["mass+"] }}</td>
-                            <td>{{ row["best_well"] }}</td>
-                            <td>{{ row["best_purity"] }}</td>
-                            <td>{{ row["overlaps"] }}</td>
-                            <td>{{ row["conflicts"] }}</td>
-                        </tr>
-                    {% endif %}
                     {% if row["overlaps"] != "No peak overlap detected." or row["conflicts"] != "No potential conflicts found." %}
                         <tr class = "table-warning">
                     {% else %}
@@ -385,6 +356,7 @@
                 <table class="table table-hover">
                     <tr>
                         <th>Name</th>
+                        <th>Locations</th>
                         <th>Retention Time</th>
                         <th>m/z-</th>
                         <th>m/z+</th>
@@ -396,6 +368,7 @@
                             
                             <tr>
                                 <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
+                                <td><button class="btn btn-outline-secondary btn-sm btn-platemap" data-bs-toggle="modal" data-bs-target="#modal-platemap-{{ row["name"] }}">Click to View Platemap</button></td>  
                                 <td>{{ row["time"] }}</td>
                                 <td>{{ row["mass-"] }}</td>
                                 <td>{{ row["mass+"] }}</td>
@@ -407,6 +380,7 @@
                 </table>
             </div>
             <br>
+
             {% for row in cptablerows %}
                 {% if row["type"] == "Impurity" %}
                     <h3 id = "header_{{ row["name"] }}">{{ row["name"] }}</h3>
