@@ -98,9 +98,6 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 .pybuilder/
 target/
@@ -182,14 +179,11 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-#conda
-.conda/
 
-#vscode
-.vscode/
 
 # notepad++
 .bak
+
 
 # vscode
 .vscode
@@ -217,7 +211,7 @@ Terms
 Privacy
 Security
 Status
-Docs
+#Docs
 Contact GitHub
 Pricing
 API

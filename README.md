@@ -37,7 +37,8 @@ Citation
 
 Publications which make use of PyParse to aid analysis of high-throughput LC-MS data should cite the peer-reviewed article:
 
-Mason J., Wilders H., Fallon D.J., Thomas R.P., Bush J.T., Tomkinson N.C.O., Rianjongdee, F.; Automated LC-MS Analysis and Data Extraction for High-Throughput Chemistry; Digital Discovery (**2023**), 2, 1894-1899 (https://doi.org/10.1039/D3DD00167A)
+
+Mason J., Wilders H., Fallon D.J., Thomas R.P., Bush J.T., Tomkinson N.C.O., Rianjongdee, F.; Automated LC-MS Analysis and Data Extraction for High-Throughput Chemistry; Digital Discovery (**2023**), 2, 1894 - 1899; https://doi.org/10.1039/D3DD00167A
 
 (An earlier version of this manuscript was published on ChemRxiv (**2023**), https://doi.org/10.26434/chemrxiv-2023-1x288)
 		

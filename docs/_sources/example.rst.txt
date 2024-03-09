@@ -17,13 +17,12 @@ Using the conda environment provided, you can use the sample data to run your fi
 .. code-block::
 	:caption: Using the sample dataset provided
 	
-	python PyParse.py example_dataset/example_rpt.rpt example_dataset/example_platemap.csv -o example_dataset/output -r 2 -c 12 -pt Parea -moa area
+	python PyParse.py example_dataset/example_rpt.rpt example_dataset/example_platemap.csv -o example_dataset/output -r 2 -c 12 -moa area
 	
 The code provided uses the following options:
 
 	* "-r 2" specifies that the data is split over two rows on the analysis plate
 	* "-c 12" specifies that there are 12 columns in the analysis plate
-	* "-pt Parea" specifies that the heatmap should be shaded by the percentage area of the product
 	* "-moa area" specifies that where there are two peaks that could correspond to the product, choose the one with the larger percentage peak area. 
 	
 	

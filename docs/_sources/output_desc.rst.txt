@@ -20,7 +20,8 @@ a zip file by default for ease of file sharing.
 Heatmap
 --------
 
-The heatmap is coloured using the plot_type (-pt parameter) specified, and is generated using matplotlib. 
+The heatmap is coloured using the plot_type described in the figure caption, and is generated using matplotlib. A separate heatmap
+is generated for each plot type, and can be viewed in the HTML output file. 
 
 .. figure:: images/example_heatmap.jpg
 	:alt: An example heatmap.

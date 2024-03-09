@@ -1,6 +1,10 @@
 Frequently Asked Questions
 ===============================
 
+Which UPLC/LCMS Vendors are Supported?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+	Currently, the .rpt file format from Waters\ |trademark|
 
 Which analysis type should I choose?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -37,5 +41,8 @@ PyParse found that in the Best Well for that product, the compound peak overlapp
 peak in the LCMS. The calculated purity given in the “Purity of Best Well” column may therefore be 
 incorrect. Check the LCMS yourself, and re-run using a different modifier (typically formic acid, ammonium bicarbonate or 
 trifluoroacetic acid).
+
+
+.. |trademark|	unicode:: U+2122 .. TRADEMARK SYMBOL
 
  

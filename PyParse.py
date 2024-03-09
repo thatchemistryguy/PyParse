@@ -411,13 +411,14 @@ def convertRPT2Dict(filename):
     :param filename: Address of the input file
     
     :return: List comprising: [a dictionary of all peaks in all wells, a list containing each chromatogram,
-                a list of the sample IDs for each well] 
+                a list of the sample IDs for each well, a list of total_area_abs for each well] 
     """
     
     wellData = []
     masterTable = {}
     chroma = {}
     sample_IDs = {}
+    total_area_abs = {}
 
     with open(filename, errors = "ignore") as f:
         fullText = f.read()
@@ -456,11 +457,10 @@ def convertRPT2Dict(filename):
         if i == 0 and (options.plate_row_no == 0 or options.plate_col_no == 0):
             options.plate_row_no = int(functions[0].split("\n")[17].split(",")[3].split(":")[1])
             options.plate_col_no = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
-            plate_rows_for_extraction = options.plate_row_no
             plate_cols_for_extraction = options.plate_col_no
         elif i == 0:
-            plate_rows_for_extraction = int(functions[0].split("\n")[17].split(",")[3].split(":")[1])
             plate_cols_for_extraction = int(functions[0].split("\n")[17].split(",")[4].split(":")[1])
+            
 
         if i == 0:
             #Find from rpt file whether each well is specified 
@@ -474,8 +474,13 @@ def convertRPT2Dict(filename):
             #If the well is simply an integer between 1 and infinity
             #Single line function to trim full string to just the well number used
             wellno = int(functions[0].split("Well")[1].split("\n")[0].split(":")[1].strip()) 
+            #If the column number specified by the user is different to that found in the rpt file, 
+            #this is the result of the user looking to trim off blank columns. Wells described by 
+            #an integer only need to be modified to take this into account. 
+            if options.plate_col_no != plate_cols_for_extraction:
+                wellno = math.floor(wellno / plate_cols_for_extraction)*options.plate_col_no + (wellno % plate_cols_for_extraction)
         except:
-            
+ 
             if row_col_order.find("X") < row_col_order.find("Y"):
                 column = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[0].strip()
                 row = functions[0].split("Well")[1].split("\n")[0].split(":")[1].split(",")[1].strip()
@@ -485,37 +490,37 @@ def convertRPT2Dict(filename):
 
             try:
                 #If the well is a combination of two integers designating column and row
-                wellno = (int(row.capat)-1) * plate_cols_for_extraction + int(column) 
+                wellno = (int(row.capat)-1) * options.plate_col_no + int(column) 
             except:
                 #If the well is a combination of an integer for the column and a letter 
                 #for the row
                 
                 try:
                     row_to_int = ord(row.capitalize()) - 64
-                    wellno = (row_to_int-1) * plate_cols_for_extraction + int(column)
+                    wellno = (row_to_int-1) * options.plate_col_no + int(column)
                 except:
                     #If that fails, try a combination of letter for the column and 
                     #a letter for the row
                     try:
                         row_to_int = ord(row.capitalize()) - 64
                         col_to_int = ord(column.capitalize()) - 64
-                        wellno = (row_to_int-1) * plate_cols_for_extraction + col_to_int
+                        wellno = (row_to_int-1) * options.plate_col_no + col_to_int
                         
                     except:
                         #If that fails, try a combination of letter for the column and 
                         #an integer for the row. 
                         try:
                             col_to_int = ord(column.capitalize()) - 64
-                            wellno = (int(row)-1) * plate_cols_for_extraction + col_to_int
+                            wellno = (int(row)-1) * options.plate_col_no + col_to_int
                         except:
 
                             logging.info("Unable to get well number. Terminating program.")
                             sys.exit(2)
-
+        
                 
         #get the sample id, and load it into a list
         #This list will be added as a column to the outputTable
-        well_ID = functions[0].split("SampleID")[1].split("\n")[0].strip()  
+        well_ID = functions[0].split("SampleID")[1].split("\n")[0].strip()
         sample_IDs[wellno] = well_ID
          
         peaks = {}
@@ -687,10 +692,44 @@ def convertRPT2Dict(filename):
                     peaks[retTime]["UV"] = data
             
         logging.debug(f'{len(peaks)} peaks found in well {wellno}.')             
-    
+
+        #Filter out any peaks within retention times specified by the user
+        #Expected uses: remove solvent peaks from consideration
+        #Expected format is a list of specified ranges, e.g.
+        #[min_time1-max_time1, min_time2-max_time2]
+        #where the start of the range appears first and is separated from 
+        #the end of the range with a hyphen
+
+        if len(options.filter_by_rt) > 0:
+            to_remove = []
+            for filter_range in options.filter_by_rt:
+                min_time = float(filter_range.split("-")[0].strip())
+                max_time = float(filter_range.split("-")[1].strip())
+
+                for index in peaks.keys():
+                    if float(index) > min_time and index < max_time:
+                        to_remove.append(index)
+
+            for index in to_remove:
+                del peaks[index]
+        
+        #If the reprocess_by_rt parameter was used, recalculate the percentage peak area for each peak
+        if len(options.filter_by_rt) > 0:
+            total_area_abs[wellno] = 0
+            for peak in peaks.values():
+                total_area_abs[wellno] = total_area_abs[wellno] + peak["areaAbs"]
+
+        #Recalculate the peak area percentages now that the total absolute area 
+        #for that well has been calculated. 
+
+        if len(options.filter_by_rt) > 0: 
+            for index in peaks.keys():
+                peaks[index]["area"] = round((peaks[index]["areaAbs"]*100) / total_area_abs[wellno], 2)
+
+        #Store the peaks into the mastertable, indexed by the well
         masterTable[wellno] = peaks.values()
 
-    return [masterTable, chroma, sample_IDs]
+    return [masterTable, chroma, sample_IDs, total_area_abs]
     
     
 def findHits(compound, dataTable):
@@ -1824,8 +1863,11 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
     for i in range(1, options.plate_row_no * options.plate_col_no + 1):
 
         well = outputTable[i]
-        if well["Uarea"] < 0: 
+        #reset any non-sensical values that arise as a result of miniscule rounding errors
+        #for the unidentified area (Uarea, UareaAbs)
+        if round(well["Uarea"]) <= 0 or round(well["UareaAbs"]) <= 0: 
             well["Uarea"] = 0
+            well["UareaAbs"] = 0
         if well["PareaAbs"] != 0 or well["SMareaAbs"] != 0:
             well["P/SM+P"] = round(well["PareaAbs"] / (well["SMareaAbs"] + well["PareaAbs"]), 2)
 
@@ -2109,10 +2151,10 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
         
         axes.bar(x, y, width = 2)
         axes.set_title(title)
-        axes.set_xlim(0, 1000)
         axes.set_ylim(0, 200)
         
         last_annotation = 0
+        highest_mass = 0
         for peak in data:
             if peak[1] > 20:
                 if math.isclose(peak[0], last_annotation, abs_tol = 3):
@@ -2123,6 +2165,16 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
                     axes.annotate(peak[0], [peak[0]+1, peak[1]], ha="center", 
                                   va="bottom", rotation=90, size = 8)
                 last_annotation = peak[0]
+                if peak[0] > highest_mass:
+                    highest_mass = peak[0]
+        
+        #Configure mass spec axis to reach at least 1000, but higher if necessary
+        #With some additional headroom so that peaks are not obscured by the edge
+        #of the plot
+        if highest_mass > 950:
+            axes.set_xlim(0, math.ceil((highest_mass + 100)/100)*100) 
+        else:
+            axes.set_xlim(0, 1000)
     
     #Plot both MS- and MS+    
     plotMS(a0, ms_minus, "MS-")
@@ -2206,6 +2258,27 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
     #Set axis limits
     a2.set_ylim(min_y - 10, 130)
     a2.set_xlim(-0.1, max_x+0.1)
+
+    #plot a hatched region if the filter_by_rt option 
+    #has been used
+    if len(options.filter_by_rt) > 0:
+        
+        #Set default yvalues to match that of chromatogram trace
+        hatched_ymin, hatched_ymax = [],[]
+        for i in trace[1]:
+            hatched_ymin.append(i)
+            hatched_ymax.append(i)
+
+        for new_range in options.filter_by_rt:
+            minx = float(new_range.split("-")[0].strip())
+            maxx = float(new_range.split("-")[1].strip())
+            for i, j in enumerate(trace[0]):
+                #Amend any values such between specified ranges
+                if j > minx and j < maxx:
+                    hatched_ymax[i] = 130
+                    hatched_ymin[i] = min_y - 10
+        #fill between on graph, using traceparency = 0.3
+        a2.fill_between(trace[0], hatched_ymin, hatched_ymax, hatch = "/", alpha = 0.3)
 
     #Fill to highlight the peak of interest 
     if pStart != 0 and pEnd != 0:
@@ -2530,6 +2603,45 @@ def generateMol(smiles, name, save_dir):
     _discard = AllChem.Compute2DCoords(mol)
     Draw.MolToFile(mol, f'{save_dir}structures/{name}.png', size=(200, 150))
 
+def genLocationHeatmaps(cptable, save_dir):
+    """
+    Generate a heatmap type graph to visualise the 
+    expected locations of each compound, based on the platemap that was provided. 
+
+    :param cptable: Pandas dataframe containing compounds
+    :param save_dir: string describing the location of the output folder
+    :output: Heatmaps saved to the output folder. 
+    """
+    
+    for index, row in cptable.iterrows():
+
+        location_data = []
+        labels = []
+        for i in range(options.plate_col_no * options.plate_row_no):
+            rowVal = int(math.floor(i / options.plate_col_no))
+            colVal = int(i % options.plate_col_no)
+            
+            if colVal == 0:
+                location_data.append([])
+                labels.append([])
+            if i+1 in row["locations"]:
+                location_data[rowVal].append(1)
+                labels[rowVal].append(u'\u2713')
+            else:
+                location_data[rowVal].append(0)
+                labels[rowVal].append("")
+                
+
+        pdTable = pd.DataFrame(location_data)
+        xLabels = [i for i in range(1, options.plate_col_no+1)]
+        yLabels = [chr(ord('@')+i) for i in range(1, options.plate_row_no+1)]
+        
+        ax = sns.heatmap(pdTable, xticklabels=xLabels, yticklabels=yLabels, cmap = "viridis", annot = labels, fmt="")
+        ax.xaxis.set_ticks_position("top")
+        
+        #Save heatmap to output directory
+        plt.savefig(f'{save_dir}graphs/loc_heatmap_{row["name"]}.jpg', format="jpg")
+        plt.close()   
 
 def buildHTML(save_dir, compoundDF, all_compounds, impurities, analysis_name, times = {}):
     """
@@ -2572,8 +2684,9 @@ def buildHTML(save_dir, compoundDF, all_compounds, impurities, analysis_name, ti
             options = vars(options)
             )
         )
-    fo.close()
-  
+    fo.close() 
+
+
 
 def main():
     """ 
@@ -2599,6 +2712,9 @@ def main():
                         mass_abs_tol = 0.5,
                         time_abs_tol = 0.025,
                         uv_abs_tol = 10,
+
+                        filter_by_rt = [],
+
 
                         detector = "UV",
 
@@ -2708,6 +2824,10 @@ def main():
     
     parser.add_argument("-z", "--generate_zip", action="store", type=str, dest = "gen_zip", 
                         help = "Choose to generate and save a zip file, True/False.\n")
+    
+    parser.add_argument("-f", "--filter_by_rt", nargs = "+", action="store", type=str, dest = "filter_by_rt",
+                        help = "Provide retention time ranges to ignore, in the form 'mintime-maxtime'"
+                        " where the two times are separated by a hyphen. Multiple ranges (separated by a space) are excepted. ")
 
     parser.add_argument("-n", "--name", action="store", type=str, dest = "analysis_name", 
                         help = "Choose a name for the analysis.\n")
@@ -2723,7 +2843,7 @@ def main():
     
     #Set standard matplotlib graph size
     plt.rcParams["figure.figsize"] = (12, 6)
-    
+
     #Ensure all required input options have a valid address
     root_names = [options.input_csv, options.input_rpt, options.output]
     
@@ -2808,22 +2928,17 @@ def main():
     #peak in the well. 
     #chroma is a list of lists containing the information required to 
     #generate the LCMS trace. 
-    #This function also determines the number of columns and rows in the plate
-    #and writes this info to the global options. 
     
     pre_rpt = time.perf_counter()
-    [dataTable, chroma, sample_IDs] = convertRPT2Dict(root_names[1])
+    [dataTable, chroma, sample_IDs, total_area_abs] = convertRPT2Dict(root_names[1])
+
     times["Import RPT File"] = time.perf_counter() - pre_rpt 
     logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
 
-    #Determine the total areaAbs for each well, so that these values can be added to the outputTable
-    total_area_abs = {}
+    #Add blank values to wells in total_area_abs for which no data was found. 
     for i in range(1, options.plate_row_no * options.plate_col_no + 1):
-        total_area_abs[i] = 0
-    for index, well in dataTable.items():
-        for peak in well:
-            if index in total_area_abs:
-                total_area_abs[index] = total_area_abs[index] + peak["areaAbs"]
+        if i not in total_area_abs:
+            total_area_abs[i] = 0
     
 
     #Import the structure data from the comma-separated values platemap file provided
@@ -2861,7 +2976,6 @@ def main():
     #Log the time taken to complete these actions
     times["Import Compound File"] = time.perf_counter() - pre_import
     logging.info(f'{len(compoundDF.index)} compounds were imported.')
-
 
     #For each compound, find all hits using the dataTable, validate them, and append 
     #them to a list ready for insertion into the compoundDF pandas dataframe
@@ -3097,6 +3211,9 @@ def main():
     times["Find Potential Conlicts"] = time.perf_counter() - pre_checks
     logging.info('Potential conflicts were searched for all compounds.')
 
+    #Generate location heatmaps based on the provided heatmap
+    genLocationHeatmaps(compoundDF, save_dir)
+
     #Return a heatmap to the user
     pre_heatmap = time.perf_counter()
     plotHeatmaps(outputTable, save_dir)
@@ -3109,9 +3226,16 @@ def main():
     #useful. 
     if options.plate_row_no * options.plate_col_no < 97:
         pre_pie = time.perf_counter()
-        plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
-        logging.info(f'A set of pie-charts was generated using {options.plot_type} '
-                    f'as the index.')
+        #Alter the piechart output depending on whether an internalSTD was specified
+        #in the platemap or not. 
+        if internalSTD != "":
+            plotPieCharts("corrP/STD", outputTable, save_dir, by_products)
+            logging.info(f'A set of pie-charts was generated using corrP/STD '
+                        f'as the index.')
+        else:
+            plotPieCharts("Parea", outputTable, save_dir, by_products)
+            logging.info(f'A set of pie-charts was generated using Parea '
+                        f'as the index.')
         times["Generate Piechart"] = time.perf_counter() - pre_pie
 
     #Plot a histogram and donut chart of Parea as a measure of plate success. 
@@ -3163,11 +3287,12 @@ def main():
     logging.info(f'The analysis was completed in {total_time} seconds.')
     print(f'The analysis was completed in {round(total_time, 2)} seconds.')
 
+   
 
 if __name__ == "__main__":
-    #try:
-    print("")
-    print("Running analysis....")
-    main()
-    #except Exception:
-    #    logging.exception("A fatal exception occurred. Contact administrator.")
+    try:
+        print("")
+        print("Running analysis....")
+        main()
+    except Exception:
+        logging.exception("A fatal exception occurred. Contact administrator.")

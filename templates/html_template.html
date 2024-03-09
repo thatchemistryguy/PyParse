@@ -9,7 +9,7 @@
             justify-content: center;
         }
 
-        h1, h3, table, p, h2:not(.no-margin) {
+        h1:not(.no-margin), h3, table, p, h2:not(.no-margin) {
             margin-left: 2%;
             margin-top: 2%;
         }
@@ -27,6 +27,15 @@
         .carousel-indicators {
             bottom: -1rem;
             margin-bottom: 0px;
+        }
+
+        .btn-platemap {
+            width:200px;
+        }
+
+        .loc_heatmap {
+            width:600px;
+            height:300px;
         }
 
     </style>
@@ -232,11 +241,11 @@
         <table class="table table-hover">
             <tr>
                 <th>Name</th>
-                <th>SMILES</th>
-                <th>Mass 1</th>
-                <th>Mass 2</th>
-                <th>Mass 3</th>
-                <th>Retention Time</th>
+                <th>Structure</th>
+                <th>Mass1</th>
+                <th>Mass2</th>
+                <th>Mass3</th>
+                <th>Time</th>
                 <th>m/z-</th>
                 <th>m/z+</th>
                 <th>Best Well</th>
@@ -278,6 +287,27 @@
                             <td>{{ row["conflicts"] }}</td>
                         </tr>
                     {% endif %}
+                    {% if row["overlaps"] != "No peak overlap detected." or row["conflicts"] != "No potential conflicts found." %}
+                        <tr class = "table-warning">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                    <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
+                    <td>
+                        <img src="structures/{{ row["name"] }}.png"></img><br>
+                        <button class="btn btn-outline-secondary btn-sm btn-platemap" data-bs-toggle="modal" data-bs-target="#modal-platemap-{{ row["name"] }}">Click to View Platemap</button>  
+                    </td>
+                    <td>{{ row["mass1"] }}</td>
+                    <td>{{ row["mass2"] }}</td>
+                    <td>{{ row["mass3"] }}</td>
+                    <td>{{ row["time"] }}</td>
+                    <td>{{ row["mass-"] }}</td>
+                    <td>{{ row["mass+"] }}</td>
+                    <td>{{ row["best_well"] }}</td>
+                    <td>{{ row["best_purity"] }}</td>
+                    <td>{{ row["overlaps"] }}</td>
+                    <td>{{ row["conflicts"] }}</td>
+                    </tr>
                 {% endif %}
             {% endfor %}
 
@@ -443,6 +473,26 @@
             {% endfor %}
         </table>
         <br>
+        
+        {% for row in cptablerows %}
+            <div id = "modal-platemap-{{ row["name"] }}" class="modal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 no-margin" id="modal-platemap-{{ row["name"] }}-label">Platemap for {{ row["name"] }}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <img src="graphs/loc_heatmap_{{ row["name"] }}.jpg" class="loc_heatmap"></img>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 
         <script>
             const search_options = {{ cpnames }}
@@ -472,7 +522,6 @@
                 })
             }
 
-            imageMapResize()
         </script>
     </body>
 </html>
