@@ -38,11 +38,14 @@ from rdkit.Chem import Descriptors
 from rdkit.Chem import Draw
 import zipfile
 from jinja2 import Environment, PackageLoader
+import numpy as np
+import matplotlib.cm as cm
 import glob
 
 #Import local scripts
 import getShimadzuData
 import getWatersData
+
 
 
 def importStructures(filename, save_dir):
@@ -108,7 +111,6 @@ def importStructures(filename, save_dir):
                 else:
                     compounds[index] = {"locations": [well]}
                     compounds[index]["g_smiles"] = g_smiles
-                    compounds[index]["wellname"] = row["well"]
                     
                     #store the common name given by the user
                     if column == "desired product smiles":
@@ -280,7 +282,7 @@ def importStructures(filename, save_dir):
     compoundDF["mass1"] = mass1
     compoundDF["mass2"] = mass2
     compoundDF["mass3"] = mass3
-
+    
     return [compoundDF, internalSTD, SMs, products, by_products]
     
 
@@ -302,7 +304,6 @@ def getUserReadableWell(wellno):
     label = f'{chr(ord("@")+(rowVal)+1)}{colVal}'
     return label
     
- 
     
 def findHits(compound, dataTable):
     """
@@ -1077,6 +1078,275 @@ def removeDupAssigns(compoundDF, internalSTD, SMs, products, by_products):
         compoundDF.at[index, "comments"] = new_comments 
     return compoundDF
 
+def findImpurities(dataTable, compoundDF, save_dir, chroma):
+    """
+    The goal of this function is to find impurities that the program wasn't explicitly
+    asked to find. It will do this by searching for commonly appearing peaks, that have a 
+    clear ionisation pattern, that haven't already been assigned. 
+
+    """
+    #Define sub-function to find common ions for a cluster of peaks
+    impurities = []
+
+    def findCommonIons(cluster):
+        ions_plus = {}
+        ions_minus = {}
+       # print(cluster)
+        for peak in cluster:
+
+            sorted_MS_plus = sorted(peak["MS+"], key = lambda x: x[1])
+            sorted_MS_minus = sorted(peak["MS-"], key = lambda x: x[1])
+
+            
+            for ms in sorted_MS_plus:
+                latest_keys = ions_plus.keys()
+                overlap = [i for i in latest_keys if math.isclose(ms[0], i, abs_tol = options.mass_abs_tol)]
+                if len(overlap) > 0:
+                    ions_plus[overlap[0]].append(ms[0])
+                else:
+                    ions_plus[ms[0]] = [ms[0]]
+
+            for ms in sorted_MS_minus:
+                latest_keys = ions_minus.keys()
+                overlap = [i for i in latest_keys if math.isclose(ms[0], i, abs_tol = options.mass_abs_tol)]
+                if len(overlap) > 0:
+                    ions_minus[overlap[0]].append(ms[0])
+                else:
+                    ions_minus[ms[0]] = [ms[0]]
+
+        #Filter the ions down to those which appear in at least 80% of the peaks
+        filtered_plus = [[i,j] for i, j in ions_plus.items() if len(j) > len(cluster)*0.8]
+        filtered_minus = [[i,j] for i, j in ions_minus.items() if len(j) > len(cluster)*0.8]
+
+        #Filter to just the top 5 most commonly observed peaks, to guarantee a maximum
+        #number of 5 mass ions reported. 
+        if len(filtered_plus) > 4:
+            filtered_plus = sorted(filtered_plus, key = lambda x: x[1], reverse = True)[0:5]
+        if len(filtered_minus) > 4:
+            filtered_minus = sorted(filtered_minus, key = lambda x: x[1], reverse = True)[0:5]
+
+        return_plus = [i[0] for i in filtered_plus]
+        return_minus = [i[0] for i in filtered_minus]
+
+        return [return_plus, return_minus]
+
+    def getWells(cluster):
+        wells = []
+        for peak in cluster:
+            if peak["well"] not in wells: 
+                wells.append(peak["well"])
+        return wells
+    
+    #Index all peaks in plate by their well and retention time
+    peakList = {}
+    
+    for index, well in dataTable.items():
+        peakList[index] = {}
+        for peak in well:
+            peakList[index][peak["time"]] = peak
+    
+    #Remove any peaks which have already been assigned to a compound
+    for index, row in compoundDF.iterrows():
+        for hit in row["hits"]["green"]:
+            del peakList[hit["well"]][hit["time"]]
+
+    #Convert the dictionary to a easier-to-handle list
+    #now that the above filtering has taken place. 
+    all_peaks = []
+    for wellID, well in peakList.items():
+        for time, peak in well.items():
+            all_peaks.append(peak)
+
+    #Sort the peaks by their retention time
+    all_peaks.sort(key = lambda x: x["time"])
+    
+    #Organise the peaks into clusters
+    clusters = []
+
+    for i in range(len(all_peaks)):
+
+        if len(clusters) == 0:
+            clusters.append([all_peaks[i]])
+        else:
+            clusterFound = False
+            for cluster in clusters:
+                mean_rt = mean([i["time"] for i in cluster])
+                
+                if math.isclose(mean_rt, all_peaks[i]["time"], abs_tol=options.time_abs_tol):
+                    cluster.append(all_peaks[i])
+                    clusterFound = True
+                    break
+            if not clusterFound:
+                clusters.append([all_peaks[i]])
+
+    #Filter to just those clusters which contain a sufficient number of impurity-containing wells.
+    
+    clusters = list(filter(lambda x: len(getWells(x)) > options.min_no_of_wells, clusters))
+
+
+    for index, cluster in enumerate(clusters):
+        hits = {
+            "green": [],
+            "discarded": [],
+            "discarded_by_cluster": [[]]
+        }
+        for peak in cluster:
+            goingin = {
+                "area": peak["area"],
+                "areaAbs": peak["areaAbs"],
+                "UV": peak["UV"],
+                "pStart": peak["pStart"],
+                "pEnd": peak["pEnd"],
+                "time": peak["time"],
+                "cluster": index,
+                "well": peak["well"],
+                "mass_conf": 0,
+                "mass+": 0,
+                "mass-": 0
+            }
+            hits["green"].append(goingin)
+        
+        best_purity = max(cluster, key = lambda x:x["area"])["area"]
+        
+        best_well = [peak["well"] for peak in cluster if peak["area"] == best_purity][0]
+        mean_rt = round(mean([peak["time"] for peak in cluster]), 2)
+        [mass_plus, mass_minus] = findCommonIons(cluster)
+        containing_wells = sorted(getWells(cluster))
+        
+        comments = []
+        
+        #Criteria to determine when a comment is added:
+        #   -Cluster typically occurs in a particular column
+        #   -Cluster typically occurs in a particular row
+        #   -Cluster typically occurs for a particular compound in the platemap
+        #   -Cluster is independant of position (i.e. whole plate) - this overrides all of the above
+        #   -describe how many wells contained this impurity
+
+        comments.append(f'This impurity was observed in {len(containing_wells)} wells.')
+        
+        if len(containing_wells) == options.plate_row_no * options.plate_col_no:
+            comments.append("This impurity was observed in every well of the plate.")
+        elif len(containing_wells) > 0.5 * options.plate_row_no * options.plate_col_no:
+            comments.append("This impurity was typically observed across the whole plate.")
+        else:
+            #Build a matrix of where the compound was observed, then iterate through each row/column in turn?
+            columns = {}
+            rows = {}
+            for well in containing_wells:
+                row = math.floor(well/options.plate_row_no)
+                column = ((well-1) % options.plate_row_no) + 1
+                if row in rows:
+                    rows[row] = rows[row] + 1
+                else:
+                    rows[row] = 1
+                if column in columns:
+                    columns[column] = columns[column] + 1
+                else:
+                    columns[column] = 1
+
+            for cindex, column in columns.items():
+                if column > 0.8 * options.plate_row_no:
+                    comments.append(f'Impurity is frequently observed in column {cindex}.')
+            for rindex, row in rows.items():
+                if row > 0.8 * options.plate_col_no:
+                    comments.append(f'Impurity is frequently observed in row {chr(ord("@")+(rindex)+1)}.')
+            
+            if len(columns.keys()) < 0.5 * options.plate_col_no:
+                readable_cols = [str(i) for i in sorted([int(j) for j in columns.keys()])]
+                comments.append(f'Impurity was only observed in columns {", ".join(readable_cols)}.')
+            if len(rows.keys()) < 0.5 * options.plate_row_no:
+                readable_rows = sorted([chr(ord("@")+(x)+1) for x in rows.keys()])
+                comments.append(f'Impurity was only observed in rows {", ".join(readable_rows)}.')
+
+        #Column headers for the compoundDF:
+        #[locations, g_smiles, name, rt, type, mass1, mass2, mass3, hits, comments, clusterbands,
+        #best_well, best_purity, overlaps, mass+, mass-, time, conflicts]
+        values = {
+            0: containing_wells,
+            1: "",
+            2: f'Impurity{index}',
+            3: 0,
+            4: "Impurity",
+            5: 0, 
+            6: 0, 
+            7: 0, 
+            8: hits,
+            9: comments,
+            10: [mean_rt],
+            11: getUserReadableWell(best_well),
+            12: best_purity,
+            13: [],
+            14: sorted(mass_plus),
+            15: sorted(mass_minus),
+            16: mean_rt,
+            17: []
+
+            
+        }
+        #Plot an annotated chromatogram for each of the impurities
+        annotate_peaks = []
+        for bindex, brow in compoundDF.iterrows():
+            if brow["type"] != "Impurity":
+                data = [i for i in brow["hits"]["green"] if i["well"] == best_well]
+                if len(data) > 0:
+                    annotate_peaks.append({
+                            "cpname": brow["name"], 
+                            "time": data[0]["time"]
+                            })
+        annotate_peaks.append({
+            "cpname": f'Impurity{index}', 
+            "time": [i["time"] for i in cluster if i["well"] == best_well][0]
+            })
+        #Get the ms data for the relevant peak in the best_well
+        ms_plus = [i["MS+"] for i in cluster if i["well"] == best_well][0]
+        ms_minus = [i["MS-"] for i in cluster if i["well"] == best_well][0]
+        pStart = [i["pStart"] for i in cluster if i["well"] == best_well][0]
+        pEnd = [i["pEnd"] for i in cluster if i["well"] == best_well][0]
+        
+        #Submit all data to existing plotChroma function
+        try:  
+            plotChroma(f'Impurity{index}', best_well, chroma[best_well], 
+                    pStart, pEnd, 
+                    annotate_peaks, save_dir, ms_plus, ms_minus, "Unknown Parent Mass")
+            logging.debug(f'A chromatogram was plotted for Impurity{index} from well {best_well}.')
+        except:
+            logging.info("No chromatogram could be plotted. Data not found.")
+        
+        #Append all data about impurity to the compoundDF
+        compoundDF.loc[f'Impurity{index}'] = list(values.values())
+        impurities.append(f'Impurity{index}')
+    
+    #If 1 or more impurities were found, plot a hit validation graph to display these. 
+    if len(clusters) > 0:
+        fig, ax = plt.subplots()
+        total_wells = options.plate_col_no * options.plate_row_no
+        ax.set_xlim(-total_wells*0.25, total_wells*1.1)
+        #Plot a hit validation graph for all clusters to more easily display the results.
+        #Save this to the graphs folder. 
+        palette = cm.rainbow(np.linspace(0, 1, len(clusters)))
+
+        for i, cluster in enumerate(clusters):
+            x = []
+            y = []
+            for peak in cluster:
+                x.append(peak["well"])
+                y.append(peak["time"])
+
+            plt.scatter(x, y, color = palette[i])
+
+            #Annotate the graph with the average retention time of each cluster
+            
+            mean_rt = round(mean([peak["time"] for peak in cluster]), 2)
+            ax.annotate(f'Impurity{i}: {mean_rt} min.', [-total_wells*0.22, mean_rt])     
+
+        #Label the graph and axes, and save to the output directory.   
+        plt.title("All Frequent Impurities Found")
+        plt.xlabel("Well")
+        plt.ylabel("Retention Time /min")
+        plt.savefig(f'{save_dir}/graphs/impuritychart.jpg', format = "jpg")    
+        plt.close()
+    return impurities
+
 def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, total_area_abs):
     """
     Reformats the validated hits into a pandas table ready for visualisation and export. 
@@ -1177,8 +1447,11 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
     for i in range(1, options.plate_row_no * options.plate_col_no + 1):
 
         well = outputTable[i]
-        if well["Uarea"] < 0: 
+        #reset any non-sensical values that arise as a result of miniscule rounding errors
+        #for the unidentified area (Uarea, UareaAbs)
+        if round(well["Uarea"]) <= 0 or round(well["UareaAbs"]) <= 0: 
             well["Uarea"] = 0
+            well["UareaAbs"] = 0
         if well["PareaAbs"] != 0 or well["SMareaAbs"] != 0:
             well["P/SM+P"] = round(well["PareaAbs"] / (well["SMareaAbs"] + well["PareaAbs"]), 2)
 
@@ -1462,10 +1735,10 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
         
         axes.bar(x, y, width = 2)
         axes.set_title(title)
-        axes.set_xlim(0, 1000)
         axes.set_ylim(0, 200)
         
         last_annotation = 0
+        highest_mass = 0
         for peak in data:
             if peak[1] > 20:
                 if math.isclose(peak[0], last_annotation, abs_tol = 3):
@@ -1476,6 +1749,16 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
                     axes.annotate(peak[0], [peak[0]+1, peak[1]], ha="center", 
                                   va="bottom", rotation=90, size = 8)
                 last_annotation = peak[0]
+                if peak[0] > highest_mass:
+                    highest_mass = peak[0]
+        
+        #Configure mass spec axis to reach at least 1000, but higher if necessary
+        #With some additional headroom so that peaks are not obscured by the edge
+        #of the plot
+        if highest_mass > 950:
+            axes.set_xlim(0, math.ceil((highest_mass + 100)/100)*100) 
+        else:
+            axes.set_xlim(0, 1000)
     
     #Plot both MS- and MS+    
     plotMS(a0, ms_minus, "MS-")
@@ -1559,6 +1842,27 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
     #Set axis limits
     a2.set_ylim(min_y - 10, 130)
     a2.set_xlim(-0.1, max_x+0.1)
+
+    #plot a hatched region if the filter_by_rt option 
+    #has been used
+    if len(options.filter_by_rt) > 0:
+        
+        #Set default yvalues to match that of chromatogram trace
+        hatched_ymin, hatched_ymax = [],[]
+        for i in trace[1]:
+            hatched_ymin.append(i)
+            hatched_ymax.append(i)
+
+        for new_range in options.filter_by_rt:
+            minx = float(new_range.split("-")[0].strip())
+            maxx = float(new_range.split("-")[1].strip())
+            for i, j in enumerate(trace[0]):
+                #Amend any values such between specified ranges
+                if j > minx and j < maxx:
+                    hatched_ymax[i] = 130
+                    hatched_ymin[i] = min_y - 10
+        #fill between on graph, using traceparency = 0.3
+        a2.fill_between(trace[0], hatched_ymin, hatched_ymax, hatch = "/", alpha = 0.3)
 
     #Fill to highlight the peak of interest 
     if pStart != 0 and pEnd != 0:
@@ -1883,8 +2187,47 @@ def generateMol(smiles, name, save_dir):
     _discard = AllChem.Compute2DCoords(mol)
     Draw.MolToFile(mol, f'{save_dir}structures/{name}.png', size=(200, 150))
 
+def genLocationHeatmaps(cptable, save_dir):
+    """
+    Generate a heatmap type graph to visualise the 
+    expected locations of each compound, based on the platemap that was provided. 
 
-def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
+    :param cptable: Pandas dataframe containing compounds
+    :param save_dir: string describing the location of the output folder
+    :output: Heatmaps saved to the output folder. 
+    """
+    
+    for index, row in cptable.iterrows():
+
+        location_data = []
+        labels = []
+        for i in range(options.plate_col_no * options.plate_row_no):
+            rowVal = int(math.floor(i / options.plate_col_no))
+            colVal = int(i % options.plate_col_no)
+            
+            if colVal == 0:
+                location_data.append([])
+                labels.append([])
+            if i+1 in row["locations"]:
+                location_data[rowVal].append(1)
+                labels[rowVal].append(u'\u2713')
+            else:
+                location_data[rowVal].append(0)
+                labels[rowVal].append("")
+                
+
+        pdTable = pd.DataFrame(location_data)
+        xLabels = [i for i in range(1, options.plate_col_no+1)]
+        yLabels = [chr(ord('@')+i) for i in range(1, options.plate_row_no+1)]
+        
+        ax = sns.heatmap(pdTable, xticklabels=xLabels, yticklabels=yLabels, cmap = "viridis", annot = labels, fmt="")
+        ax.xaxis.set_ticks_position("top")
+        
+        #Save heatmap to output directory
+        plt.savefig(f'{save_dir}graphs/loc_heatmap_{row["name"]}.jpg', format="jpg")
+        plt.close()   
+
+def buildHTML(save_dir, compoundDF, all_compounds, impurities, analysis_name, times = {}):
     """
     Build a HTML output file using jinja2 and a html_template
     that is stored in the directory "templates". 
@@ -1914,6 +2257,7 @@ def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
     with open(f'{save_dir}/html_output.html', "w") as fo:
         fo.write(template.render(
             cpnames = all_compounds,
+            imp_no = len(impurities),
             cptablerows = cptablerows, 
             save_dir = save_dir,
             path = path,
@@ -1924,8 +2268,9 @@ def buildHTML(save_dir, compoundDF, all_compounds, analysis_name, times = {}):
             options = vars(options)
             )
         )
-    fo.close()
-  
+    fo.close() 
+
+
 
 def main():
     """ 
@@ -1951,6 +2296,9 @@ def main():
                         mass_abs_tol = 0.5,
                         time_abs_tol = 0.025,
                         uv_abs_tol = 10,
+
+                        filter_by_rt = [],
+
 
                         detector = "UV",
 
@@ -1981,8 +2329,10 @@ def main():
                         gen_zip = "True",
 
                         output = "output",
-                        
+
                         instrument = "Waters"
+
+                        find_freq_imp = "True",
                         )
     
     parser.add_argument("input_data", help = "Input file/folder for analysis")
@@ -2061,12 +2411,18 @@ def main():
     
     parser.add_argument("-z", "--generate_zip", action="store", type=str, dest = "gen_zip", 
                         help = "Choose to generate and save a zip file, True/False.\n")
+    
+    parser.add_argument("-f", "--filter_by_rt", nargs = "+", action="store", type=str, dest = "filter_by_rt",
+                        help = "Provide retention time ranges to ignore, in the form 'mintime-maxtime'"
+                        " where the two times are separated by a hyphen. Multiple ranges (separated by a space) are excepted. ")
 
     parser.add_argument("-n", "--name", action="store", type=str, dest = "analysis_name", 
                         help = "Choose a name for the analysis.\n")
 
     parser.add_argument("-d", "--detector", action="store", type=str, dest = "detector",
                         help = "Choose which detector to use, UV or ELSD")
+    parser.add_argument("-ffi", "--find_freq_imp", action="store", type=str, dest = "find_freq_imp",
+                        help = "Choose whether to search for and report frequently observed impurities. ")
 
     parser.add_argument("-i", "--instrument", action="store", type=str, dest = "instrument",
                         help = "Select the data originated from, Waters or Shimadzu")
@@ -2078,7 +2434,7 @@ def main():
     
     #Set standard matplotlib graph size
     plt.rcParams["figure.figsize"] = (12, 6)
-    
+
     #Ensure all required input options have a valid address
     root_names = [options.input_data, options.input_csv, options.output]
     
@@ -2177,8 +2533,6 @@ def main():
     #peak in the well. 
     #chroma is a list of lists containing the information required to 
     #generate the LCMS trace. 
-    #This function also determines the number of columns and rows in the plate
-    #and writes this info to the global options. 
     
     pre_rpt = time.perf_counter()
 
@@ -2197,6 +2551,10 @@ def main():
         logging.error("This instrument is not currently supported by PyParse")
         sys.exit(2)
 
+    #Add blank values to wells in total_area_abs for which no data was found. 
+    for i in range(1, options.plate_row_no * options.plate_col_no + 1):
+        if i not in total_area_abs:
+            total_area_abs[i] = 0
     
 
     #Import the structure data from the comma-separated values platemap file provided
@@ -2234,7 +2592,6 @@ def main():
     #Log the time taken to complete these actions
     times["Import Compound File"] = time.perf_counter() - pre_import
     logging.info(f'{len(compoundDF.index)} compounds were imported.')
-
 
     #For each compound, find all hits using the dataTable, validate them, and append 
     #them to a list ready for insertion into the compoundDF pandas dataframe
@@ -2289,6 +2646,8 @@ def main():
     logging.info(f'Duplicate assignments were removed.')
     times["Remove Duplicate Assignments"] = time.perf_counter() - pre_rem_dup
 
+    
+    
     #Generate the output table using validated hits
     pre_output_table = time.perf_counter()
     outputTable = generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, total_area_abs)
@@ -2481,9 +2840,16 @@ def main():
     #useful. 
     if options.plate_row_no * options.plate_col_no < 97:
         pre_pie = time.perf_counter()
-        plotPieCharts(options.plot_type, outputTable, save_dir, by_products)
-        logging.info(f'A set of pie-charts was generated using {options.plot_type} '
-                    f'as the index.')
+        #Alter the piechart output depending on whether an internalSTD was specified
+        #in the platemap or not. 
+        if internalSTD != "":
+            plotPieCharts("corrP/STD", outputTable, save_dir, by_products)
+            logging.info(f'A set of pie-charts was generated using corrP/STD '
+                        f'as the index.')
+        else:
+            plotPieCharts("Parea", outputTable, save_dir, by_products)
+            logging.info(f'A set of pie-charts was generated using Parea '
+                        f'as the index.')
         times["Generate Piechart"] = time.perf_counter() - pre_pie
 
     #Plot a histogram and donut chart of Parea as a measure of plate success. 
@@ -2494,15 +2860,25 @@ def main():
     logging.info(f'A histogram and donut chart were generated.')
 
     #Generate a set of PNG files to depict each compound
-    
     for index, row in compoundDF.iterrows():
         generateMol(row["g_smiles"], row["name"], save_dir)
 
+    #Search for impurities that haven't been specified
+    if options.find_freq_imp == "True":
+        impurities = findImpurities(dataTable, compoundDF, save_dir, chroma)
+    else:
+        impurities = []
+
+    #Generate location heatmaps based on the provided heatmap
+    genLocationHeatmaps(compoundDF, save_dir)
+
     #Generate the HTML output. 
     times["Total time"] = time.perf_counter() - pre_donut
-    buildHTML(save_dir, compoundDF, all_compounds, options.analysis_name, times = times)
+    buildHTML(save_dir, compoundDF, all_compounds, impurities, options.analysis_name, times = times)
     logging.info('The HTML output was generated.')
-
+    
+    
+    
     #Generate an csv of the output table.
     if options.gen_csv == "True":
         csv = outputTable.to_csv(f'{save_dir}outputTable.csv', index = False)
@@ -2530,6 +2906,8 @@ def main():
     total_time = time.perf_counter() - time_start
     logging.info(f'The analysis was completed in {total_time} seconds.')
     print(f'The analysis was completed in {round(total_time, 2)} seconds.')
+
+   
 
 if __name__ == "__main__":
     try:

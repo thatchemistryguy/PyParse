@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Using the Example Dataset" href="example.html" /><link rel="prev" title="Installation and Run" href="installation.html" />
 
-    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>PyParse Outputs - PyParse 2023.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=dc19f415" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -198,9 +198,9 @@
         </div>
         <article role="main">
           <section id="pyparse-outputs">
-<span id="pyparse-outputs-label"></span><h1>PyParse Outputs<a class="headerlink" href="#pyparse-outputs" title="Permalink to this heading">#</a></h1>
+<span id="pyparse-outputs-label"></span><h1>PyParse Outputs<a class="headerlink" href="#pyparse-outputs" title="Link to this heading">#</a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>PyParse generates multiple tables and visualisations as part of the analysis. These allow the user to
 draw conclusions as to the success or otherwise of the reaction. It also provides a standard layout for the output
 of the processed data for long term storage, searching, and machine learning.</p>
@@ -208,12 +208,13 @@ of the processed data for long term storage, searching, and machine learning.</p
 a zip file by default for ease of file sharing.</p>
 </section>
 <section id="heatmap">
-<h2>Heatmap<a class="headerlink" href="#heatmap" title="Permalink to this heading">#</a></h2>
-<p>The heatmap is coloured using the plot_type (-pt parameter) specified, and is generated using matplotlib.</p>
+<h2>Heatmap<a class="headerlink" href="#heatmap" title="Link to this heading">#</a></h2>
+<p>The heatmap is coloured using the plot_type described in the figure caption, and is generated using matplotlib. A separate heatmap
+is generated for each plot type, and can be viewed in the HTML output file.</p>
 <figure class="align-default" id="id1">
 <img alt="An example heatmap." src="_images/example_heatmap.jpg" />
 <figcaption>
-<p><span class="caption-text">Example Heatmap</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Example Heatmap</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="admonition tip">
@@ -222,18 +223,18 @@ a zip file by default for ease of file sharing.</p>
 </div>
 </section>
 <section id="trellised-pie-charts">
-<h2>Trellised Pie-Charts<a class="headerlink" href="#trellised-pie-charts" title="Permalink to this heading">#</a></h2>
+<h2>Trellised Pie-Charts<a class="headerlink" href="#trellised-pie-charts" title="Link to this heading">#</a></h2>
 <p>A pie chart visualisation is also generated; each pie is sized according to the plot_type parameter,
 and the size of each wedge corresponds to the LCMS UV percentage area of the peak corresponding to that compound.</p>
 <figure class="align-default" id="id2">
 <img alt="An example piechart plot." src="_images/example_piecharts.jpg" />
 <figcaption>
-<p><span class="caption-text">Example Trellised Pie-Chart Plot</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Example Trellised Pie-Chart Plot</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="compound-summary-table">
-<h2>Compound Summary Table<a class="headerlink" href="#compound-summary-table" title="Permalink to this heading">#</a></h2>
+<h2>Compound Summary Table<a class="headerlink" href="#compound-summary-table" title="Link to this heading">#</a></h2>
 <p>The compound summary table shows the compounds that were provided in the platemap with:</p>
 <ul class="simple">
 <li><p>The name given to the compound</p></li>
@@ -273,7 +274,7 @@ and that they should check the conclusions.</p>
 </figure>
 </section>
 <section id="hit-validation-graph">
-<h2>Hit Validation Graph<a class="headerlink" href="#hit-validation-graph" title="Permalink to this heading">#</a></h2>
+<h2>Hit Validation Graph<a class="headerlink" href="#hit-validation-graph" title="Link to this heading">#</a></h2>
 <p>This graph visualises <em>all possible peaks</em> that contain a m/z which correspond to that expected for that compound,
 across the entire plate.</p>
 <p>It is designed to help spot trends across the plate and to point out to the user other possibilities which were ultimately
@@ -294,7 +295,7 @@ has been synthesised.</p>
 <figure class="align-default" id="id3">
 <img alt="An example of a hit validation graph generated by PyParse" src="_images/example_validationgraph.jpg" />
 <figcaption>
-<p><span class="caption-text">Example Hit-Validation Graph</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Example Hit-Validation Graph</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <div class="admonition important">
@@ -380,13 +381,11 @@ assignment due to their UV absorbance or m/z intensity deviating from what was t
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/scripts/furo.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+</div><script src="_static/documentation_options.js?v=07445e93"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>
