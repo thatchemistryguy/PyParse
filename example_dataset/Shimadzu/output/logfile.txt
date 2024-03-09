@@ -1,0 +1,26 @@
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Shimadzu/output/.
+INFO:root:17 data sources were found in the folder specified.
+INFO:root:17 compounds were imported.
+INFO:root:Peaks were chosen for Product1 by mass_conf.
+INFO:root:Peaks were chosen for Product3 by mass_conf.
+INFO:root:Peaks were chosen for Product4 by mass_conf.
+INFO:root:Peaks were chosen for Product5 by mass_conf.
+INFO:root:Peaks were chosen for Product6 by mass_conf.
+INFO:root:Peaks were chosen for Product7 by mass_conf.
+INFO:root:Peaks were chosen for Product8 by mass_conf.
+INFO:root:Peaks were chosen for Product10 by mass_conf.
+INFO:root:Peaks were chosen for Product11 by mass_conf.
+INFO:root:Peaks were chosen for Product12 by mass_conf.
+INFO:root:Peaks were chosen for Product13 by mass_conf.
+INFO:root:Peaks were chosen for Product14 by mass_conf.
+INFO:root:Peaks were chosen for Product15 by mass_conf.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 11.119863599999999 seconds.
