@@ -21,10 +21,11 @@ def init(args):
 
 
 def getData(input_dir):
-    wellData = []
+
     masterTable = {}
     chroma = {}
     sample_IDs = {}
+    total_area_abs = {}
 
     input_files = glob.glob(input_dir + '*.daml')
 
@@ -167,7 +168,40 @@ def getData(input_dir):
                     UV_maxima.append(UV_pairs[-1][0])
                 #Store these maxima values with the peak 
                 peaks[peakID]["UV"] = UV_maxima
+        
+        
+        #Filter out any peaks within retention times specified by the user
+        #Expected uses: remove solvent peaks from consideration
+        #Expected format is a list of specified ranges, e.g.
+        #[min_time1-max_time1, min_time2-max_time2]
+        #where the start of the range appears first and is separated from 
+        #the end of the range with a hyphen
 
+        if len(options.filter_by_rt) > 0:
+            to_remove = []
+            for filter_range in options.filter_by_rt:
+                min_time = float(filter_range.split("-")[0].strip())
+                max_time = float(filter_range.split("-")[1].strip())
+
+                for index in peaks.keys():
+                    if float(index) > min_time and index < max_time:
+                        to_remove.append(index)
+
+            for index in to_remove:
+                del peaks[index]
+        
+        #If the reprocess_by_rt parameter was used, recalculate the percentage peak area for each peak
+        if len(options.filter_by_rt) > 0:
+            total_area_abs[wellno] = 0
+            for peak in peaks.values():
+                total_area_abs[wellno] = total_area_abs[wellno] + peak["areaAbs"]
+
+        #Recalculate the peak area percentages now that the total absolute area 
+        #for that well has been calculated. 
+
+        if len(options.filter_by_rt) > 0: 
+            for index in peaks.keys():
+                peaks[index]["area"] = round((peaks[index]["areaAbs"]*100) / total_area_abs[wellno], 2)
 
         #Append the peaks to the specific well
         masterTable[wellno] = peaks.values()

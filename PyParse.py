@@ -2186,25 +2186,17 @@ def main():
     #correct format. 
     if options.instrument == "Waters":
         getWatersData.init(options)
-        [dataTable, chroma, sample_IDs] = getWatersData.getData(root_names[0])
+        [dataTable, chroma, sample_IDs, total_area_abs] = getWatersData.getData(root_names[0])
         times["Import RPT File"] = time.perf_counter() - pre_rpt 
         logging.info(f'{len(dataTable.items())} wells were found in the rpt.')
     elif options.instrument == "Shimadzu":
         getShimadzuData.init(options)
-        [dataTable, chroma, sample_IDs] = getShimadzuData.getData(root_names[0])
+        [dataTable, chroma, sample_IDs, total_area_abs] = getShimadzuData.getData(root_names[0])
         logging.info(f'{len(dataTable.items())} .daml data sources were found in the folder specified.')
     else:
         logging.error("This instrument is not currently supported by PyParse")
         sys.exit(2)
 
-    #Determine the total areaAbs for each well, so that these values can be added to the outputTable
-    total_area_abs = {}
-    for i in range(1, options.plate_row_no * options.plate_col_no + 1):
-        total_area_abs[i] = 0
-    for index, well in dataTable.items():
-        for peak in well:
-            if index in total_area_abs:
-                total_area_abs[index] = total_area_abs[index] + peak["areaAbs"]
     
 
     #Import the structure data from the comma-separated values platemap file provided
