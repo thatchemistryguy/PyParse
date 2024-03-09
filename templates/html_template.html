@@ -57,6 +57,9 @@
                 <a class="nav-link" href="#CompoundDetail">Compound Detail</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="#ImpuritySummary">Impurity Summary</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="#PlateSummary">Plate Summary</a>
             </li>
             <li class="nav-item">
@@ -251,11 +254,44 @@
                 <th>Potential Conflicts</th>
             </tr>
             {% for row in cptablerows %}
-                {% if row["overlaps"] != "No peak overlap detected." or row["conflicts"] != "No potential conflicts found." %}
-                    <tr class = "table-warning">
-                {% else %}
-                    <tr>
-                {% endif %}
+                {% if row["type"] != "Impurity" %}
+                    {% if row["overlaps"] != "No peak overlap detected." or row["conflicts"] != "No potential conflicts found." %}
+                        <tr class = "table-warning">
+                            <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
+                            <td><img src="structures/{{ row["name"] }}.png"></img></td>
+                            <td>{{ row["mass1"] }}</td>
+                            <td>{{ row["mass2"] }}</td>
+                            <td>{{ row["mass3"] }}</td>
+                            <td>{{ row["time"] }}</td>
+                            <td>{{ row["mass-"] }}</td>
+                            <td>{{ row["mass+"] }}</td>
+                            <td>{{ row["best_well"] }}</td>
+                            <td>{{ row["best_purity"] }}</td>
+                            <td>{{ row["overlaps"] }}</td>
+                            <td>{{ row["conflicts"] }}</td>
+                        </tr>
+                    
+                    {% else %}
+                        <tr>
+                            <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
+                            <td><img src="structures/{{ row["name"] }}.png"></img></td>
+                            <td>{{ row["mass1"] }}</td>
+                            <td>{{ row["mass2"] }}</td>
+                            <td>{{ row["mass3"] }}</td>
+                            <td>{{ row["time"] }}</td>
+                            <td>{{ row["mass-"] }}</td>
+                            <td>{{ row["mass+"] }}</td>
+                            <td>{{ row["best_well"] }}</td>
+                            <td>{{ row["best_purity"] }}</td>
+                            <td>{{ row["overlaps"] }}</td>
+                            <td>{{ row["conflicts"] }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if row["overlaps"] != "No peak overlap detected." or row["conflicts"] != "No potential conflicts found." %}
+                        <tr class = "table-warning">
+                    {% else %}
+                        <tr>
+                    {% endif %}
                     <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
                     <td>
                         <img src="structures/{{ row["name"] }}.png"></img><br>
@@ -271,7 +307,8 @@
                     <td>{{ row["best_purity"] }}</td>
                     <td>{{ row["overlaps"] }}</td>
                     <td>{{ row["conflicts"] }}</td>
-                </tr>
+                    </tr>
+                {% endif %}
             {% endfor %}
 
         </table>
@@ -279,66 +316,133 @@
         <h2 id = "CompoundDetail">Compound Detail</h2>
 
         {% for row in cptablerows %}
-            <h3 id = "header_{{ row["name"] }}">{{ row["name"] }}</h3>
+            {% if row["type"] != "Impurity" %}
+                <h3 id = "header_{{ row["name"] }}">{{ row["name"] }}</h3>
 
-            <div class="container-lg logs">
-                <div class="accordion" id="accordion-{{ row["name"] }}">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header no-margin" id="heading1-{{ row["name"] }}">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-{{ row["name"] }}" aria-expanded="true" aria-controls="collapse1-{{ row["name"] }}">Key Logs</button>
-                        </h2>
-                        <div id="collapse1-{{ row["name"] }}" class="accordion-collapse collapse show" aria-labelledby="heading1-{{ row["name"] }}">
-                            <div class="accordion-body">
-                                {% set counter = [] %}
+                <div class="container-lg logs">
+                    <div class="accordion" id="accordion-{{ row["name"] }}">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header no-margin" id="heading1-{{ row["name"] }}">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-{{ row["name"] }}" aria-expanded="true" aria-controls="collapse1-{{ row["name"] }}">Key Logs</button>
+                            </h2>
+                            <div id="collapse1-{{ row["name"] }}" class="accordion-collapse collapse show" aria-labelledby="heading1-{{ row["name"] }}">
+                                <div class="accordion-body">
+                                    {% set counter = [] %}
+                                    {% for comment in row["comments"] %}
+                                        {% if "<strong>" in comment or "were found for" in comment or "Validation" in comment %}
+                                            {{ comment }}<br>
+                                            {% set __ = counter.append("1") %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    
+                    
+                    {% if row["comments"]|length > counter|length %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header no-margin" id="heading2-{{ row["name"] }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-{{ row["name"] }}" aria-expanded="false" aria-controls="collapse2-{{ row["name"] }}">Additional Logs</button>
+                            </h2>
+                            <div id="collapse2-{{ row["name"] }}" class="accordion-collapse collapse" aria-labelledby="heading2-{{ row["name"] }}" data-bs-parent="#accordion-{{ row["name"] }}">
+                                <div class="accordion-body">
                                 {% for comment in row["comments"] %}
-                                    {% if "<strong>" in comment or "were found for" in comment or "Validation" in comment %}
+                                    {% if "<strong>" not in comment and "were found for" not in comment and "Validation" not in comment %}
                                         {{ comment }}<br>
-                                        {% set __ = counter.append("1") %}
                                     {% endif %}
                                 {% endfor %}
+                                </div>
                             </div>
                         </div>
+                    
+                    {% endif %}
                     </div>
-                
-                
-                {% if row["comments"]|length > counter|length %}
-                    <div class="accordion-item">
-                        <h2 class="accordion-header no-margin" id="heading2-{{ row["name"] }}">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-{{ row["name"] }}" aria-expanded="false" aria-controls="collapse2-{{ row["name"] }}">Additional Logs</button>
-                        </h2>
-                        <div id="collapse2-{{ row["name"] }}" class="accordion-collapse collapse" aria-labelledby="heading2-{{ row["name"] }}" data-bs-parent="#accordion-{{ row["name"] }}">
-                            <div class="accordion-body">
-                            {% for comment in row["comments"] %}
-                                {% if "<strong>" not in comment and "were found for" not in comment and "Validation" not in comment %}
-                                    {{ comment }}<br>
-                                {% endif %}
-                            {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                
-                {% endif %}
                 </div>
-            </div>
-        
-            {% set fname = save_dir ~ "graphs/hits-" ~ row["name"] ~ ".jpg" %}
-            {% set name = save_dir ~ "graphs/chroma-" ~ row["name"] ~ "-best.jpg" %}
             
-            {% if path.exists(fname) %}
-                <div class="container-fluid"><img class="graph" src="graphs/hits-{{ row["name"] }}.jpg" alt=""></img></div>
-            {% endif %}
+                {% set fname = save_dir ~ "graphs/hits-" ~ row["name"] ~ ".jpg" %}
+                {% set name = save_dir ~ "graphs/chroma-" ~ row["name"] ~ "-best.jpg" %}
+                
+                {% if path.exists(fname) %}
+                    <div class="container-fluid"><img class="graph" src="graphs/hits-{{ row["name"] }}.jpg" alt=""></img></div>
+                {% endif %}
 
-            {% if path.exists(name) %}
-                <div class="container-fluid"><img class="graph" src="graphs/chroma-{{ row["name"] }}-best.jpg"></img></div>
+                {% if path.exists(name) %}
+                    <div class="container-fluid"><img class="graph" src="graphs/chroma-{{ row["name"] }}-best.jpg"></img></div>
+                {% endif %}
             {% endif %}
         {% endfor %}
 
+
+        {% if imp_no > 0 %}
+            <h2 id = "ImpuritySummary">Impurity Summary</h2><br>
+            {% set impname = save_dir ~ "graphs/impuritychart.jpg" %}
+            {% if path.exists(impname) %}
+                <div class="container-fluid">
+                    <img class="graph" src="graphs/impuritychart.jpg"></img>
+                </div>
+            {% endif %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Retention Time</th>
+                        <th>m/z-</th>
+                        <th>m/z+</th>
+                        <th>Best Well</th>
+                        <th>Purity of Best Well</th>
+                    </tr>
+                    {% for row in cptablerows %}
+                        {% if row["type"] == "Impurity" %}
+                            
+                            <tr>
+                                <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
+                                <td>{{ row["time"] }}</td>
+                                <td>{{ row["mass-"] }}</td>
+                                <td>{{ row["mass+"] }}</td>
+                                <td>{{ row["best_well"] }}</td>
+                                <td>{{ row["best_purity"] }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            <br>
+            {% for row in cptablerows %}
+                {% if row["type"] == "Impurity" %}
+                    <h3 id = "header_{{ row["name"] }}">{{ row["name"] }}</h3>
+
+                    <div class="container-lg logs">
+                        <div class="accordion" id="accordion-{{ row["name"] }}">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header no-margin" id="heading1-{{ row["name"] }}">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-{{ row["name"] }}" aria-expanded="true" aria-controls="collapse1-{{ row["name"] }}">Key Logs</button>
+                                </h2>
+                                <div id="collapse1-{{ row["name"] }}" class="accordion-collapse collapse show" aria-labelledby="heading1-{{ row["name"] }}">
+                                    <div class="accordion-body">
+                                        {% for comment in row["comments"] %}
+                                            {{ comment }}<br>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% set name = save_dir ~ "graphs/chroma-" ~ row["name"] ~ "-best.jpg" %}
+                    {% if path.exists(name) %}
+                        <div class="container-fluid"><img class="graph" src="graphs/chroma-{{ row["name"] }}-best.jpg"></img></div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <h2 id = "ImpuritySummary">No Impurities Found</h2><br>
+        {% endif %}
+        
         <h2 id= 'PlateSummary'>Plate Summary</h2><br>
         {% set histname = save_dir ~ "graphs/histogram.jpg" %}
         {% set donutname = save_dir ~ "graphs/donut.jpg" %}
         {% if path.exists(histname) %}
             <div class="container-fluid">
-                <img class="graph" src="graphs/histogram.jpg" usemap="#donut"></img>
+                <img class="graph" src="graphs/histogram.jpg"></img>
             </div>
         {% endif %}
         
