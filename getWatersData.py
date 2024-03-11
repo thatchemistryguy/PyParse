@@ -271,7 +271,7 @@ def getData(filename):
                                         "pStart": 0,
                                         "pEnd": 0, 
                                         "peakID": peakID,
-                                        "wellno": wellno,
+                                        "well": wellno,
                                         }
                             elif peak_index != retTime:
                                 #If data has already been entered for this peak by a different
@@ -290,7 +290,7 @@ def getData(filename):
                                         "pStart": peaks[peak_index]["pStart"],
                                         "pEnd": peaks[peak_index]["pEnd"], 
                                         "peakID": peaks[peak_index]["peakID"],
-                                        "wellno": wellno,
+                                        "well": wellno,
 
                                         }
                                 #Delete the old entry now the data has been copied over
@@ -335,7 +335,7 @@ def getData(filename):
                                         "pStart": 0,
                                         "pEnd": 0, 
                                         "peakID": peakID,
-                                        "wellno": wellno,
+                                        "well": wellno,
                                         }
                             elif peak_index != retTime:
                                 #If data has already been entered for this peak by a different
@@ -354,7 +354,7 @@ def getData(filename):
                                         "pStart": peaks[peak_index]["pStart"],
                                         "pEnd": peaks[peak_index]["pEnd"], 
                                         "peakID": peaks[peak_index]["peakID"],
-                                        "wellno": wellno,
+                                        "well": wellno,
                                         }
                                 #Delete the old entry now the data has been copied over
                                 #to use the correct retention time. 
@@ -384,7 +384,7 @@ def getData(filename):
                             "pStart": 0,
                             "pEnd": 0,
                             "peakID": peakID,
-                            "wellno": wellno,
+                            "well": wellno,
                             }
                 else:
                     retTime = peak_index

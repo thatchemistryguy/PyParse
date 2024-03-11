@@ -63,6 +63,7 @@ def getData(input_dir):
         for peak in raw_UV.findall("peak"):
             #Fetch all data about a peak from the details section
             new_entry = {}
+            
             for detail in peak.get("details").split(","):
                 name = detail.strip().split("=")[0]
                 value = detail.strip().split("=")[1]
@@ -79,6 +80,9 @@ def getData(input_dir):
             #Add placeholders for the correct data structure
             new_entry["MS+"] = [[]]
             new_entry["MS-"] = [[]]
+
+            #Add well number to the new entry
+            new_entry["well"] = wellno
 
             #Add the new entry to the peaks dictionary
             peaks[new_entry["peakID"]] = new_entry
@@ -206,4 +210,4 @@ def getData(input_dir):
         #Append the peaks to the specific well
         masterTable[wellno] = peaks.values()
 
-    return [masterTable, chroma, sample_IDs]
+    return [masterTable, chroma, sample_IDs, total_area_abs]

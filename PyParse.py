@@ -2330,7 +2330,7 @@ def main():
 
                         output = "output",
 
-                        instrument = "Waters"
+                        instrument = "Waters",
 
                         find_freq_imp = "True",
                         )
