@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="./">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation and Run" href="installation.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
         <title>PyParse 2023.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=dc19f415" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -160,6 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_desc.html">PyParse Outputs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Using the Example Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="freq_imp_det.html">Automatic Impurity Detection and Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_param.html">Additional Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyparse_det.html">PyParse Function Detail</a></li>
@@ -198,10 +199,10 @@
         </div>
         <article role="main">
           <section id="welcome-to-pyparse-s-documentation">
-<h1>Welcome to PyParse’s documentation!<a class="headerlink" href="#welcome-to-pyparse-s-documentation" title="Link to this heading">#</a></h1>
+<h1>Welcome to PyParse’s documentation!<a class="headerlink" href="#welcome-to-pyparse-s-documentation" title="Permalink to this heading">#</a></h1>
 <p>Authors: Joseph Mason, Francesco Rianjongdee, Harry Wilders, David Fallon</p>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
 <p>This script will read Liquid Chromatography Mass Spectrometry (LCMS) data in the Waters OpenLynx™ browser report (.rpt) file
 format or Shimadzu .daml file format, and assigns peaks to compounds specified in  a .csv platemap. This assignment is then used to generate heatmaps and
 other visualisations to compare and contrast different LCMS runs. It was designed specifically for the analysis of data generated from
@@ -209,35 +210,38 @@ high-throughput chemistry, and is suitable for reaction optimisations, parallel 
 and library validation experiments.</p>
 </section>
 <section id="example-usage">
-<h2>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading">#</a></h2>
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this heading">#</a></h2>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Standard Analysis for a 96-Well Plate</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="code-block-caption"><span class="caption-text">Standard Analysis for a 96-Well Plate for Water’s data</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">PyParse</span><span class="o">.</span><span class="n">py</span> <span class="n">example_rpt</span><span class="o">.</span><span class="n">rpt</span> <span class="n">example_platemap</span><span class="o">.</span><span class="n">csv</span> <span class="o">-</span><span class="n">o</span> <span class="n">new_output_directory</span>
 </pre></div>
 </div>
 </div>
-<p>(Used for an LCMS plate with 8 rows and 12 columns, to generate visualisations based
-on the corrected ratio of product to internal standard. Saves all output tables/data/visualisations
-to “new_output_directory”.)</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Standard Analysis for a 96-Well Plate for Shimadzu data</span><a class="headerlink" href="#id2" title="Permalink to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">PyParse</span><span class="o">.</span><span class="n">py</span> <span class="n">folder_containing_daml_files</span> <span class="n">example_platemap</span><span class="o">.</span><span class="n">csv</span> <span class="o">-</span><span class="n">o</span> <span class="n">new_output_directory</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="license">
-<h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
+<h2>License<a class="headerlink" href="#license" title="Permalink to this heading">#</a></h2>
 <p>Apache 2.0</p>
 </section>
 <section id="copyright">
-<h2>Copyright<a class="headerlink" href="#copyright" title="Link to this heading">#</a></h2>
+<h2>Copyright<a class="headerlink" href="#copyright" title="Permalink to this heading">#</a></h2>
 <p>2023 GlaxoSmithKline Research &amp; Development Limited</p>
 </section>
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">#</a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">#</a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 <section id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Link to this heading">#</a></h2>
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -263,9 +267,15 @@ to “new_output_directory”.)</p>
 <li class="toctree-l2"><a class="reference internal" href="example.html#heatmap">Heatmap</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="freq_imp_det.html">Automatic Impurity Detection and Reporting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="freq_imp_det.html#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="freq_imp_det.html#the-hit-validation-graph">The Hit Validation Graph</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#which-uplc-lcms-vendors-are-supported">Which UPLC/LCMS Vendors are Supported?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#which-analysis-type-should-i-choose">Which analysis type should I choose?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#which-plot-type-heatmap-should-i-look-at">Which plot type heatmap should I look at?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#what-does-corrp-std-actually-mean">What does “corrP/STD” actually mean?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#my-plate-design-has-deliberate-gaps-empty-wells-in-it-what-do-i-do">My plate design has deliberate gaps/empty wells in it - what do I do?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#i-d-like-to-view-the-results-in-excel-spotfire-another-program-how-do-i-do-this">I’d like to view the results in Excel/Spotfire/another program - how do I do this?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html#the-program-didn-t-find-my-product">The program didn’t find my product!!</a></li>
@@ -279,36 +289,7 @@ to “new_output_directory”.)</p>
 <li class="toctree-l2"><a class="reference internal" href="add_param.html#parameters-used-for-the-visualisations">Parameters Used for the Visualisations</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pyparse_det.html">PyParse Function Detail</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.buildHTML"><code class="docutils literal notranslate"><span class="pre">buildHTML()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.convertRPT2Dict"><code class="docutils literal notranslate"><span class="pre">convertRPT2Dict()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.findHits"><code class="docutils literal notranslate"><span class="pre">findHits()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.findOverlap"><code class="docutils literal notranslate"><span class="pre">findOverlap()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.findPotentialConflicts"><code class="docutils literal notranslate"><span class="pre">findPotentialConflicts()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.genLocationHeatmaps"><code class="docutils literal notranslate"><span class="pre">genLocationHeatmaps()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.generateMol"><code class="docutils literal notranslate"><span class="pre">generateMol()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.generateOutputTable"><code class="docutils literal notranslate"><span class="pre">generateOutputTable()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.getChromatogram"><code class="docutils literal notranslate"><span class="pre">getChromatogram()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.getMSData"><code class="docutils literal notranslate"><span class="pre">getMSData()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.getUVData"><code class="docutils literal notranslate"><span class="pre">getUVData()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.getUserReadableWell"><code class="docutils literal notranslate"><span class="pre">getUserReadableWell()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.importStructures"><code class="docutils literal notranslate"><span class="pre">importStructures()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.plotChroma"><code class="docutils literal notranslate"><span class="pre">plotChroma()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.plotDonut"><code class="docutils literal notranslate"><span class="pre">plotDonut()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.plotHeatmaps"><code class="docutils literal notranslate"><span class="pre">plotHeatmaps()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.plotHistogram"><code class="docutils literal notranslate"><span class="pre">plotHistogram()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.plotHitValidationGraph"><code class="docutils literal notranslate"><span class="pre">plotHitValidationGraph()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.plotPieCharts"><code class="docutils literal notranslate"><span class="pre">plotPieCharts()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.refineClusterByMassConf"><code class="docutils literal notranslate"><span class="pre">refineClusterByMassConf()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.refineClusterByTime"><code class="docutils literal notranslate"><span class="pre">refineClusterByTime()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.refineClusterByUV"><code class="docutils literal notranslate"><span class="pre">refineClusterByUV()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.removeDupAssigns"><code class="docutils literal notranslate"><span class="pre">removeDupAssigns()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.selectClusterByMassConf"><code class="docutils literal notranslate"><span class="pre">selectClusterByMassConf()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.selectClusterBySize"><code class="docutils literal notranslate"><span class="pre">selectClusterBySize()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyparse_det.html#PyParse.validateHits"><code class="docutils literal notranslate"><span class="pre">validateHits()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="pyparse_det.html">PyParse Function Detail</a></li>
 </ul>
 </div>
 </section>
@@ -379,11 +360,13 @@ to “new_output_directory”.)</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=07445e93"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
-    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="_static/copybutton.js?v=f281be69"></script>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     </body>
 </html>

@@ -659,11 +659,11 @@
                     <td>298.12</td>
                     <td>242.06</td>
                     <td>198.07</td>
-                    <td>1.28</td>
+                    <td>1.07</td>
                     <td>-</td>
-                    <td>243.12</td>
+                    <td>299.12</td>
                     <td>B6</td>
-                    <td>7.13</td>
+                    <td>92.87</td>
                     <td>No peak overlap detected.</td>
                     <td>No potential conflicts found.</td>
                     </tr>
@@ -1447,11 +1447,11 @@
                                     
                                 
                                     
-                                        The hit at 1.3217 for Product13 in well B1 was selected as it had the largest mass_conf.<br>
+                                        The hit at 1.3217 for Product13 in well B1 was selected as it had the largest area.<br>
                                     
                                 
                                     
-                                        The hit at 1.4329 for Product13 in well B1 was discarded as it did not have the largest mass_conf of all hits found.<br>
+                                        The hit at 1.4329 for Product13 in well B1 was discarded as it did not have the largest area of all hits found.<br>
                                     
                                 
                                 </div>
@@ -1722,11 +1722,11 @@
                                     
                                 
                                     
-                                        The hit at 1.0684 for Product18 in well B6 was discarded as it did not have the largest mass_conf of all hits found.<br>
+                                        The hit at 1.0684 for Product18 in well B6 was selected as it had the largest area.<br>
                                     
                                 
                                     
-                                        The hit at 1.2758 for Product18 in well B6 was selected as it had the largest mass_conf.<br>
+                                        The hit at 1.2758 for Product18 in well B6 was discarded as it did not have the largest area of all hits found.<br>
                                     
                                 
                                 </div>
@@ -2070,27 +2070,27 @@
             
                 <tr><td>Initialise Script</td><td>0.0 s</td></tr>
             
-                <tr><td>Import RPT File</td><td>0.09 s</td></tr>
+                <tr><td>Import RPT File</td><td>0.05 s</td></tr>
             
-                <tr><td>Import Compound File</td><td>0.05 s</td></tr>
+                <tr><td>Import Compound File</td><td>0.03 s</td></tr>
             
-                <tr><td>Find Hits and Validate</td><td>0.02 s</td></tr>
+                <tr><td>Find Hits and Validate</td><td>0.01 s</td></tr>
             
-                <tr><td>Remove Duplicate Assignments</td><td>0.03 s</td></tr>
+                <tr><td>Remove Duplicate Assignments</td><td>0.02 s</td></tr>
             
-                <tr><td>Generate Output Table</td><td>0.03 s</td></tr>
+                <tr><td>Generate Output Table</td><td>0.01 s</td></tr>
             
-                <tr><td>Plot Peaks</td><td>8.17 s</td></tr>
+                <tr><td>Plot Peaks</td><td>4.92 s</td></tr>
             
-                <tr><td>Find Potential Conlicts</td><td>0.02 s</td></tr>
+                <tr><td>Find Potential Conlicts</td><td>0.01 s</td></tr>
             
-                <tr><td>Generate Heatmap</td><td>2.09 s</td></tr>
+                <tr><td>Generate Heatmap</td><td>0.87 s</td></tr>
             
-                <tr><td>Generate Piechart</td><td>2.65 s</td></tr>
+                <tr><td>Generate Piechart</td><td>0.46 s</td></tr>
             
-                <tr><td>Generate Histogram and Donut</td><td>0.17 s</td></tr>
+                <tr><td>Generate Histogram and Donut</td><td>0.1 s</td></tr>
             
-                <tr><td>Total time</td><td>4.67 s</td></tr>
+                <tr><td>Total time</td><td>2.31 s</td></tr>
             
             </table><br><br>
         
@@ -2101,18 +2101,18 @@
                 <th>Option Name</th><th>Value</th></tr>
             
                 <tr>
-                    <td>input_rpt</td>
-                    <td>testing\example_rpt_LL.rpt</td>
+                    <td>input_data</td>
+                    <td>testing/example_rpt_LL.rpt</td>
                 </tr>
             
                 <tr>
                     <td>input_csv</td>
-                    <td>testing\example_platemap.csv</td>
+                    <td>testing/example_platemap.csv</td>
                 </tr>
             
                 <tr>
                     <td>output</td>
-                    <td>testing\output_LL</td>
+                    <td>testing/output_LL</td>
                 </tr>
             
                 <tr>
@@ -2177,7 +2177,7 @@
             
                 <tr>
                     <td>plate_row_no</td>
-                    <td>8</td>
+                    <td>2</td>
                 </tr>
             
                 <tr>
@@ -2197,7 +2197,7 @@
             
                 <tr>
                     <td>mass_or_area</td>
-                    <td>mass_conf</td>
+                    <td>area</td>
                 </tr>
             
                 <tr>
@@ -2243,6 +2243,11 @@
                 <tr>
                     <td>find_freq_imp</td>
                     <td>True</td>
+                </tr>
+            
+                <tr>
+                    <td>instrument</td>
+                    <td>Waters</td>
                 </tr>
             
         </table>

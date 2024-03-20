@@ -10,12 +10,16 @@ PyParse was written for Python v3.7, and the following packages should be instal
 * seaborn: https://seaborn.pydata.org/ (v 0.11.0)
 * pandas: https://pandas.pydata.org/ (v 1.1.3)
 * rdkit: https://rdkit.org/docs/api-docs.html (v 2020.09.1)
+* jinja2: https://jinja.palletsprojects.com/en/3.1.x/ (v 3.1.2)
+* numpy: https://numpy.org/ (v 1.21.5)
 
 The suggested version of each package is provided in parentheses. A conda text/yml file is provided 
-as part of the Github repository. 
+as part of the Github repository. PyParse has also been tested and used in Python version 3.11 using up to date versions
+of the above libraries. 
 
-PyParse is currently only capable of analysing LCMS data in the Waters OpenLynx\ |trademark| browser report (.rpt) file
-format. All data for the analysis *must* be in a *single* file of this format. 
+PyParse is currently capable of analysing LCMS data in the Waters OpenLynx\ |trademark| browser report (.rpt) file
+format (single file for the whole plate), or LCMS data saved in the .daml file format from Shimadzu machines (one .daml file per well). 
+All data for the analysis *must* be in one of these two formats. 
 
 .. _preparing_a_platemap_label:
 
@@ -115,20 +119,32 @@ Running a PyParse Analysis
 PyParse has been written as a standalone script and called from the command line, 
 to carry out the automated analysis of a single reaction plate at a time. 
 
-Each analysis should specify, at a minimum, the locations of the LCMS .rpt file and the platemap.
+Each analysis should specify, at a minimum, the locations of the LCMS data and the platemap.
 
 
 .. code-block::
-	:caption: Standard Analysis for a 96-Well Plate 
+	:caption: Standard Analysis for a 96-Well Plate for Water's data
 	
 	python PyParse.py example_rpt.rpt example_platemap.csv
+
+.. code-block::
+	:caption: Standard Analysis for a 96-Well Plate	for Shimadzu data
 	
+	python PyParse.py folder_containing_daml_files example_platemap.csv -i Shimadzu
+
+Note that for data generated using a Shimadzu machine, the instrument (-i) must be specified. 
+
 
 Commonly Used Optional Parameters
 ------------------------------------
-	
-Many analyses will use an alternative plate size, will require an alternative output directory, 
-or won't use the ratio of product:internal standard to compare wells. 
+
+PyParse is now configured to determine the number of rows and columns in the plate for 
+data obtained from both Waters and Shimadzu machines. Furthermore, it generates heatmaps 
+for all different plot types by default. 
+
+The below options allow you to adjust the number of rows and columns in the heatmaps [-r and -c]
+(e.g. only the top left of the physical plate contained samples), adjust the default output
+folder [-o], and specify an alternative metric to determine the "best well" for a compound [-pt]
 
 Use the following optional parameters to change each of these:
 

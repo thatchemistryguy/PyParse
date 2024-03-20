@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="./">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Additional Parameters" href="add_param.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
         <title>PyParse Function Detail - PyParse 2023.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=dc19f415" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -135,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -160,6 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_desc.html">PyParse Outputs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Using the Example Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="freq_imp_det.html">Automatic Impurity Detection and Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_param.html">Additional Parameters</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">PyParse Function Detail</a></li>
@@ -191,14 +192,14 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
           <section id="module-PyParse">
-<span id="pyparse-function-detail"></span><h1>PyParse Function Detail<a class="headerlink" href="#module-PyParse" title="Link to this heading">#</a></h1>
+<span id="pyparse-function-detail"></span><h1>PyParse Function Detail<a class="headerlink" href="#module-PyParse" title="Permalink to this heading">#</a></h1>
 <p>Copyright 2023 GlaxoSmithKline Research &amp; Development Limited</p>
 <p>Licensed under the Apache License, Version 2.0 (the “License”);
 you may not use this file except in compliance with the License.
@@ -214,7 +215,7 @@ limitations under the License.</p>
 <p>Authors: Joe Mason, Francesco Rianjongdee, Harry Wilders, David Fallon</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.buildHTML">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">buildHTML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compoundDF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_compounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#buildHTML"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.buildHTML" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">buildHTML</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compoundDF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_compounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">impurities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analysis_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#buildHTML"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.buildHTML" title="Permalink to this definition">#</a></dt>
 <dd><p>Build a HTML output file using jinja2 and a html_template
 that is stored in the directory “templates”.</p>
 <dl class="field-list simple">
@@ -224,6 +225,8 @@ that is stored in the directory “templates”.</p>
 <li><p><strong>compoundDF</strong> – Pandas datatable containing all information on
 the compounds used for analysis</p></li>
 <li><p><strong>all_compounds</strong> – a list of all compound names</p></li>
+<li><p><strong>impurities</strong> – a list of all impurity names</p></li>
+<li><p><strong>analysis_name</strong> – User provided name for the analysis</p></li>
 <li><p><strong>times</strong> – Optional parameter of a list of floats related to processing time
 for each step of the analysis.</p></li>
 </ul>
@@ -235,25 +238,8 @@ for each step of the analysis.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="PyParse.convertRPT2Dict">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">convertRPT2Dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#convertRPT2Dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.convertRPT2Dict" title="Link to this definition">#</a></dt>
-<dd><p>Converts the input .rpt file into a dictionary where each index corresponds to a well.
-Each dictionary value contains a list of peaks, where each peak is represented as a dictionary
-with the peak area, m/z and UV (if available) data present.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> – Address of the input file</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List comprising: [a dictionary of all peaks in all wells, a list containing each chromatogram,
-a list of the sample IDs for each well]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="PyParse.findHits">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">findHits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataTable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#findHits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.findHits" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">findHits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataTable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#findHits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.findHits" title="Permalink to this definition">#</a></dt>
 <dd><p>For a given compound, look at each peak in each well
 to find a suitable match based on m/z data.</p>
 <dl class="field-list simple">
@@ -271,8 +257,34 @@ from the compoundDF pandas dataframe</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="PyParse.findImpurities">
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">findImpurities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataTable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compoundDF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chroma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#findImpurities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.findImpurities" title="Permalink to this definition">#</a></dt>
+<dd><p>The goal of this function is to find impurities that the program wasn’t explicitly
+asked to find. It will do this by searching for commonly appearing peaks, that have a
+clear ionisation pattern, that haven’t already been assigned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataTable</strong> – dictionary of all peaks, indexed by well</p></li>
+<li><p><strong>compoundDF</strong> – pandas dataframe for all compounds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Save_dir<span class="colon">:</span></dt>
+<dd class="field-even"><p>string for output directory</p>
+</dd>
+<dt class="field-odd">Chroma<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a dictionary containing chromatograms, indexed by well</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Chromatograms for each impurity, additional rows in the compoundDF,
+and hit validation graph plotted containing all impurity hits.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="PyParse.findOverlap">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">findOverlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataTable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">well</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#findOverlap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.findOverlap" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">findOverlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataTable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">well</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#findOverlap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.findOverlap" title="Permalink to this definition">#</a></dt>
 <dd><p>Provided with the dataTable and a retention time+well of interest,
 this function will look for any overlapping peaks, and return the retention
 times of those peaks to the user.</p>
@@ -292,7 +304,7 @@ times of those peaks to the user.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.findPotentialConflicts">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">findPotentialConflicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compoundDF</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#findPotentialConflicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.findPotentialConflicts" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">findPotentialConflicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compoundDF</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#findPotentialConflicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.findPotentialConflicts" title="Permalink to this definition">#</a></dt>
 <dd><p>Find any products which are in danger of overlapping with other compounds that
 are expected in the same well.
 This function is useful as the program may not detect SM (etc) for that peak/well
@@ -310,7 +322,7 @@ may be a problem.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.genLocationHeatmaps">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">genLocationHeatmaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cptable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#genLocationHeatmaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.genLocationHeatmaps" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">genLocationHeatmaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cptable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#genLocationHeatmaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.genLocationHeatmaps" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a heatmap type graph to visualise the
 expected locations of each compound, based on the platemap that was provided.</p>
 <dl class="field-list simple">
@@ -328,7 +340,7 @@ expected locations of each compound, based on the platemap that was provided.</p
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.generateMol">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">generateMol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#generateMol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.generateMol" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">generateMol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smiles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#generateMol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.generateMol" title="Permalink to this definition">#</a></dt>
 <dd><p>Generates a 2D rendering of the given structure and saves
 it as a .png</p>
 <dl class="field-list simple">
@@ -347,7 +359,7 @@ it as a .png</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.generateOutputTable">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">generateOutputTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compoundDF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internalSTD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SMs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_products</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_area_abs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#generateOutputTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.generateOutputTable" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">generateOutputTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compoundDF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internalSTD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SMs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_products</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_area_abs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#generateOutputTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.generateOutputTable" title="Permalink to this definition">#</a></dt>
 <dd><p>Reformats the validated hits into a pandas table ready for visualisation and export.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -367,59 +379,8 @@ it as a .png</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="PyParse.getChromatogram">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">getChromatogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#getChromatogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.getChromatogram" title="Link to this definition">#</a></dt>
-<dd><p>Takes the region of text in rpt file corresponding to the chromatogram,
-and extracts the data into two lists, corresponding to x-values and y-values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>spectrum</strong> – Section of rpt file as string</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of 2 lists, [x-values, y-values]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="PyParse.getMSData">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">getMSData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#getMSData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.getMSData" title="Link to this definition">#</a></dt>
-<dd><p>Takes the specific region of the rpt file pertaining to
-m/z data for a specific peak in a specific well, and
-returns a 2-D list containing all m/z peaks and their
-normalised intensity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>spectrum</strong> – Section of rpt file as string</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>2-D list in following format:
-[m/z value, normalised intensity of that value]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="PyParse.getUVData">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">getUVData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#getUVData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.getUVData" title="Link to this definition">#</a></dt>
-<dd><p>Takes the specific region of the rpt file pertaining to
-UV absorbance spectrum data for a specific peak in a specific
-well, and returns a list containing all the maxima of that spectrum.
-The height of the maxima must be greater than the min_uv_threshold
-specified in options.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>spectrum</strong> – Section of rpt file as string</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>UV maxima as a list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="PyParse.getUserReadableWell">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">getUserReadableWell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wellno</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#getUserReadableWell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.getUserReadableWell" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">getUserReadableWell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wellno</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#getUserReadableWell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.getUserReadableWell" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts the well as a number into a user-friendly string,
 e.g. well 11 becomes “B5” for a 4*6 well plate</p>
 <dl class="field-list simple">
@@ -434,7 +395,7 @@ e.g. well 11 becomes “B5” for a 4*6 well plate</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.importStructures">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">importStructures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#importStructures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.importStructures" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">importStructures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#importStructures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.importStructures" title="Permalink to this definition">#</a></dt>
 <dd><p>From a given CSV, with defined header names, and one row per well,
 deconvolute the information to give a dataframe of one compound
 per row, indexed by canonical SMILES. The well must be specified
@@ -454,7 +415,7 @@ list of names of the products, list of names of the byproducts]</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.main">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.main" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.main" title="Permalink to this definition">#</a></dt>
 <dd><p>Provide an .rpt file and a csv containing the compounds in the
 plate to analyse the wells and return an output containing plots of compounds,
 key wells, and multiple output tables.</p>
@@ -462,7 +423,7 @@ key wells, and multiple output tables.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.plotChroma">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotChroma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wellno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pStart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pEnd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotate_peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms_plus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms_minus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotChroma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotChroma" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotChroma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wellno</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pStart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pEnd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annotate_peaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms_plus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms_minus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotChroma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotChroma" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots the LCMS trace with labels for compounds found for a specific well,
 and highlights a particular peak of interest, providing m/z data for that
 peak.</p>
@@ -490,7 +451,7 @@ to get to an expected observed mass (typically parent isotopic mass)</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.plotDonut">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotDonut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotDonut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotDonut" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotDonut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotDonut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotDonut" title="Permalink to this definition">#</a></dt>
 <dd><p>Takes the outputTable dataframe and generates a donut chart for product %area
 to be saved in the output folder.</p>
 <dl class="field-list simple">
@@ -508,7 +469,7 @@ to be saved in the output folder.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.plotHeatmaps">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotHeatmaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputTable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotHeatmaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotHeatmaps" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotHeatmaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputTable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotHeatmaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotHeatmaps" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots and saves heatmaps for the full dataset</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -525,7 +486,7 @@ to be saved in the output folder.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.plotHistogram">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotHistogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotHistogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotHistogram" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotHistogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotHistogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotHistogram" title="Permalink to this definition">#</a></dt>
 <dd><p>Takes the outputTable dataframe and generates a histogram for product %area
 to be saved in the output folder.</p>
 <dl class="field-list simple">
@@ -543,7 +504,7 @@ to be saved in the output folder.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.plotHitValidationGraph">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotHitValidationGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validatedHits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_bands</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotHitValidationGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotHitValidationGraph" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotHitValidationGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validatedHits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_bands</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotHitValidationGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotHitValidationGraph" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots all the hit peaks in a scatter graph of peaktime vs
 well, colour coded by whether the hit was included or discarded
 from the final output.</p>
@@ -564,7 +525,7 @@ from the final output.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.plotPieCharts">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotPieCharts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zvalue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputTable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_products</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotPieCharts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotPieCharts" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">plotPieCharts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zvalue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputTable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_products</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#plotPieCharts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.plotPieCharts" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots a set of pie charts for the full plate
 using the full dataset. The size of the pie chart is dependant on
 the value in the datatable for the column specified by zvalue</p>
@@ -585,7 +546,7 @@ the value in the datatable for the column specified by zvalue</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.refineClusterByMassConf">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">refineClusterByMassConf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#refineClusterByMassConf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.refineClusterByMassConf" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">refineClusterByMassConf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#refineClusterByMassConf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.refineClusterByMassConf" title="Permalink to this definition">#</a></dt>
 <dd><p>Takes in input cluster of all the hit peaks,
 and refines them by ensuring all peaks have a similar mass confidence
 to the cluster’s mean. Those which do are left in “green”;
@@ -605,7 +566,7 @@ those which don’t are moved to the “orange” category.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.refineClusterByTime">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">refineClusterByTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_rt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#refineClusterByTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.refineClusterByTime" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">refineClusterByTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_rt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#refineClusterByTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.refineClusterByTime" title="Permalink to this definition">#</a></dt>
 <dd><p>Takes in input cluster of all the hit peaks,
 and refines them by finding a mid-value for the retention
 time based on which hit has the greatest number of nearest neighbours.
@@ -627,7 +588,7 @@ in the same well into “discarded”.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.refineClusterByUV">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">refineClusterByUV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">UVdatafound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#refineClusterByUV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.refineClusterByUV" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">refineClusterByUV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cluster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">UVdatafound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#refineClusterByUV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.refineClusterByUV" title="Permalink to this definition">#</a></dt>
 <dd><p>Takes in input cluster of all the hit peaks,
 and refines the cluster by ensuring all peaks have a similar set
 of UV maxima. Those which do are left in “green”, those which
@@ -648,7 +609,7 @@ don’t are moved to the “orange” category</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.removeDupAssigns">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">removeDupAssigns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compoundDF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internalSTD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SMs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_products</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#removeDupAssigns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.removeDupAssigns" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">removeDupAssigns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compoundDF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internalSTD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SMs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_products</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#removeDupAssigns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.removeDupAssigns" title="Permalink to this definition">#</a></dt>
 <dd><p>Checks each compound to ensure that no peak has been assigned
 to two different compounds. If this has happened, the internalSTD
 (if present) takes first priority, limiting reactant is second priority,
@@ -671,7 +632,7 @@ product third priority and finally a by-product is lowest priority.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.selectClusterByMassConf">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">selectClusterByMassConf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clusters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#selectClusterByMassConf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.selectClusterByMassConf" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">selectClusterByMassConf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clusters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#selectClusterByMassConf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.selectClusterByMassConf" title="Permalink to this definition">#</a></dt>
 <dd><p>If more than one cluster was found for the compound,
 this function is called to try to select a single cluster based on
 which cluster has the highest mean massConf. If more than one cluster
@@ -691,7 +652,7 @@ has a close-to-highest-mean massconf, take them all.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.selectClusterBySize">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">selectClusterBySize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clusters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#selectClusterBySize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.selectClusterBySize" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">selectClusterBySize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clusters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#selectClusterBySize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.selectClusterBySize" title="Permalink to this definition">#</a></dt>
 <dd><p>If more than one cluster was found for the compound,
 this function is called to try to select a single cluster based on
 which cluster is the largest. If more than one cluster
@@ -711,7 +672,7 @@ has a close-to-largest size, take them all.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PyParse.validateHits">
-<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">validateHits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peakList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_rt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#validateHits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.validateHits" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PyParse.</span></span><span class="sig-name descname"><span class="pre">validateHits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peakList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_rt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyParse.html#validateHits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyParse.validateHits" title="Permalink to this definition">#</a></dt>
 <dd><p>Looks at all hits for a given compound, and refines
 the list based on retention time, massConf and UV data.
 The goal is to end up with only high confidence hits, and no more than
@@ -768,62 +729,19 @@ along with other useful variables to aid plot generation.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">PyParse Function Detail</a><ul>
-<li><a class="reference internal" href="#PyParse.buildHTML"><code class="docutils literal notranslate"><span class="pre">buildHTML()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.convertRPT2Dict"><code class="docutils literal notranslate"><span class="pre">convertRPT2Dict()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.findHits"><code class="docutils literal notranslate"><span class="pre">findHits()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.findOverlap"><code class="docutils literal notranslate"><span class="pre">findOverlap()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.findPotentialConflicts"><code class="docutils literal notranslate"><span class="pre">findPotentialConflicts()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.genLocationHeatmaps"><code class="docutils literal notranslate"><span class="pre">genLocationHeatmaps()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.generateMol"><code class="docutils literal notranslate"><span class="pre">generateMol()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.generateOutputTable"><code class="docutils literal notranslate"><span class="pre">generateOutputTable()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.getChromatogram"><code class="docutils literal notranslate"><span class="pre">getChromatogram()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.getMSData"><code class="docutils literal notranslate"><span class="pre">getMSData()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.getUVData"><code class="docutils literal notranslate"><span class="pre">getUVData()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.getUserReadableWell"><code class="docutils literal notranslate"><span class="pre">getUserReadableWell()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.importStructures"><code class="docutils literal notranslate"><span class="pre">importStructures()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.plotChroma"><code class="docutils literal notranslate"><span class="pre">plotChroma()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.plotDonut"><code class="docutils literal notranslate"><span class="pre">plotDonut()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.plotHeatmaps"><code class="docutils literal notranslate"><span class="pre">plotHeatmaps()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.plotHistogram"><code class="docutils literal notranslate"><span class="pre">plotHistogram()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.plotHitValidationGraph"><code class="docutils literal notranslate"><span class="pre">plotHitValidationGraph()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.plotPieCharts"><code class="docutils literal notranslate"><span class="pre">plotPieCharts()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.refineClusterByMassConf"><code class="docutils literal notranslate"><span class="pre">refineClusterByMassConf()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.refineClusterByTime"><code class="docutils literal notranslate"><span class="pre">refineClusterByTime()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.refineClusterByUV"><code class="docutils literal notranslate"><span class="pre">refineClusterByUV()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.removeDupAssigns"><code class="docutils literal notranslate"><span class="pre">removeDupAssigns()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.selectClusterByMassConf"><code class="docutils literal notranslate"><span class="pre">selectClusterByMassConf()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.selectClusterBySize"><code class="docutils literal notranslate"><span class="pre">selectClusterBySize()</span></code></a></li>
-<li><a class="reference internal" href="#PyParse.validateHits"><code class="docutils literal notranslate"><span class="pre">validateHits()</span></code></a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=07445e93"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
-    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="_static/copybutton.js?v=f281be69"></script>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     </body>
 </html>

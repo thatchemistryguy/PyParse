@@ -20,6 +20,9 @@ Generic Parameters
 * -generate_zip (-z): "True" or "False"
 	Choose whether to generate and save a zip file containing all visualisations and outputs
 
+* -name (-n): String value
+	Specify a name for the analysis, which appears at the top of the HTML report
+
 
 Parameters Used for the Analysis
 ----------------------------------
@@ -53,7 +56,16 @@ Parameters Used for the Analysis
 * -calc_higherions (-chi): "True" or "False"
 	Use [M+2H]2+ and [M+3H]3+ ions when looking for hits for a compound. Specify when a set of compounds 
 	are likely to ionise multiple times on the mass spectrometer. 
-
+* -calc_boc (-cboc): "True" or "False"
+	Look for Boc degradation ions when looking for hits for a compound
+* -filter_by_rt (-f): String value
+	Provide retention time ranges to ignore, written as 'mintime-maxtime' where the two times
+	are separated by a hyphen. Multiple ranges may be specified by a space. 
+* -detector (-d): String value, "UV" or "ELSD"
+	Specify "ELSD" where required to use only ELSD detector data  for the analysis. Default is "UV", 
+	where only UV detector data  are used. Waters data option only. 
+* -find_freq_imp (-ffi): "True" or "False"
+	Choose whether to search for and report frequently observed impurities. :ref:`freq_impurity_detection_label`
 
 
 

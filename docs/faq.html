@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="./">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Additional Parameters" href="add_param.html" /><link rel="prev" title="Using the Example Dataset" href="example.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Additional Parameters" href="add_param.html" /><link rel="prev" title="Automatic Impurity Detection and Reporting" href="freq_imp_det.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
         <title>Frequently Asked Questions - PyParse 2023.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=dc19f415" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -160,6 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_desc.html">PyParse Outputs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Using the Example Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="freq_imp_det.html">Automatic Impurity Detection and Reporting</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_param.html">Additional Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyparse_det.html">PyParse Function Detail</a></li>
@@ -198,29 +199,39 @@
         </div>
         <article role="main">
           <section id="frequently-asked-questions">
-<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Link to this heading">#</a></h1>
+<h1>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Permalink to this heading">#</a></h1>
 <section id="which-uplc-lcms-vendors-are-supported">
-<h2>Which UPLC/LCMS Vendors are Supported?<a class="headerlink" href="#which-uplc-lcms-vendors-are-supported" title="Link to this heading">#</a></h2>
+<h2>Which UPLC/LCMS Vendors are Supported?<a class="headerlink" href="#which-uplc-lcms-vendors-are-supported" title="Permalink to this heading">#</a></h2>
 <blockquote>
-<div><p>Currently, the .rpt file format from Waters™</p>
+<div><p>Currently, the .rpt file format from Waters™ and the .daml file format from Shimadzu.</p>
 </div></blockquote>
 </section>
-<section id="which-analysis-type-should-i-choose">
-<h2>Which analysis type should I choose?<a class="headerlink" href="#which-analysis-type-should-i-choose" title="Link to this heading">#</a></h2>
+<section id="which-plot-type-heatmap-should-i-look-at">
+<h2>Which plot type heatmap should I look at?<a class="headerlink" href="#which-plot-type-heatmap-should-i-look-at" title="Permalink to this heading">#</a></h2>
 <blockquote>
-<div><p>This depends on your plate and the information you want to extract – speak to a lead user or super
-user for advice, or refer to the “Help” tab in Pipeline Pilot for detail on each analysis type.</p>
+<div><p>This depends on your plate and the information you want to extract. Typically, the heatmap
+plotted by product percentage area (Parea) is useful where there is no internal standard present.
+In cases where an internal standard was added to the plate, the heatmap plotted by the corrected ratio of
+product to internal standard (corrP/STD) is most useful.</p>
+</div></blockquote>
+</section>
+<section id="what-does-corrp-std-actually-mean">
+<h2>What does “corrP/STD” actually mean?<a class="headerlink" href="#what-does-corrp-std-actually-mean" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>This is the ratio of the absolute peak of the product to internal standard in that well,
+divided by the maximum observed ratio of the product to internal standard observed in any well
+for that particular product. This normalises arbitrary ratio values to onto a “zero-to-one” scale.</p>
 </div></blockquote>
 </section>
 <section id="my-plate-design-has-deliberate-gaps-empty-wells-in-it-what-do-i-do">
-<h2>My plate design has deliberate gaps/empty wells in it - what do I do?<a class="headerlink" href="#my-plate-design-has-deliberate-gaps-empty-wells-in-it-what-do-i-do" title="Link to this heading">#</a></h2>
+<h2>My plate design has deliberate gaps/empty wells in it - what do I do?<a class="headerlink" href="#my-plate-design-has-deliberate-gaps-empty-wells-in-it-what-do-i-do" title="Permalink to this heading">#</a></h2>
 <blockquote>
 <div><p>Continue generating the platemap as per the guide on <a class="reference internal" href="installation.html#preparing-a-platemap-label"><span class="std std-ref">Preparing a Platemap</span></a>, omitting
 any wells which shouldn’t be used in the analysis.</p>
 </div></blockquote>
 </section>
 <section id="i-d-like-to-view-the-results-in-excel-spotfire-another-program-how-do-i-do-this">
-<h2>I’d like to view the results in Excel/Spotfire/another program - how do I do this?<a class="headerlink" href="#i-d-like-to-view-the-results-in-excel-spotfire-another-program-how-do-i-do-this" title="Link to this heading">#</a></h2>
+<h2>I’d like to view the results in Excel/Spotfire/another program - how do I do this?<a class="headerlink" href="#i-d-like-to-view-the-results-in-excel-spotfire-another-program-how-do-i-do-this" title="Permalink to this heading">#</a></h2>
 <blockquote>
 <div><p>The compoundtable.csv and outputTable.csv output files contain all the information used
 to generate the visualisations detailed in the section on <a class="reference internal" href="output_desc.html#pyparse-outputs-label"><span class="std std-ref">PyParse Outputs</span></a>.
@@ -228,14 +239,14 @@ Import these files into your preferred data analysis program for custom visualis
 </div></blockquote>
 </section>
 <section id="the-program-didn-t-find-my-product">
-<h2>The program didn’t find my product!!<a class="headerlink" href="#the-program-didn-t-find-my-product" title="Link to this heading">#</a></h2>
+<h2>The program didn’t find my product!!<a class="headerlink" href="#the-program-didn-t-find-my-product" title="Permalink to this heading">#</a></h2>
 <p>Check that the compound strongly ionises to give an [M+H]+, [M+2H]2+ or [M+3H]3+ ion, or Boc group degradation fragment ions.
 PyParse uses a generous limit to ensure that background MS noise isn’t captured as a compound. If the compound
 doesn’t ionise, add the retention time to the platemap to force PyParse to accept peaks at that time which don’t ionise correctly
 <a class="reference internal" href="installation.html#adding-a-rt-label"><span class="std std-ref">Specifying a Retention Time in the Platemap</span></a></p>
 </section>
 <section id="the-output-says-peak-overlap-detected-for-my-compound-what-does-this-mean">
-<h2>The output says “Peak overlap detected!” for my compound – what does this mean?<a class="headerlink" href="#the-output-says-peak-overlap-detected-for-my-compound-what-does-this-mean" title="Link to this heading">#</a></h2>
+<h2>The output says “Peak overlap detected!” for my compound – what does this mean?<a class="headerlink" href="#the-output-says-peak-overlap-detected-for-my-compound-what-does-this-mean" title="Permalink to this heading">#</a></h2>
 <p>PyParse found that in the Best Well for that product, the compound peak overlapped with another
 peak in the LCMS. The calculated purity given in the “Purity of Best Well” column may therefore be
 incorrect. Check the LCMS yourself, and re-run using a different modifier (typically formic acid, ammonium bicarbonate or
@@ -257,14 +268,14 @@ trifluoroacetic acid).</p>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="example.html">
+          <a class="prev-page" href="freq_imp_det.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Using the Example Dataset</div>
+                <div class="title">Automatic Impurity Detection and Reporting</div>
                 
               </div>
             </a>
@@ -300,7 +311,8 @@ trifluoroacetic acid).</p>
             <ul>
 <li><a class="reference internal" href="#">Frequently Asked Questions</a><ul>
 <li><a class="reference internal" href="#which-uplc-lcms-vendors-are-supported">Which UPLC/LCMS Vendors are Supported?</a></li>
-<li><a class="reference internal" href="#which-analysis-type-should-i-choose">Which analysis type should I choose?</a></li>
+<li><a class="reference internal" href="#which-plot-type-heatmap-should-i-look-at">Which plot type heatmap should I look at?</a></li>
+<li><a class="reference internal" href="#what-does-corrp-std-actually-mean">What does “corrP/STD” actually mean?</a></li>
 <li><a class="reference internal" href="#my-plate-design-has-deliberate-gaps-empty-wells-in-it-what-do-i-do">My plate design has deliberate gaps/empty wells in it - what do I do?</a></li>
 <li><a class="reference internal" href="#i-d-like-to-view-the-results-in-excel-spotfire-another-program-how-do-i-do-this">I’d like to view the results in Excel/Spotfire/another program - how do I do this?</a></li>
 <li><a class="reference internal" href="#the-program-didn-t-find-my-product">The program didn’t find my product!!</a></li>
@@ -316,11 +328,13 @@ trifluoroacetic acid).</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=07445e93"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
-    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="_static/copybutton.js?v=f281be69"></script>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     </body>
 </html>

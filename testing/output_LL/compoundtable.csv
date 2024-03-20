@@ -16,7 +16,7 @@ Product14,CC(C)(C)OC(=O)N1CCN(CC1)C1=CC=NC2=C1C=CN2,302.17,246.11,202.12,1.04,-,
 Product15,CC(C)(C)OC(=O)N1CCN(CC1)C1=NC=C(Br)C=N1,342.07,286.01,242.02,1.32,-,287.0,B3,100.0,No peak overlap detected.,No potential conflicts found.
 Product16,BrC1=CC2=CC=CC=C2N=C1,206.97,208.97,0.0,1.07,-,208.0,B4,100.0,No peak overlap detected.,No potential conflicts found.
 Product17,CC(C)(C)OC(=O)N1CCN(CC1C(O)=O)C(=O)OCC1C2=CC=CC=C2C2=CC=CC=C12,452.19,396.13,352.14,0.9,-,397.23,B5,98.59,No peak overlap detected.,No potential conflicts found.
-Product18,CC(C)(C)OC(=O)N1CCN(CC1)C1=CC=NC(Cl)=N1,298.12,242.06,198.07,1.28,-,243.12,B6,7.13,No peak overlap detected.,No potential conflicts found.
+Product18,CC(C)(C)OC(=O)N1CCN(CC1)C1=CC=NC(Cl)=N1,298.12,242.06,198.07,1.07,-,299.12,B6,92.87,No peak overlap detected.,No potential conflicts found.
 Product19,CC1=CC(=NC=C1Br)N1CCNCC1,255.04,257.04,0.0,0.99,-,258.08,B7,100.0,No peak overlap detected.,No potential conflicts found.
 Product20,BrC1=CC=C(Br)C2=C1C=CC=N2,284.88,286.88,0.0,1.18,-,287.86,B8,95.95,No peak overlap detected.,No potential conflicts found.
 Product21,BrC1=CC=CN=C1N1CCOCC1,242.01,244.01,0.0,0.95,-,245.05,B9,100.0,No peak overlap detected.,No potential conflicts found.

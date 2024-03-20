@@ -23,13 +23,14 @@ Example Usage
 ---------------
 
 .. code-block::
-	:caption: Standard Analysis for a 96-Well Plate	
+	:caption: Standard Analysis for a 96-Well Plate	for Water's data
 	
 	python PyParse.py example_rpt.rpt example_platemap.csv -o new_output_directory
 
-(Used for an LCMS plate with 8 rows and 12 columns, to generate visualisations based 
-on the corrected ratio of product to internal standard. Saves all output tables/data/visualisations
-to "new_output_directory".)
+.. code-block::
+	:caption: Standard Analysis for a 96-Well Plate	for Shimadzu data
+	
+	python PyParse.py folder_containing_daml_files example_platemap.csv -o new_output_directory
 		
 		
 License
@@ -61,6 +62,7 @@ Contents
    installation
    output_desc
    example
+   freq_imp_det
    faq
    add_param
    pyparse_det

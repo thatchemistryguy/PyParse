@@ -1084,14 +1084,22 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
     asked to find. It will do this by searching for commonly appearing peaks, that have a 
     clear ionisation pattern, that haven't already been assigned. 
 
+    :param dataTable: dictionary of all peaks, indexed by well
+    :param compoundDF: pandas dataframe for all compounds
+    :save_dir: string for output directory
+    :chroma: a dictionary containing chromatograms, indexed by well
+
+    :return: Chromatograms for each impurity, additional rows in the compoundDF,
+             and hit validation graph plotted containing all impurity hits.
     """
-    #Define sub-function to find common ions for a cluster of peaks
+    
     impurities = []
 
+    #Define sub-function to find common ions for a cluster of peaks
     def findCommonIons(cluster):
         ions_plus = {}
         ions_minus = {}
-       # print(cluster)
+       
         for peak in cluster:
 
             sorted_MS_plus = sorted(peak["MS+"], key = lambda x: x[1])
@@ -1130,6 +1138,8 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
 
         return [return_plus, return_minus]
 
+    #Define function to get a list of wells from a cluster, 
+    #without any duplicates
     def getWells(cluster):
         wells = []
         for peak in cluster:
@@ -1183,7 +1193,8 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
     
     clusters = list(filter(lambda x: len(getWells(x)) > options.min_no_of_wells, clusters))
 
-
+    #Format the data in each cluster into a form suitable for 
+    #the compoundDF.
     for index, cluster in enumerate(clusters):
         hits = {
             "green": [],
@@ -1227,14 +1238,14 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
         if len(containing_wells) == options.plate_row_no * options.plate_col_no:
             comments.append("This impurity was observed in every well of the plate.")
         elif len(containing_wells) > 0.5 * options.plate_row_no * options.plate_col_no:
-            comments.append("This impurity was typically observed across the whole plate.")
+            comments.append("This impurity was observed across the majority of the plate.")
         else:
             #Build a matrix of where the compound was observed, then iterate through each row/column in turn?
             columns = {}
             rows = {}
             for well in containing_wells:
-                row = math.floor(well/options.plate_row_no)
-                column = ((well-1) % options.plate_row_no) + 1
+                row = math.floor((well-1)/options.plate_col_no) + 1
+                column = ((well-1) % options.plate_col_no) + 1
                 if row in rows:
                     rows[row] = rows[row] + 1
                 else:
@@ -1250,14 +1261,13 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
             for rindex, row in rows.items():
                 if row > 0.8 * options.plate_col_no:
                     comments.append(f'Impurity is frequently observed in row {chr(ord("@")+(rindex)+1)}.')
-            
             if len(columns.keys()) < 0.5 * options.plate_col_no:
                 readable_cols = [str(i) for i in sorted([int(j) for j in columns.keys()])]
                 comments.append(f'Impurity was only observed in columns {", ".join(readable_cols)}.')
             if len(rows.keys()) < 0.5 * options.plate_row_no:
-                readable_rows = sorted([chr(ord("@")+(x)+1) for x in rows.keys()])
+                readable_rows = sorted([chr(ord("@")+(x)) for x in rows.keys()])
                 comments.append(f'Impurity was only observed in rows {", ".join(readable_rows)}.')
-
+            
         #Column headers for the compoundDF:
         #[locations, g_smiles, name, rt, type, mass1, mass2, mass3, hits, comments, clusterbands,
         #best_well, best_purity, overlaps, mass+, mass-, time, conflicts]
@@ -1303,7 +1313,7 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
         pStart = [i["pStart"] for i in cluster if i["well"] == best_well][0]
         pEnd = [i["pEnd"] for i in cluster if i["well"] == best_well][0]
         
-        #Submit all data to existing plotChroma function
+        #Submit all data to plotChroma function
         try:  
             plotChroma(f'Impurity{index}', best_well, chroma[best_well], 
                     pStart, pEnd, 
@@ -1337,7 +1347,9 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
             #Annotate the graph with the average retention time of each cluster
             
             mean_rt = round(mean([peak["time"] for peak in cluster]), 2)
-            ax.annotate(f'Impurity{i}: {mean_rt} min.', [-total_wells*0.22, mean_rt])     
+
+            ax.annotate(f'Imp{i}: {mean_rt} min.', [-total_wells*0.22, mean_rt], 
+                        verticalalignment='center')     
 
         #Label the graph and axes, and save to the output directory.   
         plt.title("All Frequent Impurities Found")
@@ -1345,6 +1357,8 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
         plt.ylabel("Retention Time /min")
         plt.savefig(f'{save_dir}/graphs/impuritychart.jpg', format = "jpg")    
         plt.close()
+    
+    #Return a list of impurity names for use when building the HTML output. 
     return impurities
 
 def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, total_area_abs):
@@ -2236,6 +2250,8 @@ def buildHTML(save_dir, compoundDF, all_compounds, impurities, analysis_name, ti
     :param compoundDF: Pandas datatable containing all information on 
                         the compounds used for analysis
     :param all_compounds: a list of all compound names
+    :param impurities: a list of all impurity names
+    :param analysis_name: User provided name for the analysis
     :param times: Optional parameter of a list of floats related to processing time
                     for each step of the analysis. 
     :return: HTML file saved to save_dir 
@@ -2420,7 +2436,8 @@ def main():
                         help = "Choose a name for the analysis.\n")
 
     parser.add_argument("-d", "--detector", action="store", type=str, dest = "detector",
-                        help = "Choose which detector to use, UV or ELSD")
+                        help = "Choose which detector to use, UV or ELSD. Waters data only.")
+    
     parser.add_argument("-ffi", "--find_freq_imp", action="store", type=str, dest = "find_freq_imp",
                         help = "Choose whether to search for and report frequently observed impurities. ")
 

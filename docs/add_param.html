@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="./">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="PyParse Function Detail" href="pyparse_det.html" /><link rel="prev" title="Frequently Asked Questions" href="faq.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
         <title>Additional Parameters - PyParse 2023.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=dc19f415" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -160,6 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_desc.html">PyParse Outputs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Using the Example Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="freq_imp_det.html">Automatic Impurity Detection and Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Additional Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyparse_det.html">PyParse Function Detail</a></li>
@@ -198,14 +199,14 @@
         </div>
         <article role="main">
           <section id="additional-parameters">
-<h1>Additional Parameters<a class="headerlink" href="#additional-parameters" title="Link to this heading">#</a></h1>
+<h1>Additional Parameters<a class="headerlink" href="#additional-parameters" title="Permalink to this heading">#</a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
 <p>There are optional parameters in addition to those detailed in <a class="reference internal" href="installation.html#running-an-analysis-label"><span class="std std-ref">Running a PyParse Analysis</span></a> which are more rarely
 re-configured.</p>
 </section>
 <section id="generic-parameters">
-<h2>Generic Parameters<a class="headerlink" href="#generic-parameters" title="Link to this heading">#</a></h2>
+<h2>Generic Parameters<a class="headerlink" href="#generic-parameters" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>-verbose (-v): “True” or “False”</dt><dd><p>Specify whether logging should be run in debug mode or not</p>
@@ -222,10 +223,15 @@ re-configured.</p>
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt>-name (-n): String value</dt><dd><p>Specify a name for the analysis, which appears at the top of the HTML report</p>
+</dd>
+</dl>
+</li>
 </ul>
 </section>
 <section id="parameters-used-for-the-analysis">
-<h2>Parameters Used for the Analysis<a class="headerlink" href="#parameters-used-for-the-analysis" title="Link to this heading">#</a></h2>
+<h2>Parameters Used for the Analysis<a class="headerlink" href="#parameters-used-for-the-analysis" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>-validate (-V): “True” or “False”</dt><dd><p>Specify whether or not to run the hit validation algorithm.</p>
@@ -298,10 +304,32 @@ are likely to ionise multiple times on the mass spectrometer.</p>
 </dd>
 </dl>
 </li>
+<li><dl class="simple">
+<dt>-calc_boc (-cboc): “True” or “False”</dt><dd><p>Look for Boc degradation ions when looking for hits for a compound</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>-filter_by_rt (-f): String value</dt><dd><p>Provide retention time ranges to ignore, written as ‘mintime-maxtime’ where the two times
+are separated by a hyphen. Multiple ranges may be specified by a space.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>-detector (-d): String value, “UV” or “ELSD”</dt><dd><p>Specify “ELSD” where required to use only ELSD detector data  for the analysis. Default is “UV”,
+where only UV detector data  are used. Waters data option only.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>-find_freq_imp (-ffi): “True” or “False”</dt><dd><p>Choose whether to search for and report frequently observed impurities. <a class="reference internal" href="freq_imp_det.html#freq-impurity-detection-label"><span class="std std-ref">Automatic Impurity Detection and Reporting</span></a></p>
+</dd>
+</dl>
+</li>
 </ul>
 </section>
 <section id="parameters-used-for-the-visualisations">
-<h2>Parameters Used for the Visualisations<a class="headerlink" href="#parameters-used-for-the-visualisations" title="Link to this heading">#</a></h2>
+<h2>Parameters Used for the Visualisations<a class="headerlink" href="#parameters-used-for-the-visualisations" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><dl class="simple">
 <dt>-points_per_trace (-ppt): Integer value</dt><dd><p>The maximum number of data points of a UV chromatogram to save. This value should be reduced if the program is found to run exceptionally slowly.</p>
@@ -383,11 +411,13 @@ are likely to ionise multiple times on the mass spectrometer.</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=07445e93"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
-    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="_static/copybutton.js?v=f281be69"></script>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     </body>
 </html>
