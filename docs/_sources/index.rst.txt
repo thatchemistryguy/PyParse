@@ -67,6 +67,8 @@ Contents
    faq
    add_param
    pyparse_det
+   getwaters_det
+   getshimadzu_det
 
 
 .. |trademark|	unicode:: U+2122 .. TRADEMARK SYMBOL

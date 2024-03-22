@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Additional Parameters" href="add_param.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Acquire Data from Water’s .rpt File" href="getwaters_det.html" /><link rel="prev" title="Additional Parameters" href="add_param.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
         <title>PyParse Function Detail - PyParse 2023.1.0 documentation</title>
@@ -162,10 +162,11 @@
 <li class="toctree-l1"><a class="reference internal" href="example.html">Using the Example Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="freq_imp_det.html">Automatic Impurity Detection and Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filter_rt.html">Filtering by Retention Time</a></li>
-<li class="toctree-l1"><a class="reference internal" href="filter_rt.html#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_param.html">Additional Parameters</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">PyParse Function Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getwaters_det.html">Acquire Data from Water’s .rpt File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getshimadzu_det.html">Acquire Data from Shimadzu .daml Files</a></li>
 </ul>
 
 </div>
@@ -269,13 +270,9 @@ clear ionisation pattern, that haven’t already been assigned.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dataTable</strong> – dictionary of all peaks, indexed by well</p></li>
 <li><p><strong>compoundDF</strong> – pandas dataframe for all compounds</p></li>
+<li><p><strong>save_dir</strong> – string for output directory</p></li>
+<li><p><strong>chroma</strong> – a dictionary containing chromatograms, indexed by well</p></li>
 </ul>
-</dd>
-<dt class="field-even">Save_dir<span class="colon">:</span></dt>
-<dd class="field-even"><p>string for output directory</p>
-</dd>
-<dt class="field-odd">Chroma<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a dictionary containing chromatograms, indexed by well</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Chromatograms for each impurity, additional rows in the compoundDF,
@@ -701,7 +698,15 @@ along with other useful variables to aid plot generation.</p>
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="getwaters_det.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Acquire Data from Water’s .rpt File</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
           <a class="prev-page" href="add_param.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">

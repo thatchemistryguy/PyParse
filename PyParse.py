@@ -1086,8 +1086,8 @@ def findImpurities(dataTable, compoundDF, save_dir, chroma):
 
     :param dataTable: dictionary of all peaks, indexed by well
     :param compoundDF: pandas dataframe for all compounds
-    :save_dir: string for output directory
-    :chroma: a dictionary containing chromatograms, indexed by well
+    :param save_dir: string for output directory
+    :param chroma: a dictionary containing chromatograms, indexed by well
 
     :return: Chromatograms for each impurity, additional rows in the compoundDF,
              and hit validation graph plotted containing all impurity hits.

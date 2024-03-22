@@ -8,10 +8,10 @@ input. Not only will PyParse remove any peaks in these regions from consideratio
 recalculate all peak percentage areas to reflect the fact that this region was removed. 
 
 Usage 
-=======
+-------
 
 To use this option, a range (or multiple ranges) should be provided in the form:
-    "[first_retention_time]-[second_retention_time]"
+"[first_retention_time]-[second_retention_time]"
 
 For example, to filter out all peaks between 0 and 0.4 minutes, you would add the following argument:
 
@@ -35,20 +35,17 @@ To filter out multiple ranges, input each range separated by a space:
 .. figure:: images/filter_multiple_range.jpg
     :alt: An example chromatogram where a multiple ranges were filtered out
 
-    An example chromatogram where a multiple ranges were filtered out.
 
-
-As a result of this filtering is that the the purity reported by PyParse is higher:
+The result of this filtering is that the purity reported by PyParse is higher:
 
 .. figure:: images/filter_oldpurity.jpg
     :alt: Original purity value reported for Product1
 
-    Original Purity Value Reported for Product1.
 
 .. figure:: images/filter_newpurity.jpg
     :alt: New purity value reported for Product1
 
-    New Purity Value Reported for Product1.
+    Top) Original purity value for Product1; Bottom) New purity value for Product1
 
 The purpose of this feature is to enable the user to remove solvent peaks (e.g. DMSO, toluene)
 from consideration. However, it should be noted that this feature should only be used with 

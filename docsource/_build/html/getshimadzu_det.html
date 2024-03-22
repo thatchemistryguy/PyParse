@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Automatic Impurity Detection and Reporting" href="freq_imp_det.html" /><link rel="prev" title="PyParse Outputs" href="output_desc.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Acquire Data from Water’s .rpt File" href="getwaters_det.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
-        <title>Using the Example Dataset - PyParse 2023.1.0 documentation</title>
+        <title>Acquire Data from Shimadzu .daml Files - PyParse 2023.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -135,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -159,14 +159,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="output_desc.html">PyParse Outputs</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Using the Example Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Using the Example Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="freq_imp_det.html">Automatic Impurity Detection and Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filter_rt.html">Filtering by Retention Time</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_param.html">Additional Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyparse_det.html">PyParse Function Detail</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getwaters_det.html">Acquire Data from Water’s .rpt File</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getshimadzu_det.html">Acquire Data from Shimadzu .daml Files</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Acquire Data from Shimadzu .daml Files</a></li>
 </ul>
 
 </div>
@@ -195,61 +195,43 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <section id="using-the-example-dataset">
-<h1>Using the Example Dataset<a class="headerlink" href="#using-the-example-dataset" title="Permalink to this heading">#</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
-<p>To help you get started, an example dataset from a Waters machine is provided in the repository
-under the folder “example_dataset”.</p>
-<dl class="simple">
-<dt>Included are:</dt><dd><ul class="simple">
-<li><p>An “example_rpt” file, which includes the LCMS traces for 24 compounds published in the public domain.</p></li>
-<li><p>An “example_platemap” file, which is the corresponding platemap to enable PyParse analysis of the above data.</p></li>
-<li><p>The output you should expect to see</p></li>
-</ul>
+          <section id="module-getShimadzuData">
+<span id="acquire-data-from-shimadzu-daml-files"></span><h1>Acquire Data from Shimadzu .daml Files<a class="headerlink" href="#module-getShimadzuData" title="Permalink to this heading">#</a></h1>
+<p>The .daml files provided by Shimadzu come in an xml format
+where key data pieces (chromatogram, observed m/z ratios
+with their corresponding intensity and UV traces) are
+encoded in base64 format.</p>
+<p>The following script extracts the data relevant to PyParse, and reformats
+it into a common structure.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="getShimadzuData.getData">
+<span class="sig-prename descclassname"><span class="pre">getShimadzuData.</span></span><span class="sig-name descname"><span class="pre">getData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/getShimadzuData.html#getData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#getShimadzuData.getData" title="Permalink to this definition">#</a></dt>
+<dd><p>Search the directory specified by the user to acquire any and all input
+LC-MS data that is present. Format this data into the preferred PyParse format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_dir</strong> – A string specifying the directory to search for .daml files</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list comprising: a dictionary of all peaks in all wells (indexed by well);
+a dictionary of all chromatograms; a dictionary of all sample IDs; a dictionary
+total_area_abs of each well. Each of these dictionaries are indexed by well</p>
 </dd>
 </dl>
-<p>Using the conda environment provided, you can use the sample data to run your first PyParse analysis!</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Using the sample Waters dataset provided</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">PyParse</span><span class="o">.</span><span class="n">py</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">Waters</span><span class="o">/</span><span class="n">Example1</span><span class="o">/</span><span class="n">example_rpt</span><span class="o">.</span><span class="n">rpt</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">Waters</span><span class="o">/</span><span class="n">Example1</span><span class="o">/</span><span class="n">example_dataset</span><span class="o">/</span><span class="n">example_platemap</span><span class="o">.</span><span class="n">csv</span> <span class="o">-</span><span class="n">o</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">Waters</span><span class="o">/</span><span class="n">Example1</span><span class="o">/</span><span class="n">example_dataset</span><span class="o">/</span><span class="n">output</span> <span class="o">-</span><span class="n">moa</span> <span class="n">area</span>
-</pre></div>
-</div>
-</div>
-<p>The “-moa area” specifies to the PyParse algorithm that where there are two peaks that
-could correspond to the product, choose the one with the larger percentage peak area.</p>
-<p>A different example dataset obtained using a Shimadzu machine is also provided, under the example_dataset/Shimadzu folder.</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Using the sample Shimadzu dataset provided</span><a class="headerlink" href="#id2" title="Permalink to this code">#</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">PyParse</span><span class="o">.</span><span class="n">py</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">Shimadzu</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">Shimadzu</span><span class="o">/</span><span class="n">Platemap</span><span class="o">.</span><span class="n">csv</span> <span class="o">-</span><span class="n">o</span> <span class="n">example_dataset</span><span class="o">/</span><span class="n">Shimadzu</span><span class="o">/</span><span class="n">output</span> <span class="o">-</span><span class="n">i</span> <span class="n">Shimadzu</span>
-</pre></div>
-</div>
-</div>
-</section>
-<section id="expected-output">
-<h2>Expected Output<a class="headerlink" href="#expected-output" title="Permalink to this heading">#</a></h2>
-<p>Once the analysis is complete, navigate to the “example_dataset” folder, where you should find a new sub-folder called output.
-Open this folder, and double-click on the “html_output” file. The HTML report will open, and contain the following
-visualisations.</p>
-<p>You can also find these visualisations, and the underlying processed data, in the same subfolder.</p>
-</section>
-<section id="heatmap">
-<h2>Heatmap<a class="headerlink" href="#heatmap" title="Permalink to this heading">#</a></h2>
-<figure class="align-default" id="id3">
-<img alt="An example heatmap." src="_images/example_heatmap.jpg" />
-<figcaption>
-<p><span class="caption-text">Example Heatmap</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>Check to make sure that your heatmap looks the same as the one shown above. If so, you are ready to begin your own
-analyses!!</p>
-</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="getShimadzuData.init">
+<span class="sig-prename descclassname"><span class="pre">getShimadzuData.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/getShimadzuData.html#init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#getShimadzuData.init" title="Permalink to this definition">#</a></dt>
+<dd><p>Initialise global options.</p>
+</dd></dl>
+
 </section>
 
         </article>
@@ -257,23 +239,15 @@ analyses!!</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="freq_imp_det.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Automatic Impurity Detection and Reporting</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="output_desc.html">
+          
+          <a class="prev-page" href="getwaters_det.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">PyParse Outputs</div>
+                <div class="title">Acquire Data from Water’s .rpt File</div>
                 
               </div>
             </a>
@@ -295,29 +269,8 @@ analyses!!</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">Using the Example Dataset</a><ul>
-<li><a class="reference internal" href="#introduction">Introduction</a></li>
-<li><a class="reference internal" href="#expected-output">Expected Output</a></li>
-<li><a class="reference internal" href="#heatmap">Heatmap</a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>

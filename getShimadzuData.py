@@ -16,12 +16,25 @@ import math
 
 
 def init(args):
+    """
+    Initialise global options. 
+    """
     global options
     options = args
 
 
 def getData(input_dir):
+    """
+    Search the directory specified by the user to acquire any and all input 
+    LC-MS data that is present. Format this data into the preferred PyParse format.
 
+    :param input_dir: A string specifying the directory to search for .daml files
+
+    :return: A list comprising: a dictionary of all peaks in all wells (indexed by well); 
+        a dictionary of all chromatograms; a dictionary of all sample IDs; a dictionary
+        total_area_abs of each well. Each of these dictionaries are indexed by well
+    
+    """
     masterTable = {}
     chroma = {}
     sample_IDs = {}

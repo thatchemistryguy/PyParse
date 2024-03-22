@@ -161,10 +161,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Using the Example Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../freq_imp_det.html">Automatic Impurity Detection and Reporting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../filter_rt.html">Filtering by Retention Time</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../filter_rt.html#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../add_param.html">Additional Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyparse_det.html">PyParse Function Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getwaters_det.html">Acquire Data from Water’s .rpt File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getshimadzu_det.html">Acquire Data from Shimadzu .daml Files</a></li>
 </ul>
 
 </div>
@@ -1287,8 +1288,8 @@
 
 <span class="sd">    :param dataTable: dictionary of all peaks, indexed by well</span>
 <span class="sd">    :param compoundDF: pandas dataframe for all compounds</span>
-<span class="sd">    :save_dir: string for output directory</span>
-<span class="sd">    :chroma: a dictionary containing chromatograms, indexed by well</span>
+<span class="sd">    :param save_dir: string for output directory</span>
+<span class="sd">    :param chroma: a dictionary containing chromatograms, indexed by well</span>
 
 <span class="sd">    :return: Chromatograms for each impurity, additional rows in the compoundDF,</span>
 <span class="sd">             and hit validation graph plotted containing all impurity hits.</span>

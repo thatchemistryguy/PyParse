@@ -130,8 +130,10 @@ def getData(filename):
     
     :param filename: Address of the input file
     
-    :return: List comprising: [a dictionary of all peaks in all wells, a list containing each chromatogram,
-                a list of the sample IDs for each well] 
+    :return: List comprising: a dictionary of all peaks in all wells; a dictionary containing each chromatogram;
+        a dictionary of the sample IDs for each well; a dictionary of the total_abs_area of each well.
+        Each of these dictionaries are indexed by well. 
+        
     """
     
     wellData = []

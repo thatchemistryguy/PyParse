@@ -135,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -162,10 +162,11 @@
 <li class="toctree-l1"><a class="reference internal" href="example.html">Using the Example Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="freq_imp_det.html">Automatic Impurity Detection and Reporting</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Filtering by Retention Time</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="add_param.html">Additional Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyparse_det.html">PyParse Function Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getwaters_det.html">Acquire Data from Water’s .rpt File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getshimadzu_det.html">Acquire Data from Shimadzu .daml Files</a></li>
 </ul>
 
 </div>
@@ -194,7 +195,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -205,13 +206,10 @@
 <p>The option “filter_by_rt” (-f) can be used to filter out regions of all chromatograms provided as an
 input. Not only will PyParse remove any peaks in these regions from consideration, but it will also
 recalculate all peak percentage areas to reflect the fact that this region was removed.</p>
-</section>
 <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h1>
-<dl class="simple">
-<dt>To use this option, a range (or multiple ranges) should be provided in the form:</dt><dd><p>“[first_retention_time]-[second_retention_time]”</p>
-</dd>
-</dl>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
+<p>To use this option, a range (or multiple ranges) should be provided in the form:
+“[first_retention_time]-[second_retention_time]”</p>
 <p>For example, to filter out all peaks between 0 and 0.4 minutes, you would add the following argument:</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Filter out a specific range of the chromatogram</span><a class="headerlink" href="#id1" title="Permalink to this code">#</a></div>
@@ -232,28 +230,23 @@ recalculate all peak percentage areas to reflect the fact that this region was r
 </pre></div>
 </div>
 </div>
-<figure class="align-default" id="id4">
+<figure class="align-default">
 <img alt="An example chromatogram where a multiple ranges were filtered out" src="_images/filter_multiple_range.jpg" />
-<figcaption>
-<p><span class="caption-text">An example chromatogram where a multiple ranges were filtered out.</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
-</figcaption>
 </figure>
-<p>As a result of this filtering is that the the purity reported by PyParse is higher:</p>
-<figure class="align-default" id="id5">
+<p>The result of this filtering is that the purity reported by PyParse is higher:</p>
+<figure class="align-default">
 <img alt="Original purity value reported for Product1" src="_images/filter_oldpurity.jpg" />
-<figcaption>
-<p><span class="caption-text">Original Purity Value Reported for Product1.</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
-</figcaption>
 </figure>
-<figure class="align-default" id="id6">
+<figure class="align-default" id="id4">
 <img alt="New purity value reported for Product1" src="_images/filter_newpurity.jpg" />
 <figcaption>
-<p><span class="caption-text">New Purity Value Reported for Product1.</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Top) Original purity value for Product1; Bottom) New purity value for Product1</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The purpose of this feature is to enable the user to remove solvent peaks (e.g. DMSO, toluene)
 from consideration. However, it should be noted that this feature should only be used with
 extreme caution to avoid misrepresenting the results!</p>
+</section>
 </section>
 
         </article>
@@ -299,8 +292,27 @@ extreme caution to avoid misrepresenting the results!</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Filtering by Retention Time</a><ul>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

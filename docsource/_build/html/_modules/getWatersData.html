@@ -1,0 +1,690 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+
+    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
+        <title>getWatersData - PyParse 2023.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">PyParse 2023.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">PyParse 2023.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation and Run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output_desc.html">PyParse Outputs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Using the Example Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freq_imp_det.html">Automatic Impurity Detection and Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../filter_rt.html">Filtering by Retention Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../add_param.html">Additional Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyparse_det.html">PyParse Function Detail</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getwaters_det.html">Acquire Data from Water’s .rpt File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getshimadzu_det.html">Acquire Data from Shimadzu .daml Files</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for getWatersData</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The .rpt file provided by Waters instrument is a text file</span>
+<span class="sd">containing the output from each detector (UV, ELSD, ES+ and ES-),</span>
+<span class="sd">described as &quot;functions&quot; sequentially. The functions are described for </span>
+<span class="sd">each well in turn. </span>
+
+<span class="sd">The following script extracts the data relevant to PyParse, and reformats</span>
+<span class="sd">it into a common structure. It finds the appropriate sections of text by </span>
+<span class="sd">looking for keywords that describe the start of a particular section. </span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">options</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">args</span>
+
+<div class="viewcode-block" id="getChromatogram"><a class="viewcode-back" href="../getwaters_det.html#getWatersData.getChromatogram">[docs]</a><span class="k">def</span> <span class="nf">getChromatogram</span><span class="p">(</span><span class="n">spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes the region of text in rpt file corresponding to the chromatogram,</span>
+<span class="sd">    and extracts the data into two lists, corresponding to x-values and y-values. </span>
+<span class="sd">    </span>
+<span class="sd">    :param spectrum: Section of rpt file as string</span>
+<span class="sd">    </span>
+<span class="sd">    :return: A list of 2 lists, [x-values, y-values]</span>
+<span class="sd">    &quot;&quot;&quot;</span>            
+    
+    <span class="n">x_val</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">y_val</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="n">lineData</span> <span class="o">=</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lineData</span><span class="p">)</span>
+    <span class="n">n_val</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">length</span> <span class="o">/</span> <span class="n">options</span><span class="o">.</span><span class="n">points_per_trace</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lineData</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;}&quot;</span><span class="p">:</span> <span class="c1">#stop for loop if end of data section is reached</span>
+            <span class="k">break</span>
+        <span class="k">elif</span> <span class="n">index</span> <span class="o">%</span> <span class="n">n_val</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            
+            <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s2">&quot;{&quot;</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">x_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="n">y_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">]</span></div>
+           
+        
+<div class="viewcode-block" id="getMSData"><a class="viewcode-back" href="../getwaters_det.html#getWatersData.getMSData">[docs]</a><span class="k">def</span> <span class="nf">getMSData</span><span class="p">(</span><span class="n">spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes the specific region of the rpt file pertaining to </span>
+<span class="sd">    m/z data for a specific peak in a specific well, and </span>
+<span class="sd">    returns a 2-D list containing all m/z peaks and their </span>
+<span class="sd">    normalised intensity.</span>
+<span class="sd">    </span>
+<span class="sd">    :param spectrum: Section of rpt file as string</span>
+<span class="sd">    </span>
+<span class="sd">    :return: 2-D list in following format: </span>
+<span class="sd">        [m/z value, normalised intensity of that value]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">masses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="n">lineData</span> <span class="o">=</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;Mass</span><span class="se">\t</span><span class="s2">% BPI&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lineData</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s2">&quot;}&quot;</span><span class="p">:</span> <span class="c1">#stop the for loop if end of MSData section is reached</span>
+            <span class="k">break</span>
+    
+        <span class="n">massData</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">massData</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">floatData</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">massData</span><span class="p">]</span> <span class="c1">#convert all data to float</span>
+            <span class="n">masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">floatData</span><span class="p">)</span>
+            
+            <span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">floatData</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1">#Remove any masses which, as a percentage, round to 0 </span>
+    <span class="c1">#to remove unnecessary baseline ions</span>
+    <span class="n">refined_masses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">masses</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">total</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">refined_masses</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+    
+    <span class="k">return</span> <span class="n">refined_masses</span></div>
+   
+<div class="viewcode-block" id="getUVData"><a class="viewcode-back" href="../getwaters_det.html#getWatersData.getUVData">[docs]</a><span class="k">def</span> <span class="nf">getUVData</span><span class="p">(</span><span class="n">spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes the specific region of the rpt file pertaining to </span>
+<span class="sd">    UV absorbance spectrum data for a specific peak in a specific</span>
+<span class="sd">    well, and returns a list containing all the maxima of that spectrum.</span>
+<span class="sd">    The height of the maxima must be greater than the min_uv_threshold</span>
+<span class="sd">    specified in options.</span>
+<span class="sd">    </span>
+<span class="sd">    :param spectrum: Section of rpt file as string</span>
+<span class="sd">    </span>
+<span class="sd">    :return: UV maxima as a list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">UVmaxima</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="n">lineData</span> <span class="o">=</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;Mass</span><span class="se">\t</span><span class="s2">% BPI&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">UVx</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">UVy</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lineData</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s2">&quot;}&quot;</span><span class="p">:</span><span class="c1">#stop for loop if end of UVData section is reached</span>
+            <span class="k">break</span>
+        
+        <span class="n">UVdata</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">UVdata</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">UVx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">UVdata</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">UVy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">UVdata</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+    <span class="k">if</span> <span class="n">UVy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">UVy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">UVy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">options</span><span class="o">.</span><span class="n">min_uv_threshold</span><span class="p">:</span>
+        <span class="n">UVmaxima</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UVx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">UVy</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">UVy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">UVy</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">UVy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">UVy</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">UVy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">options</span><span class="o">.</span><span class="n">min_uv_threshold</span><span class="p">:</span>
+            <span class="n">UVmaxima</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UVx</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">UVy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">UVy</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span> <span class="n">UVy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">options</span><span class="o">.</span><span class="n">min_uv_threshold</span><span class="p">:</span>
+        <span class="n">UVmaxima</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UVx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        
+    <span class="k">return</span> <span class="n">UVmaxima</span>            </div>
+
+<div class="viewcode-block" id="getData"><a class="viewcode-back" href="../getwaters_det.html#getWatersData.getData">[docs]</a><span class="k">def</span> <span class="nf">getData</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts the input .rpt file into a dictionary where each index corresponds to a well.</span>
+<span class="sd">    Each dictionary value contains a list of peaks, where each peak is represented as a dictionary</span>
+<span class="sd">    with the peak area, m/z and UV (if available) data present. </span>
+<span class="sd">    </span>
+<span class="sd">    :param filename: Address of the input file</span>
+<span class="sd">    </span>
+<span class="sd">    :return: List comprising: a dictionary of all peaks in all wells; a dictionary containing each chromatogram;</span>
+<span class="sd">        a dictionary of the sample IDs for each well; a dictionary of the total_abs_area of each well.</span>
+<span class="sd">        Each of these dictionaries are indexed by well. </span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">wellData</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">masterTable</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">chroma</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">sample_IDs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">total_area_abs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">fullText</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">text_split</span> <span class="o">=</span> <span class="n">fullText</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[SAMPLE]&quot;</span><span class="p">)</span> <span class="c1">#Split the file into individual wells</span>
+        <span class="n">wellData</span> <span class="o">=</span> <span class="n">text_split</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> 
+        
+
+    <span class="k">def</span> <span class="nf">findDataEntry</span><span class="p">(</span><span class="n">peaks</span><span class="p">,</span> <span class="n">peakID</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The program should match up equivalent peaks from different </span>
+<span class="sd">        detectors. Detectors may have subtly different retention times, but </span>
+<span class="sd">        the rpt file tags equivalent peaks with the same peakID. Use this value </span>
+<span class="sd">        to match up peaks from different detectors. </span>
+
+<span class="sd">        :param peaks: a dictionary of peaks found so far</span>
+<span class="sd">        :param peakID: a string; the peakID of a specific peak for a specific detector</span>
+<span class="sd">        :return: a float corresponding to an index for the peaks dictionary, or false if none was found. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">peaks</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;peakID&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">peakID</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wellData</span><span class="p">)):</span>
+        <span class="n">well</span> <span class="o">=</span> <span class="n">wellData</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">wellno</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">functions</span> <span class="o">=</span> <span class="n">well</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[FUNCTION]&quot;</span><span class="p">)</span> <span class="c1">#Split data by function (Prelude, MS+, MS- or UV)</span>
+        
+        <span class="c1">#Get the plate dimensions from the first sample</span>
+        <span class="c1">#Data sample: #Plate	01TL,XY,SD,1: 8,2:12,3: 90.0...</span>
+        <span class="c1">#where number of rows is 8 and number of columns in 12</span>
+        <span class="c1">#Overwrite the default option, but ensure that the user retains control</span>
+        <span class="c1">#such that empty rows can be removed from the heatmap. </span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">plate_row_no</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">options</span><span class="o">.</span><span class="n">plate_col_no</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">plate_row_no</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">17</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">plate_col_no</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">17</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">plate_cols_for_extraction</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">plate_col_no</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">plate_cols_for_extraction</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">17</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            
+
+        
+        <span class="c1">#Find from rpt file how each well is specified </span>
+        <span class="c1">#Data sample: #Plate	01TL,XY,SD,1: 8,2:12,3: 90.0...</span>
+        <span class="n">row_col_order</span> <span class="o">=</span> <span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">17</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">well_type</span> <span class="o">=</span> <span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">17</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span> 
+            <span class="c1">#If the well type is just a Single Digit...</span>
+            <span class="k">if</span> <span class="n">well_type</span> <span class="o">==</span> <span class="s2">&quot;SD&quot;</span><span class="p">:</span>
+                <span class="c1">#If the well is simply an integer between 1 and infinity</span>
+                <span class="c1">#Single line function to trim full string to just the well number used</span>
+                <span class="n">wellno</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Well&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> 
+                <span class="c1">#If the column number specified by the user is different to that found in the rpt file, </span>
+                <span class="c1">#this is the result of the user looking to trim off blank columns. Only wells described by </span>
+                <span class="c1">#a single digit need to be modified to take this into account. </span>
+                <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">plate_col_no</span> <span class="o">!=</span> <span class="n">plate_cols_for_extraction</span><span class="p">:</span>
+                    <span class="n">wellno</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">wellno</span> <span class="o">/</span> <span class="n">plate_cols_for_extraction</span><span class="p">)</span><span class="o">*</span><span class="n">options</span><span class="o">.</span><span class="n">plate_col_no</span> <span class="o">+</span> <span class="p">(</span><span class="n">wellno</span> <span class="o">%</span> <span class="n">plate_cols_for_extraction</span><span class="p">)</span>
+            
+            <span class="c1">#If the well type is a combination of letters/numbers...</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1">#Find if the well  </span>
+                <span class="k">if</span> <span class="n">row_col_order</span> <span class="o">==</span> <span class="s2">&quot;XY&quot;</span><span class="p">:</span>
+                    <span class="n">column</span> <span class="o">=</span> <span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Well&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Well&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span> 
+                    <span class="n">column</span> <span class="o">=</span> <span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Well&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">row</span> <span class="o">=</span> <span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Well&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                
+                <span class="c1">#Convert the column to integer, either by direct</span>
+                <span class="c1">#conversion, or by finding position in the alphabet</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">col_as_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">col_as_int</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span> <span class="o">-</span> <span class="mi">64</span>
+                
+                <span class="c1">#Convert the row to integer, either by direct</span>
+                <span class="c1">#conversion, or by finding position in the alphabet</span>
+                <span class="k">try</span><span class="p">:</span> 
+                    <span class="n">row_as_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span> 
+                    <span class="n">row_as_int</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span> <span class="o">-</span> <span class="mi">64</span>
+
+                <span class="c1">#Calculate the wellno as a single integer</span>
+                <span class="n">wellno</span> <span class="o">=</span> <span class="p">(</span><span class="n">row_as_int</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">options</span><span class="o">.</span><span class="n">plate_col_no</span> <span class="o">+</span> <span class="n">col_as_int</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unable to get well number. Terminating program.&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                
+        <span class="c1">#get the sample id, and load it into a list</span>
+        <span class="c1">#This list will be added as a column to the outputTable</span>
+        <span class="n">well_ID</span> <span class="o">=</span> <span class="n">functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;SampleID&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  
+        <span class="n">sample_IDs</span><span class="p">[</span><span class="n">wellno</span><span class="p">]</span> <span class="o">=</span> <span class="n">well_ID</span>
+         
+        <span class="n">peaks</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">function</span> <span class="ow">in</span> <span class="n">functions</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span> <span class="c1">#Ignore the prelude data</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">spectra</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[SPECTRUM]&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1">#split by spectrum (i.e. each peak)</span>
+            
+            <span class="c1">#get peakarea for this peak</span>
+            <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Type</span><span class="se">\t</span><span class="s2">DAD &quot;</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">detector</span> <span class="o">==</span> <span class="s2">&quot;UV&quot;</span><span class="p">:</span>
+                <span class="n">chromatograms</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[CHROMATOGRAM]&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">for</span> <span class="n">chromatogram</span> <span class="ow">in</span> <span class="n">chromatograms</span><span class="p">:</span>
+                    <span class="n">c_lines</span> <span class="o">=</span> <span class="n">chromatogram</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">c_lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Description</span><span class="se">\t</span><span class="s2">DAD: TIC&quot;</span><span class="p">:</span>
+                        <span class="n">chroma</span><span class="p">[</span><span class="n">wellno</span><span class="p">]</span> <span class="o">=</span> <span class="n">getChromatogram</span><span class="p">(</span><span class="n">chromatogram</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[TRACE]&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="c1">#get chromatogram for this well</span>
+                        <span class="n">wellpeaks</span> <span class="o">=</span> <span class="n">chromatogram</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[PEAK]&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+                        <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">wellpeaks</span><span class="p">:</span>
+                            
+                            <span class="n">retTime</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="n">peakWidth</span> <span class="o">=</span> <span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Peak</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">peakArea</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Area %Total&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="n">peakAreaAbs</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;AreaAbs&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="n">peakID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Peak ID&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+                            <span class="n">peak_index</span> <span class="o">=</span> <span class="kc">False</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">peaks</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">peak_index</span> <span class="o">=</span> <span class="n">findDataEntry</span><span class="p">(</span><span class="n">peaks</span><span class="p">,</span> <span class="n">peakID</span><span class="p">)</span>
+                            
+                            <span class="k">if</span> <span class="n">peak_index</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                                <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                                        <span class="s2">&quot;MS+&quot;</span><span class="p">:</span> <span class="p">[],</span> 
+                                        <span class="s2">&quot;MS-&quot;</span><span class="p">:</span> <span class="p">[],</span> 
+                                        <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                        <span class="s2">&quot;areaAbs&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+                                        <span class="s2">&quot;UV&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                                        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">retTime</span><span class="p">,</span>
+                                        <span class="s2">&quot;pStart&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                        <span class="s2">&quot;pEnd&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+                                        <span class="s2">&quot;peakID&quot;</span><span class="p">:</span> <span class="n">peakID</span><span class="p">,</span>
+                                        <span class="s2">&quot;well&quot;</span><span class="p">:</span> <span class="n">wellno</span><span class="p">,</span>
+                                        <span class="p">}</span>
+                            <span class="k">elif</span> <span class="n">peak_index</span> <span class="o">!=</span> <span class="n">retTime</span><span class="p">:</span>
+                                <span class="c1">#If data has already been entered for this peak by a different</span>
+                                <span class="c1">#function (i.e. MS+, MS-) using a slightly different retention time,</span>
+                                <span class="c1">#copy this data over to a new entry</span>
+                                <span class="c1">#which uses the retention time observed in the chromatogram </span>
+                                <span class="c1">#i.e. we don&#39;t want some retention times from the MS+, and others</span>
+                                <span class="c1">#from the chromatogram - we want a standard output</span>
+                                <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                                        <span class="s2">&quot;MS+&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;MS+&quot;</span><span class="p">],</span> 
+                                        <span class="s2">&quot;MS-&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;MS-&quot;</span><span class="p">],</span> 
+                                        <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;area&quot;</span><span class="p">],</span> 
+                                        <span class="s2">&quot;areaAbs&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;areaAbs&quot;</span><span class="p">],</span>
+                                        <span class="s2">&quot;UV&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;UV&quot;</span><span class="p">],</span>
+                                        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">retTime</span><span class="p">,</span>
+                                        <span class="s2">&quot;pStart&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;pStart&quot;</span><span class="p">],</span>
+                                        <span class="s2">&quot;pEnd&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;pEnd&quot;</span><span class="p">],</span> 
+                                        <span class="s2">&quot;peakID&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;peakID&quot;</span><span class="p">],</span>
+                                        <span class="s2">&quot;well&quot;</span><span class="p">:</span> <span class="n">wellno</span><span class="p">,</span>
+
+                                        <span class="p">}</span>
+                                <span class="c1">#Delete the old entry now the data has been copied over</span>
+                                <span class="c1">#to use the correct retention time. </span>
+                                <span class="k">del</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">]</span>
+                                
+                            <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;area&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">peakArea</span>
+                            <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;areaAbs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">peakAreaAbs</span>
+                            <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;pStart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peakWidth</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                            <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;pEnd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peakWidth</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="c1">#Add additional section to search for and use the ELSD data</span>
+            <span class="c1">#as opposed to the UV data. Note that the two detectors cannot currently</span>
+            <span class="c1">#be used in parallel. </span>
+            <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Description</span><span class="se">\t</span><span class="s2">ANALOG&quot;</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">detector</span> <span class="o">==</span> <span class="s2">&quot;ELSD&quot;</span><span class="p">:</span>
+                <span class="n">chromatograms</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[CHROMATOGRAM]&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">for</span> <span class="n">chromatogram</span> <span class="ow">in</span> <span class="n">chromatograms</span><span class="p">:</span>
+                    <span class="n">c_lines</span> <span class="o">=</span> <span class="n">chromatogram</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">c_lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Description</span><span class="se">\t</span><span class="s2"> (3) ELSD Signal&quot;</span><span class="p">:</span>
+                        <span class="n">chroma</span><span class="p">[</span><span class="n">wellno</span><span class="p">]</span> <span class="o">=</span> <span class="n">getChromatogram</span><span class="p">(</span><span class="n">chromatogram</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[TRACE]&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="c1">#get chromatogram for this well</span>
+                        <span class="n">wellpeaks</span> <span class="o">=</span> <span class="n">chromatogram</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[PEAK]&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+                        <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">wellpeaks</span><span class="p">:</span>
+                            
+                            <span class="n">retTime</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="n">peakWidth</span> <span class="o">=</span> <span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Peak</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">peakArea</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Area %Total&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="n">peakAreaAbs</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;AreaAbs&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="n">peakID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">peak</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Peak ID&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+                            <span class="n">peak_index</span> <span class="o">=</span> <span class="kc">False</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">peaks</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">peak_index</span> <span class="o">=</span> <span class="n">findDataEntry</span><span class="p">(</span><span class="n">peaks</span><span class="p">,</span> <span class="n">peakID</span><span class="p">)</span>
+                            
+                            <span class="k">if</span> <span class="n">peak_index</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                                <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                                        <span class="s2">&quot;MS+&quot;</span><span class="p">:</span> <span class="p">[],</span> 
+                                        <span class="s2">&quot;MS-&quot;</span><span class="p">:</span> <span class="p">[],</span> 
+                                        <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                        <span class="s2">&quot;areaAbs&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+                                        <span class="s2">&quot;UV&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                                        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">retTime</span><span class="p">,</span>
+                                        <span class="s2">&quot;pStart&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                        <span class="s2">&quot;pEnd&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+                                        <span class="s2">&quot;peakID&quot;</span><span class="p">:</span> <span class="n">peakID</span><span class="p">,</span>
+                                        <span class="s2">&quot;well&quot;</span><span class="p">:</span> <span class="n">wellno</span><span class="p">,</span>
+                                        <span class="p">}</span>
+                            <span class="k">elif</span> <span class="n">peak_index</span> <span class="o">!=</span> <span class="n">retTime</span><span class="p">:</span>
+                                <span class="c1">#If data has already been entered for this peak by a different</span>
+                                <span class="c1">#function (i.e. MS+, MS-) using a slightly different retention time,</span>
+                                <span class="c1">#copy this data over to a new entry</span>
+                                <span class="c1">#which uses the retention time observed in the chromatogram </span>
+                                <span class="c1">#i.e. we don&#39;t want some retention times from the MS+, and others</span>
+                                <span class="c1">#from the chromatogram - we want a standard output</span>
+                                <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                                        <span class="s2">&quot;MS+&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;MS+&quot;</span><span class="p">],</span> 
+                                        <span class="s2">&quot;MS-&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;MS-&quot;</span><span class="p">],</span> 
+                                        <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;area&quot;</span><span class="p">],</span> 
+                                        <span class="s2">&quot;areaAbs&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;areaAbs&quot;</span><span class="p">],</span>
+                                        <span class="s2">&quot;UV&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;UV&quot;</span><span class="p">],</span>
+                                        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">retTime</span><span class="p">,</span>
+                                        <span class="s2">&quot;pStart&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;pStart&quot;</span><span class="p">],</span>
+                                        <span class="s2">&quot;pEnd&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;pEnd&quot;</span><span class="p">],</span> 
+                                        <span class="s2">&quot;peakID&quot;</span><span class="p">:</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">][</span><span class="s2">&quot;peakID&quot;</span><span class="p">],</span>
+                                        <span class="s2">&quot;well&quot;</span><span class="p">:</span> <span class="n">wellno</span><span class="p">,</span>
+                                        <span class="p">}</span>
+                                <span class="c1">#Delete the old entry now the data has been copied over</span>
+                                <span class="c1">#to use the correct retention time. </span>
+                                <span class="k">del</span> <span class="n">peaks</span><span class="p">[</span><span class="n">peak_index</span><span class="p">]</span>
+                                
+                            <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;area&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">peakArea</span>
+                            <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;areaAbs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">peakAreaAbs</span>
+                            <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;pStart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peakWidth</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                            <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;pEnd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">peakWidth</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+
+            <span class="k">for</span> <span class="n">spectrum</span> <span class="ow">in</span> <span class="n">spectra</span><span class="p">:</span>
+                <span class="n">peakID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">spectrum</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Peak ID&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">retTime</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">spectrum</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">peak_index</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="c1">#Find matching peaks in other functions by reference to the peakID</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">peaks</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">peak_index</span> <span class="o">=</span> <span class="n">findDataEntry</span><span class="p">(</span><span class="n">peaks</span><span class="p">,</span> <span class="n">peakID</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">peak_index</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s2">&quot;MS+&quot;</span><span class="p">:</span> <span class="p">[],</span> 
+                            <span class="s2">&quot;MS-&quot;</span><span class="p">:</span> <span class="p">[],</span> 
+                            <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+                            <span class="s2">&quot;areaAbs&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                            <span class="s2">&quot;UV&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                            <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">retTime</span><span class="p">,</span>
+                            <span class="s2">&quot;pStart&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                            <span class="s2">&quot;pEnd&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                            <span class="s2">&quot;peakID&quot;</span><span class="p">:</span> <span class="n">peakID</span><span class="p">,</span>
+                            <span class="s2">&quot;well&quot;</span><span class="p">:</span> <span class="n">wellno</span><span class="p">,</span>
+                            <span class="p">}</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">retTime</span> <span class="o">=</span> <span class="n">peak_index</span>
+                    
+                <span class="c1">#For each function, parse all the associated data and store</span>
+                <span class="c1">#as a float. </span>
+                <span class="c1">#For UV, take only the lambaMax</span>
+                <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;IonMode</span><span class="se">\t</span><span class="s2">ES+ &quot;</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">getMSData</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+                    <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;MS+&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+                      
+                <span class="k">elif</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;IonMode</span><span class="se">\t</span><span class="s2">ES- &quot;</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">getMSData</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+                    <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;MS-&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+                
+                <span class="k">elif</span> <span class="n">lines</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Type</span><span class="se">\t</span><span class="s2">DAD &quot;</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">getUVData</span><span class="p">(</span><span class="n">spectrum</span><span class="p">)</span>
+                    <span class="n">peaks</span><span class="p">[</span><span class="n">retTime</span><span class="p">][</span><span class="s2">&quot;UV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+            
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span><span class="si">}</span><span class="s1"> peaks found in well </span><span class="si">{</span><span class="n">wellno</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>             
+    
+        <span class="c1">#Filter out any peaks within retention times specified by the user</span>
+        <span class="c1">#Expected uses: remove solvent peaks from consideration</span>
+        <span class="c1">#Expected format is a list of specified ranges, e.g.</span>
+        <span class="c1">#[min_time1-max_time1, min_time2-max_time2]</span>
+        <span class="c1">#where the start of the range appears first and is separated from </span>
+        <span class="c1">#the end of the range with a hyphen</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">filter_by_rt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">to_remove</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">filter_range</span> <span class="ow">in</span> <span class="n">options</span><span class="o">.</span><span class="n">filter_by_rt</span><span class="p">:</span>
+                <span class="n">min_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">filter_range</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">max_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">filter_range</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+                <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">peaks</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">min_time</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">max_time</span><span class="p">:</span>
+                        <span class="n">to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">to_remove</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">peaks</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        
+        <span class="c1">#If the reprocess_by_rt parameter was used, recalculate the percentage peak area for each peak</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">filter_by_rt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">total_area_abs</span><span class="p">[</span><span class="n">wellno</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">peak</span> <span class="ow">in</span> <span class="n">peaks</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">total_area_abs</span><span class="p">[</span><span class="n">wellno</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_area_abs</span><span class="p">[</span><span class="n">wellno</span><span class="p">]</span> <span class="o">+</span> <span class="n">peak</span><span class="p">[</span><span class="s2">&quot;areaAbs&quot;</span><span class="p">]</span>
+
+        <span class="c1">#Recalculate the peak area percentages now that the total absolute area </span>
+        <span class="c1">#for that well has been calculated. </span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">filter_by_rt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> 
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">peaks</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">peaks</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;area&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">peaks</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s2">&quot;areaAbs&quot;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_area_abs</span><span class="p">[</span><span class="n">wellno</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">masterTable</span><span class="p">[</span><span class="n">wellno</span><span class="p">]</span> <span class="o">=</span> <span class="n">peaks</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>  
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">masterTable</span><span class="p">,</span> <span class="n">chroma</span><span class="p">,</span> <span class="n">sample_IDs</span><span class="p">,</span> <span class="n">total_area_abs</span><span class="p">]</span></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, GlaxoSmithKline Research &amp; Development Limited
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    </body>
+</html>
