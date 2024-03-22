@@ -120,6 +120,8 @@ PyParse has been written as a standalone script and called from the command line
 to carry out the automated analysis of a single reaction plate at a time. 
 
 Each analysis should specify, at a minimum, the locations of the LCMS data and the platemap.
+By default, the output of this run will be saved in a new folder called "output" in the current working
+directory. 
 
 
 .. code-block::
