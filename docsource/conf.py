@@ -22,7 +22,7 @@ copyright = '2023, GlaxoSmithKline Research & Development Limited'
 author = 'Joseph Mason, Francesco Rianjongdee, Harry Wilders, David Fallon'
 
 # The full version, including alpha/beta/rc tags
-release = '2023.1.0'
+release = '1.1.0'
 
 
 # -- General configuration ---------------------------------------------------

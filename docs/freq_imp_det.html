@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Filtering by Retention Time" href="filter_rt.html" /><link rel="prev" title="Using the Example Dataset" href="example.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
-        <title>Automatic Impurity Detection and Reporting - PyParse 2023.1.0 documentation</title>
+        <title>Automatic Impurity Detection and Reporting - PyParse 1.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">PyParse 2023.1.0 documentation</div></a>
+      <a href="index.html"><div class="brand">PyParse 1.1.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">PyParse 2023.1.0 documentation</span>
+  <span class="sidebar-brand-text">PyParse 1.1.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -206,43 +206,101 @@
 <section id="background">
 <h2>Background<a class="headerlink" href="#background" title="Permalink to this heading">#</a></h2>
 <p>For a plate of reactions, there will typically be at least one reagent which is commonly used
-across multiple wells of the plate. With this commonality is a higher chance that a particular
+across multiple wells of the plate. With this commonality comes a higher chance that a particular
 by-product or side-product (generically termed “impurity” for simplicity) is synthesised across multiple wells.</p>
 <p>Compared to single reactions that compare One Variable At a Time (OVAT), high-throughput experimentation
 generates large quantities of data in a single experiment. What was previously a one-off impurity can become
-an observation backed up with data from multiple reactions.</p>
+an observation backed up by data from multiple reactions.</p>
 <p>PyParse, through the hit-validation algorithm, overlays all peaks that weren’t assigned to a compound specified
 by the user and identifies those that frequently occur.</p>
 </section>
-<section id="the-hit-validation-graph">
-<h2>The Hit Validation Graph<a class="headerlink" href="#the-hit-validation-graph" title="Permalink to this heading">#</a></h2>
-<p>Below is a hit validation graph for the impurities in a 384-well plate containing reactions on random members of a diverse
-fragment library. The graph does not contain any real common impurities - it is a random assortment of peaks.</p>
-<figure class="align-default" id="id1">
-<img alt="Hit Validation graph for 384-well plate" src="_images/384_hitvalidationgraph.jpg" />
-<figcaption>
-<p><span class="caption-text">Hit Validation Graph for 384-Well Plate</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>Here is the hit validation graph, generated using the same algorithm, for the 48-Well reaction optimisation plate
-included in the GitHub repository.</p>
+<section id="c-h-activation-reaction-optimisation-plate">
+<h2>C-H Activation Reaction Optimisation Plate<a class="headerlink" href="#c-h-activation-reaction-optimisation-plate" title="Permalink to this heading">#</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For further details on the reaction optimisation plate, see: Mason J., Wilders H., Fallon D.J., Thomas R.P.,
+<p>For further details on the reaction optimisation plate described below, see: Mason J., Wilders H., Fallon D.J., Thomas R.P.,
 Bush J.T., Tomkinson N.C.O., Rianjongdee, F.; Automated LC-MS Analysis and Data Extraction for High-Throughput Chemistry;
 Digital Discovery (2023), 2, 1894 - 1899; <a class="reference external" href="https://doi.org/10.1039/D3DD00167A">https://doi.org/10.1039/D3DD00167A</a></p>
 </div>
+<p>Using high-throughput experimentation, a small dataset for the C-H activation of an oxazole was prepared and published
+as part of the PyParse repository.</p>
+<figure class="align-default" id="id1">
+<img alt="Reaction Design for C-H Activation Optimisation" src="_images/C-H_activation_scheme.jpg" />
+<figcaption>
+<p><span class="caption-text">Scheme 1. Reaction Design for C-H Activation Optimisation</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In the course of running the experiment, it was expected that both regioisomers (R1 and R2) and the bis-substitution side-product
+would likely be synthesised in the plate. This was indeed observed and the two regioisomers were confirmed by isolation of the each
+product and structure assigned by ROESY (see the open-access paper referenced above for further details).</p>
+<p>In v1.1.0 of PyParse, the “find_impurities” function is designed to draw the user’s attention to commonly observed impurities.
+The goal of this function is to enable the user to generate new hypotheses more quickly than would otherwise be possible, by reporting
+the data in a more digestible form.</p>
+<p>The first step of this function is to generate the hit validation graph for all impurities. This graph is independant of any m/z ions
+that were observed at this stage - it simply groups all peaks (that weren’t already assigned to compounds specified in the platemap) by their
+retention time.</p>
 <figure class="align-default" id="id2">
 <img alt="Hit Validation graph for reaction optimisation plate" src="_images/48_hitvalidationgraph.jpg" />
 <figcaption>
-<p><span class="caption-text">Hit Validation Graph for Reaction Optimisation Plate</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Figure 1. Hit Validation Graph for Reaction Optimisation Plate</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>In this graph, the impurities line up at specific retention times; this consistency
-across multiple wells suggest that the impurity observed in each well may be the same.
-For example, it can be seen that impurity6 (at 0.79 min)
-For these impurities, it is relevant to investigate the m/z values that are common to
-all peaks at each retention time.</p>
+<p>In this graph, multiple impurities form lines on the graph at a specific retention times; this consistency
+across multiple wells suggest that the impurity observed in each well may be the same. For example, impurities 6, 13 and 14
+are all observed in numerous wells with a tight retention time. For these impurities, we have both quality data to build confidence
+in any conclusions we draw, and there is a greater expected reward for determining the structure of an impurity which
+consistently hampers the desired transformation.</p>
+<p>We’ll start with these impurities and use the impurity table to find the m/z values for each. PyParse <strong>only</strong> reports m/z ions
+that were observed in at least 80% of the peaks assigned to that impurity. This helps to filter out the noise so that the user
+can focus on key data rather than “red herrings”.</p>
+<figure class="align-default" id="id3">
+<img alt="Impurity Table for reaction optimisation plate" src="_images/impurity_table.jpg" />
+<figcaption>
+<p><span class="caption-text">Table 1. Impurity Table for Reaction Optimisation Plate</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>At this point, we need to use our knowledge of common chemical transformations to build hypotheses on what these impurities could be.
+Starting with impurity 6, a m/z of 225 (ES+) is observed in &gt;80% of the peaks; this is 2 units less than that observed for the desired product
+(R1/2, Scheme 1) and suggests an oxidation mechanism may be in effect. A plausible suggestion is that oxidation of the benzylic alcohol to the
+corresponding aldehyde has occurred.</p>
+<figure class="align-default" id="id4">
+<a class="reference internal image-reference" href="_images/oxidation_monoalkylation.jpg"><img alt="Scheme for the oxidation of the desired product" src="_images/oxidation_monoalkylation.jpg" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-text">Scheme 2. Hypothesised Oxidation Scheme of the Desired Product to give Impurity 6</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>This mechanism is certainly unusual and it must be noted here that any assignments based on m/z values should be followed up with more
+robust analytical techniques (e.g. 1H NMR) to verify these conclusions. However, using PyParse in this way has allowed us to more
+quickly identify the retention time and mass of this impurity.</p>
+<p>Using the same technique, we can build a similar hypothesis for impurity 13:</p>
+<figure class="align-default" id="id5">
+<a class="reference internal image-reference" href="_images/oxidation_bisalkylation.jpg"><img alt="Scheme for the oxidation of the bis-substituted side-product" src="_images/oxidation_bisalkylation.jpg" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-text">Scheme 3. Hypothesised Oxidation Scheme of the Bis-Substituted Side-Product to give Impurity 13</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Finally, using knowledge of the Buchwald G3-type precatalysts that were used in certain wells of the reaction optimisation plate (see
+cited paper above), PyParse helps us to assign a tentative structure for impurity 14:</p>
+<figure class="align-default" id="id6">
+<a class="reference internal image-reference" href="_images/G3precat_buchwald_bp.jpg"><img alt="Scheme for the formation of impurity 14" src="_images/G3precat_buchwald_bp.jpg" style="width: 650px;" /></a>
+<figcaption>
+<p><span class="caption-text">Scheme 4. Hypothesised C-N Cross-Coupling to Generate Impurity 14</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>This C-N cross coupling side product is not unusual when using the Generation 3 type pre-catalysts: we can hypothesise that using the Generation 4
+pre-catalyst instead would help us to further improve the yield of the desired product (R1, scheme 1).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For further details on Generation 4 pre-catalysts, see: Bruno N.C., Niljianskul N., Buchwald S.L.; <em>N</em>-Substituted 2-Aminobiphenylpalladium
+MethaneSulfonate Precatalysts and Their Use in C-C and C-N Cross Couplings; J. Org. Chem. (2014), 79 (9), 4161-4166; <a class="reference external" href="https://doi.org/10.1021/jo500355k">https://doi.org/10.1021/jo500355k</a>.</p>
+</div>
+</section>
+<section id="conclusions">
+<h2>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this heading">#</a></h2>
+<p>The PyParse “find_impurity” function is not designed to replace the trained chemist, but instead take advantage of the rich dataset that has been
+generated and highlight key data to the user. Without a doubt, the same process could be performed manually, but would be a tedious and labour-intensive
+process. Using PyParse in this fashion allows new hypotheses to be generated more rapidly and gives back time to the user to focus on cutting edge
+research.</p>
 </section>
 </section>
 
@@ -303,7 +361,8 @@ all peaks at each retention time.</p>
             <ul>
 <li><a class="reference internal" href="#">Automatic Impurity Detection and Reporting</a><ul>
 <li><a class="reference internal" href="#background">Background</a></li>
-<li><a class="reference internal" href="#the-hit-validation-graph">The Hit Validation Graph</a></li>
+<li><a class="reference internal" href="#c-h-activation-reaction-optimisation-plate">C-H Activation Reaction Optimisation Plate</a></li>
+<li><a class="reference internal" href="#conclusions">Conclusions</a></li>
 </ul>
 </li>
 </ul>

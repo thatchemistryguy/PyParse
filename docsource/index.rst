@@ -15,8 +15,8 @@ Description
 This script will read Liquid Chromatography Mass Spectrometry (LCMS) data in the Waters OpenLynx\ |trademark| browser report (.rpt) file
 format or Shimadzu .daml file format, and assigns peaks to compounds specified in  a .csv platemap. This assignment is then used to generate heatmaps and 
 other visualisations to compare and contrast different LCMS runs. It was designed specifically for the analysis of data generated from 
-high-throughput chemistry, and is suitable for reaction optimisations, parallel synthesis
-and library validation experiments. 
+high-throughput chemistry, and is suitable for reaction optimisations, parallel synthesis, library validation experiments and
+direct-to-biology. 
 
 
 Example Usage 

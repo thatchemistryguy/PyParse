@@ -6,9 +6,9 @@ Pre-Requisites
 
 PyParse was written for Python v3.7, and the following packages should be installed if not already available:
 
-* matplotlib: https://matplotlib.org/stable/index.html (v 3.3.2)
-* seaborn: https://seaborn.pydata.org/ (v 0.11.0)
-* pandas: https://pandas.pydata.org/ (v 1.1.3)
+* matplotlib: https://matplotlib.org/stable/index.html (v 3.5.3)
+* seaborn: https://seaborn.pydata.org/ (v 0.12.1)
+* pandas: https://pandas.pydata.org/ (v 1.3.5)
 * rdkit: https://rdkit.org/docs/api-docs.html (v 2020.09.1)
 * jinja2: https://jinja.palletsprojects.com/en/3.1.x/ (v 3.1.2)
 * numpy: https://numpy.org/ (v 1.21.5)
