@@ -1,27 +1,27 @@
 name,g_smiles,mass1,mass2,mass3,time,mass-,mass+,best_well,best_purity,overlaps,conflicts
-Product1,Cc1cc(-c2ccc(O)cc2C)n[nH]1,188.09,0.0,0,1.16,-,189.0,A1,8.62,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product1,Cc1cc(-c2ccc(O)cc2C)n[nH]1,188.09,0.0,0,1.16,-,189.0,A1,8.616,<strong>Peak overlap detected!</strong>,No potential conflicts found.
 Product2,Cc1cc(-c2ccccc2C)n[nH]1,172.1,0.0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
 Product3,COc1ccccc1-c1cc(C)[nH]n1,188.09,0.0,0,1.36,-,189.0,C1,30.63,<strong>Peak overlap detected!</strong>,No potential conflicts found.
-Product4,Cc1cc(-c2ccccc2O)n[nH]1,174.08,0.0,0,1.49,172.85,174.95,D1,5.35,<strong>Peak overlap detected!</strong>,No potential conflicts found.
-Product5,Cc1cc(-c2cc(Cl)ccc2Cl)n[nH]1,226.01,228.01,0,1.71,-,226.8,E1,6.4,<strong>Peak overlap detected!</strong>,No potential conflicts found.
-Product6,Cc1ccc(C)c(-c2cc(C)[nH]n2)c1,186.12,0.0,0,1.59,-,187.0,F1,42.4,No peak overlap detected.,No potential conflicts found.
-Product7,Cc1cc(-c2ccc(C#N)cc2C)n[nH]1,197.1,0.0,0,1.49,195.85,198.0,G1,25.19,<strong>Peak overlap detected!</strong>,No potential conflicts found.
-Product8,Cc1cc(-c2ccc(Cl)cc2C)n[nH]1,206.06,208.06,0,1.68,-,206.9,H1,45.38,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product4,Cc1cc(-c2ccccc2O)n[nH]1,174.08,0.0,0,1.49,172.85,174.95,D1,5.348,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product5,Cc1cc(-c2cc(Cl)ccc2Cl)n[nH]1,226.01,228.01,0,1.71,-,226.8,E1,6.398,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product6,Cc1ccc(C)c(-c2cc(C)[nH]n2)c1,186.12,0.0,0,1.59,-,187.0,F1,42.403,No peak overlap detected.,No potential conflicts found.
+Product7,Cc1cc(-c2ccc(C#N)cc2C)n[nH]1,197.1,0.0,0,1.49,195.85,198.0,G1,25.188,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product8,Cc1cc(-c2ccc(Cl)cc2C)n[nH]1,206.06,208.06,0,1.68,-,206.9,H1,45.381,<strong>Peak overlap detected!</strong>,No potential conflicts found.
 Product9,Cc1cc(-c2ccc(C(F)(F)F)cc2C)n[nH]1,240.09,0.0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
-Product10,Cc1cc(-c2ccc(C(F)(F)F)cc2F)n[nH]1,244.06,0.0,0,1.75,242.9,244.95,B2,37.09,<strong>Peak overlap detected!</strong>,No potential conflicts found.
-Product11,Cc1cc(-c2cc(CO)ccc2Cl)n[nH]1,222.06,224.06,0,1.34,-,222.95,C2,17.89,<strong>Peak overlap detected!</strong>,No potential conflicts found.
-Product12,Cc1cc(-c2sccc2C)n[nH]1,178.06,0.0,0,1.47,-,179.0,D2,5.91,<strong>Peak overlap detected!</strong>,No potential conflicts found.
-Product13,Cc1cc(-c2c(C)noc2C)n[nH]1,177.09,0.0,0,1.23,-,178.0,E2,0.6,<strong>Peak overlap detected!</strong>,No potential conflicts found.
-Product14,Cc1cc(-c2cn(C)c3ccccc23)n[nH]1,211.11,0.0,0,1.39,-,212.05,F2,3.09,<strong>Peak overlap detected!</strong>,No potential conflicts found.
-Product15,Cc1cc(-c2cc3ccccc3n2C)n[nH]1,211.11,0.0,0,1.63,-,212.0,G2,17.24,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product10,Cc1cc(-c2ccc(C(F)(F)F)cc2F)n[nH]1,244.06,0.0,0,1.75,242.9,244.95,B2,37.089,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product11,Cc1cc(-c2cc(CO)ccc2Cl)n[nH]1,222.06,224.06,0,1.34,-,222.95,C2,17.894,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product12,Cc1cc(-c2sccc2C)n[nH]1,178.06,0.0,0,1.47,-,179.0,D2,5.909,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product13,Cc1cc(-c2c(C)noc2C)n[nH]1,177.09,0.0,0,1.23,-,178.0,E2,0.601,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product14,Cc1cc(-c2cn(C)c3ccccc23)n[nH]1,211.11,0.0,0,1.39,-,212.05,F2,3.086,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Product15,Cc1cc(-c2cc3ccccc3n2C)n[nH]1,211.11,0.0,0,1.63,-,212.0,G2,17.241,<strong>Peak overlap detected!</strong>,No potential conflicts found.
 Product16,Cc1cc(-c2cn[nH]c2)n[nH]1,148.07,0.0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
 Product17,Cc1cc(-c2ccoc2)n[nH]1,148.06,0.0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
-Impurity0,,0.0,0.0,0,1.16,"[112.7, 114.6, 158.9]",[178.95],F2,11.53,[],[]
+Impurity0,,0.0,0.0,0,1.16,"[112.7, 114.6, 158.9]",[178.95],F2,11.532,[],[]
 Impurity1,,0.0,0.0,0,1.48,[],[],C2,2.7,[],[]
 Impurity2,,0.0,0.0,0,1.56,[],"[170.0, 210.95]",A1,1.31,[],[]
 Impurity3,,0.0,0.0,0,1.7,[124.65],[768.65],A2,100.0,[],[]
-Impurity4,,0.0,0.0,0,1.75,[],"[102.05, 338.2]",C2,27.14,[],[]
-Impurity5,,0.0,0.0,0,2.05,[],[],H1,5.56,[],[]
-Impurity6,,0.0,0.0,0,2.14,[],[679.4],H2,73.24,[],[]
-Impurity7,,0.0,0.0,0,2.24,[652.75],[],E1,1.61,[],[]
-Impurity8,,0.0,0.0,0,2.58,[870.9],"[494.3, 495.3, 515.35, 985.75, 986.8]",E2,2.62,[],[]
+Impurity4,,0.0,0.0,0,1.75,[],"[102.05, 338.2]",C2,27.143,[],[]
+Impurity5,,0.0,0.0,0,2.05,[],[],H1,5.561,[],[]
+Impurity6,,0.0,0.0,0,2.14,[],[679.4],H2,73.241,[],[]
+Impurity7,,0.0,0.0,0,2.24,[652.75],[],E1,1.608,[],[]
+Impurity8,,0.0,0.0,0,2.58,[870.9],"[494.3, 495.3, 515.35, 985.75, 986.8]",E2,2.617,[],[]
