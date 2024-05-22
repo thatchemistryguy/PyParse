@@ -30,7 +30,6 @@ def getChromatogram(spectrum):
     
     x_val = []
     y_val = []
-    
     lineData = spectrum.split("\n")
     length = len(lineData)
     n_val = math.ceil(length / options.points_per_trace)
@@ -44,7 +43,6 @@ def getChromatogram(spectrum):
                 data = value.split("\t")
                 x_val.append(float(data[0]))
                 y_val.append(float(data[1]))
-    
     return [x_val, y_val]
            
         
@@ -247,7 +245,7 @@ def getData(filename):
                 chromatograms = function.split("[CHROMATOGRAM]")[1:]
                 for chromatogram in chromatograms:
                     c_lines = chromatogram.split("\n")
-                    if c_lines[3] == "Description\tDAD: TIC":
+                    if "Description\tDAD:" in c_lines[3]:
                         chroma[wellno] = getChromatogram(chromatogram.split("[TRACE]")[1]) #get chromatogram for this well
                         wellpeaks = chromatogram.split("[PEAK]")[1:]
                         for peak in wellpeaks:

@@ -1,0 +1,13 @@
+name,g_smiles,mass1,mass2,mass3,time,mass-,mass+,best_well,best_purity,overlaps,conflicts
+Product1,CCC,44.06,0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
+Product2,CCCCN,73.09,0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
+Product3,c1ccccc1O,94.04,0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
+Product4,c1ccccc1,78.05,0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
+Product5,CCCCCCCCN,129.15,0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
+Product6,CC,30.05,0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
+Product7,CCCNO,75.07,0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
+Product8,CCOCOC,90.07,0,0,0.0,-,-,None found.,0.0,N/A,No potential conflicts found.
+Impurity0,,0.0,0,0,1.45,[],"[169.03, 278.99, 280.13, 301.0]",A8,68.08,[],[]
+Impurity1,,0.0,0,0,1.54,[],[274.19],A1,50.79,[],[]
+Impurity2,,0.0,0,0,1.62,[],[],A1,13.84,[],[]
+Impurity3,,0.0,0,0,1.85,[],"[296.19, 297.27, 318.2, 457.22]",A3,12.41,[],[]
