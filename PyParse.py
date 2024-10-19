@@ -46,7 +46,17 @@ import glob
 import getShimadzuData
 import getWatersData
 
-
+#Fn to convert a well name like B5 to machine format (11)
+def convertWellToNum(well):
+    row = well[0]
+    column = well[1:]
+    #if the format of the row/column conforms to expectations
+    if isinstance(int(column[0]), int):
+        return int((ord(row) - 65) * options.plate_col_no + int(column))
+    #Plates with more than 26 rows are unsupported at present. 
+    else:
+        logging.info("The well specified implies an unsupported plate.")
+        sys.exit(2)
 
 def importStructures(filename, save_dir):
     """
@@ -77,21 +87,6 @@ def importStructures(filename, save_dir):
     global product_count, SM_count
     product_count = 0
     SM_count = 0
-
-    #Fn to convert a well name like B5 to machine format (11)
-    def convertWellToNum(well):
-        row = well[0]
-        column = well[1:]
-        #if the format of the row/column conforms to expectations
-        if isinstance(int(column[0]), int):
-            return int((ord(row) - 65) * options.plate_col_no + int(column))
-        #Plates with more than 26 rows are unsupported at present. 
-        else:
-            logging.info("The well specified implies an unsupported plate.")
-            with open(f'{save_dir}html_output.html', 'w') as f:
-                f.write("The well specified implies an unsupported plate.")
-                f.close()
-            sys.exit(2)
 
     #fn to import process each compound into the right format
     def addCompound(column, row):
@@ -283,7 +278,7 @@ def importStructures(filename, save_dir):
     compoundDF["mass2"] = mass2
     compoundDF["mass3"] = mass3
     
-    return [compoundDF, internalSTD, SMs, products, by_products]
+    return [inputCSV, compoundDF, internalSTD, SMs, products, by_products]
     
 
 def getUserReadableWell(wellno):
@@ -2286,7 +2281,129 @@ def buildHTML(save_dir, compoundDF, all_compounds, impurities, analysis_name, ti
         )
     fo.close() 
 
+def genAnalyticalTable(platemapDF, cpTable, save_dir, sample_IDs, products, SMs, by_products, internalSTD):
+    """ 
+    Generate an analytical table that includes all input and output information
+    for a plate, including reagent amounts, IDs, plate temperature, irradiation
+    power, etc. 
+    There is a row for each piece of information, for each reagent, product or
+    plate parameter, for each well in the plate. 
+    The column headers are based on the assumption that the co-repository, "PyParse_designer",
+    was used to generate the platemap. Other methods of generating the required platemap 
+    may need to edit the column headers used below. 
+    
+    :param outputTable: Pandas datatable containing the full output by well
+    :param compoundTable: Pandas datatable containing the full output by compound
+    :param sample_IDs: Dictionary of all sample IDs, indexed by well number
+    :output: Data saved to the master analytical CSV file
+    """
+    class analyteRow:
+        def __init__(self, well, wellID, sample_ID, smiles, analyte_class, data_type, data_value, data_desc, data_unit):
+            self.well = well
+            self.well_ID = wellID
+            self.Reaction_ID = sample_ID
+            self.analyte_smiles = smiles
+            self.analyte_class = analyte_class
+            self.data_entry = data_value
+            self.data_type = data_type
+            self.data_units = data_unit
+            self.data_description = data_desc
+            
+    aTable = []
 
+    for index, compound in cpTable.iterrows():
+        
+        if compound["name"] in products:
+            a_class = "desired product"
+        elif compound["name"] in by_products:
+            a_class = "byproduct"
+        elif compound["name"] in SMs:
+            a_class = "limiting reactant"
+        elif compound["name"] == internalSTD:
+            a_class = "internalstd"
+        else:
+            a_class = "impurity"
+
+        for well in compound["locations"]:
+            well_name = getUserReadableWell(well)
+            valid_hit = [hit for hit in compound["hits"]["green"] if well == hit["well"]]
+
+            if len(valid_hit) == 1:
+                valid_hit = valid_hit[0]
+                
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Retention Time", valid_hit["time"], "Time at which compound elutes", "min").__dict__)
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "ES+", valid_hit["mass+"], "Positive m/z", "Da/Q").__dict__)
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "ES-", valid_hit["mass-"], "Negative m/z", "Da/Q").__dict__)
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Percentage Area", valid_hit["area"], "LCMS UV Peak percentage area", "%").__dict__)
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Area Absolute", valid_hit["areaAbs"], "LCMS UV Peak absolute area", "AU").__dict__)
+            #If no hit was found, capture in the table that the product was expected but not observed. 
+            else: 
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Retention Time", 0, "Time at which compound elutes", "min").__dict__)
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "ES+", 0, "Positive m/z", "Da/Q").__dict__)
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "ES-", 0, "Negative m/z", "Da/Q").__dict__)
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Percentage Area", 0, "LCMS UV Peak percentage area", "%").__dict__)
+                aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Area Absolute", 0, "LCMS UV Peak absolute area", "AU").__dict__)
+        
+    #Add the remaining data from the platemapDF, containing info on IDs, amounts, quantity used, etc
+
+    entry_types = ["desired product", "limiting reactant", "excess reactant", "internalstd", "base", "catalyst1", "catalyst2", "additive", "solvent1", "solvent2"]
+    for index, row in platemapDF.iterrows():
+        well_as_num = convertWellToNum(row["well"])
+        for entry in entry_types:
+            if row[entry+" smiles"] != "":
+                if entry == "solvent1" or entry == "solvent2":
+                    amount_unit = "uL"
+                else:
+                    amount_unit = "umol"
+                
+                #Ensure that catalysts and co-catalysts are all given the same analyte class
+                if entry == "catalyst1" or entry == "catalyst2":
+                    a_class = "catalyst"
+                else:
+                    a_class = entry
+
+                #generate a canonical smiles for use as an index
+                try:
+                    mol = Chem.MolFromSmiles(row[entry+" smiles"].strip())
+                    c_smiles = Chem.MolToSmiles(mol)
+                except:
+                    c_smiles = row[entry+" smiles"]
+                
+                if row[entry +" amount"] != "":
+                    aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Expected Amount", row[entry +" amount"], 
+                                "Amount of analyte expected in plate.", amount_unit).__dict__)
+
+                if row[entry +" id"] != "":
+                    aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte ID", row[entry +" id"], 
+                                    "ID of analyte in well.", "N/A").__dict__)
+
+                if row[entry +" name"] != "":
+                    aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte Name", row[entry +" name"], 
+                                    "Name of analyte in well.", "N/A").__dict__)
+        if(row["time"] != ""):
+            aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Time", "plate parameter", "Time", row["time"], 
+                        "Reaction time prior to analysis.", "h").__dict__)
+
+        if(row["temperature"] != ""):    
+            aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Temperature", "plate parameter", "Temperature", row["temperature"], 
+                        "Reaction temperature prior to analysis", "C").__dict__)
+        if(row["irradiation_power"] != ""):
+            aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Power", "plate parameter", "Irradiation Power", row["irradiation_power"], 
+                            "Irradiation power applied", "mW per well").__dict__)
+        if(row["irradiation_wavelength"] != ""):
+            aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Wavelength", "plate parameter", "Irradiation Wavelength", row["irradiation_wavelength"], 
+                            "Irradiation wavelength applied", "nm").__dict__)
+
+
+
+    #Build the Pandas dataframe and sort it inplace
+    df = pd.DataFrame(aTable)
+    df.sort_values(["well", "analyte_smiles"], inplace = True)
+    del df["well"]
+
+    #Save the analytical table to the run folder
+
+    csv = df.to_csv(f'{save_dir}aTable.csv', index = False, header = True)
 
 def main():
     """ 
@@ -2577,7 +2694,7 @@ def main():
     #Import the structure data from the comma-separated values platemap file provided
     #by the user to initiate the compoundDF. 
     pre_import = time.perf_counter()            
-    [compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[1], save_dir)
+    [platemapDF, compoundDF, internalSTD, SMs, products, by_products] = importStructures(root_names[1], save_dir)
 
     #Check that an internal standard was provided if the plot_type expects one
     if options.plot_type in ["P/STD", "corrP/STD"] and internalSTD == "":
@@ -2918,7 +3035,11 @@ def main():
                         dst = f'{path.split("/")[-1]}/{file}'
                         myzip.write(filename, arcname = dst)
     
+    #Save the analytical file to the master location for DMX
+    #This function also saves the same formatted data to the local run folder
+    #to be accessed by the user. 
     
+    genAnalyticalTable(platemapDF, compoundDF, DMX_save_dir, save_dir, sample_IDs, products, SMs, by_products, internalSTD)
 
     total_time = time.perf_counter() - time_start
     logging.info(f'The analysis was completed in {total_time} seconds.')
