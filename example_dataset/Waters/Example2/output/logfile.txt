@@ -11,3 +11,92 @@ INFO:root:A histogram and donut chart were generated.
 INFO:root:The HTML output was generated.
 INFO:root:The CSV outputs were generated.
 INFO:root:The analysis was completed in 10.108196900000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
+INFO:root:48 wells were found in the rpt.
+INFO:root:4 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\indexes\base.py", line 3361, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas\_libs\index.pyx", line 76, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\index.pyx", line 108, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\hashtable_class_helper.pxi", line 5198, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas\_libs\hashtable_class_helper.pxi", line 5206, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'desired product amount'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "PyParse.py", line 3056, in <module>
+    main()
+  File "PyParse.py", line 3045, in main
+    genAnalyticalTable(platemapDF, compoundDF, save_dir, sample_IDs, products, SMs, by_products, internalSTD)
+  File "PyParse.py", line 2372, in genAnalyticalTable
+    if row[entry +" amount"] != "":
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\series.py", line 942, in __getitem__
+    return self._get_value(key)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\series.py", line 1051, in _get_value
+    loc = self.index.get_loc(label)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\indexes\base.py", line 3363, in get_loc
+    raise KeyError(key) from err
+KeyError: 'desired product amount'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
+INFO:root:48 wells were found in the rpt.
+INFO:root:4 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\indexes\base.py", line 3361, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "pandas\_libs\index.pyx", line 76, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\index.pyx", line 108, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas\_libs\hashtable_class_helper.pxi", line 5198, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas\_libs\hashtable_class_helper.pxi", line 5206, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'excess reactant smiles'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "PyParse.py", line 3057, in <module>
+    main()
+  File "PyParse.py", line 3046, in main
+    genAnalyticalTable(platemapDF, compoundDF, save_dir, sample_IDs, products, SMs, by_products, internalSTD)
+  File "PyParse.py", line 2354, in genAnalyticalTable
+    if row[entry+" smiles"] != "":
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\series.py", line 942, in __getitem__
+    return self._get_value(key)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\series.py", line 1051, in _get_value
+    loc = self.index.get_loc(label)
+  File "E:\Installations\Anaconda\envs\PyParse\lib\site-packages\pandas\core\indexes\base.py", line 3363, in get_loc
+    raise KeyError(key) from err
+KeyError: 'excess reactant smiles'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
+INFO:root:48 wells were found in the rpt.
+INFO:root:4 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 9.2420018 seconds.

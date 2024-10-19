@@ -2347,10 +2347,11 @@ def genAnalyticalTable(platemapDF, cpTable, save_dir, sample_IDs, products, SMs,
     #Add the remaining data from the platemapDF, containing info on IDs, amounts, quantity used, etc
 
     entry_types = ["desired product", "limiting reactant", "excess reactant", "internalstd", "base", "catalyst1", "catalyst2", "additive", "solvent1", "solvent2"]
+
     for index, row in platemapDF.iterrows():
         well_as_num = convertWellToNum(row["well"])
         for entry in entry_types:
-            if row[entry+" smiles"] != "":
+            if f'{entry} smiles' in row and row[entry+" smiles"] != "":
                 if entry == "solvent1" or entry == "solvent2":
                     amount_unit = "uL"
                 else:
@@ -2369,28 +2370,28 @@ def genAnalyticalTable(platemapDF, cpTable, save_dir, sample_IDs, products, SMs,
                 except:
                     c_smiles = row[entry+" smiles"]
                 
-                if row[entry +" amount"] != "":
+                if f'{entry} amount' in row and row[entry +" amount"] != "":
                     aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Expected Amount", row[entry +" amount"], 
                                 "Amount of analyte expected in plate.", amount_unit).__dict__)
 
-                if row[entry +" id"] != "":
+                if f'{entry} id' in row and row[entry +" id"] != "":
                     aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte ID", row[entry +" id"], 
                                     "ID of analyte in well.", "N/A").__dict__)
 
-                if row[entry +" name"] != "":
+                if f'{entry} name' in row and row[entry +" name"] != "":
                     aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte Name", row[entry +" name"], 
                                     "Name of analyte in well.", "N/A").__dict__)
-        if(row["time"] != ""):
+        if "time" in row and row["time"] != "":
             aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Time", "plate parameter", "Time", row["time"], 
                         "Reaction time prior to analysis.", "h").__dict__)
 
-        if(row["temperature"] != ""):    
+        if "temperature" in row and row["temperature"] != "":    
             aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Temperature", "plate parameter", "Temperature", row["temperature"], 
                         "Reaction temperature prior to analysis", "C").__dict__)
-        if(row["irradiation_power"] != ""):
+        if "irradiation_power" in row and row["irradiation_power"] != "":
             aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Power", "plate parameter", "Irradiation Power", row["irradiation_power"], 
                             "Irradiation power applied", "mW per well").__dict__)
-        if(row["irradiation_wavelength"] != ""):
+        if "irradiation_wavelength" in row and row["irradiation_wavelength"] != "":
             aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Wavelength", "plate parameter", "Irradiation Wavelength", row["irradiation_wavelength"], 
                             "Irradiation wavelength applied", "nm").__dict__)
 
@@ -2460,6 +2461,7 @@ def main():
                         
                         gen_csv = "True",
                         gen_zip = "True",
+                        gen_atable = "True", 
 
                         output = "output",
 
@@ -2544,6 +2546,9 @@ def main():
     
     parser.add_argument("-z", "--generate_zip", action="store", type=str, dest = "gen_zip", 
                         help = "Choose to generate and save a zip file, True/False.\n")
+    
+    parser.add_argument("-a", "--generate_atable", action="store", type=str, dest = "gen_atable", 
+                        help = "Choose to generate and save an analytical table, True/False.\n")
     
     parser.add_argument("-f", "--filter_by_rt", nargs = "+", action="store", type=str, dest = "filter_by_rt",
                         help = "Provide retention time ranges to ignore, in the form 'mintime-maxtime'"
@@ -3035,11 +3040,10 @@ def main():
                         dst = f'{path.split("/")[-1]}/{file}'
                         myzip.write(filename, arcname = dst)
     
-    #Save the analytical file to the master location for DMX
-    #This function also saves the same formatted data to the local run folder
-    #to be accessed by the user. 
-    
-    genAnalyticalTable(platemapDF, compoundDF, DMX_save_dir, save_dir, sample_IDs, products, SMs, by_products, internalSTD)
+    #Generates and saves an analytical table containing all information concerning inputs and
+    #outputs of the plate. 
+    if options.gen_atable == "True":
+        genAnalyticalTable(platemapDF, compoundDF, save_dir, sample_IDs, products, SMs, by_products, internalSTD)
 
     total_time = time.perf_counter() - time_start
     logging.info(f'The analysis was completed in {total_time} seconds.')
