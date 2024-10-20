@@ -2292,11 +2292,14 @@ def genAnalyticalTable(platemapDF, cpTable, save_dir, sample_IDs, products, SMs,
     was used to generate the platemap. Other methods of generating the required platemap 
     may need to edit the column headers used below. 
     
-    :param outputTable: Pandas datatable containing the full output by well
-    :param compoundTable: Pandas datatable containing the full output by compound
+    :param platemapDF: Pandas datatable containing the full platemap
+    :param cpTable: Pandas datatable containing the full output by compound
+    :param save_dir: String to specify where to save the output CSV file
     :param sample_IDs: Dictionary of all sample IDs, indexed by well number
+    :param products/SMs/by_products/internalSTD: List of names of compounds, by each compound type
     :output: Data saved to the master analytical CSV file
     """
+
     class analyteRow:
         def __init__(self, well, wellID, sample_ID, smiles, analyte_class, data_type, data_value, data_desc, data_unit):
             self.well = well
@@ -2364,6 +2367,7 @@ def genAnalyticalTable(platemapDF, cpTable, save_dir, sample_IDs, products, SMs,
                     a_class = entry
 
                 #generate a canonical smiles for use as an index
+
                 try:
                     mol = Chem.MolFromSmiles(row[entry+" smiles"].strip())
                     c_smiles = Chem.MolToSmiles(mol)
@@ -3045,6 +3049,7 @@ def main():
     if options.gen_atable == "True":
         genAnalyticalTable(platemapDF, compoundDF, save_dir, sample_IDs, products, SMs, by_products, internalSTD)
 
+    #Log the time taken to complete the run. 
     total_time = time.perf_counter() - time_start
     logging.info(f'The analysis was completed in {total_time} seconds.')
     print(f'The analysis was completed in {round(total_time, 2)} seconds.')
