@@ -35,6 +35,9 @@ New!! About This Branch
 
 This branch, genAnalyticalTable, generates a .csv file containing all possible information about every analyte for every well in the plate. It is designed to encompass everything, in a machine-readable format ready
 for upload to a database or similar. 
+<p align="center">
+	<img src="https://github.com/user-attachments/assets/f3d12331-44ab-42fc-bb9a-5aff86b6b006" width="700">
+</p>
 
 It is most useful when used in conjunction with [PyParse_designer](https://github.com/thatchemistryguy/PyParse_designer), which a simple and lightweight tool to help the user generate fully detailed platemaps
 with minimal effort. When used, the user gets a full end-to-end workflow to design the plate, analyse the data, and prepare this data for long term storage in a database. 
