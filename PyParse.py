@@ -74,9 +74,10 @@ def importStructures(filename, save_dir):
     SMs = []
     products = []
     by_products = []
-    global product_count, SM_count
+    global product_count, SM_count, bp_count
     product_count = 0
     SM_count = 0
+    bp_count = 0
 
     #Fn to convert a well name like B5 to machine format (11)
     def convertWellToNum(well):
@@ -98,7 +99,7 @@ def importStructures(filename, save_dir):
         if column in row:
             if row[column] != "":
                 g_smiles = row[column]
-                
+
                 #generate a canonical smiles for use as an index
                 mol = Chem.MolFromSmiles(g_smiles.strip())
                 index = Chem.MolToSmiles(mol)
@@ -169,19 +170,23 @@ def importStructures(filename, save_dir):
 
                     #use regex to find the byproduct columns (as multiple
                     #byproducts are permitted and each requires a separate column
-                    #in the platemap.) 
+                    #in the platemap.)
+                    #  
                     elif re.search("^byproduct.*smiles$", column):
                         name = ""
-                        byprod_num = column.split("byproduct")[1].split(" ")[0].strip()
-                        if f'byproduct{byprod_num} name' in row and row[f'byproduct{byprod_num} name'] != "":
-                            name = row[f'byproduct{byprod_num} name']
+                        byprod_col_index = column.split("byproduct")[1].split(" ")[0].strip()
+                        if f'byproduct{byprod_col_index} name' in row and row[f'byproduct{byprod_col_index} name'] != "":
+                            name = row[f'byproduct{byprod_col_index} name']
                         else:
-                            name = f'Byproduct{byprod_num}'
+                            global bp_count
+                            bp_count = bp_count + 1
+                            name = f'Byproduct{bp_count}'
+                            
 
                         compounds[index]["name"] = name
 
-                        if f'byproduct{byprod_num} rt' in row and row[f'byproduct{byprod_num} rt'] != "":
-                            compounds[index]["rt"] = float(row[f'byproduct{byprod_num} rt'])
+                        if f'byproduct{byprod_col_index} rt' in row and row[f'byproduct{byprod_col_index} rt'] != "":
+                            compounds[index]["rt"] = float(row[f'byproduct{byprod_col_index} rt'])
                         else:
                             compounds[index]["rt"] = 0
 
@@ -208,6 +213,7 @@ def importStructures(filename, save_dir):
             new_byprod = addCompound(j, row)
             if new_byprod != 0:
                 by_products.append(new_byprod)
+        
         
         new_reactant = addCompound("limiting reactant smiles", row)
         if new_reactant != 0:
@@ -1399,7 +1405,8 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
             "corrParea": 0,
             "corrSTDarea": 0,
             "P/SM+P": 0,
-            "P/STD":0
+            "P/STD":0,
+            "P/tot_BP": 0
             }
         for by_prod in by_products:            
             name = f'{by_prod}area'
@@ -1446,8 +1453,6 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
                     outputTable[hit["well"]]["Uarea"] = outputTable[hit["well"]]["Uarea"] - hit["area"]
                     outputTable[hit["well"]]["UareaAbs"] = outputTable[hit["well"]]["UareaAbs"] - hit["areaAbs"]
 
-                    
-
                 elif row["name"] in by_products:
                     name = f'{row["name"]}area'
                     corr_name = f'corr{row["name"]}area'
@@ -1469,8 +1474,11 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
         if well["PareaAbs"] != 0 or well["SMareaAbs"] != 0:
             well["P/SM+P"] = round(well["PareaAbs"] / (well["SMareaAbs"] + well["PareaAbs"]), 2)
 
-        if well["STDareaAbs"] != 0:
-            
+        if any(well[f'{by_prod}areaAbs'] != 0 for by_prod in by_products):
+            total_by_area = sum(well[f'{by_prod}areaAbs'] for by_prod in by_products)
+            well["P/tot_BP"] = round(well["PareaAbs"] / total_by_area, 2)
+
+        if well["STDareaAbs"] != 0: 
             if well["PareaAbs"] != 0:
                 well["P/STD"] = round(well["PareaAbs"] / well["STDareaAbs"], 2)
             for by_prod in by_products:
@@ -1485,23 +1493,31 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
     #Generate composite metrics like P/STD, and add them to the dataframe. 
     corrP_SM = {}
     corrP_STD = {}
+    corrP_tot_BP = {}
     for index, row in compoundDF.iterrows():
         if row["name"] in products:
             new_slice = dataframe.loc[(dataframe["well_no"].isin(row["locations"])), 
-                                      ["well_no", "P/SM+P", "P/STD"]]
+                                      ["well_no", "P/SM+P", "P/STD", "P/tot_BP"]]
             
             max_val_P_SM = new_slice["P/SM+P"].max()
             max_val_P_STD = new_slice["P/STD"].max()
+            max_val_P_BP = new_slice["P/tot_BP"].max()
             
             for sindex, srow in new_slice.iterrows():
                 if max_val_P_SM != 0:
                     corrP_SM[srow["well_no"]] = srow["P/SM+P"] / max_val_P_SM
                 else:
                     corrP_SM[srow["well_no"]] = 0
+
                 if max_val_P_STD != 0:
                     corrP_STD[srow["well_no"]] = srow["P/STD"] / max_val_P_STD
                 else:
                     corrP_STD[srow["well_no"]] = 0 
+
+                if max_val_P_BP != 0:
+                    corrP_tot_BP[srow["well_no"]] = srow["P/tot_BP"] / max_val_P_BP
+                else:
+                    corrP_tot_BP[srow["well_no"]] = 0 
 
         elif row["name"] in by_products:
             name_std = f'{by_prod}/STD'
@@ -1527,17 +1543,21 @@ def generateOutputTable(compoundDF, internalSTD, SMs, products, by_products, tot
     #as a column to the dataframe. 
     going_in_sm = []
     going_in_std = []
+    going_in_tot_bp = []
 
     for i in range(options.plate_row_no * options.plate_col_no):
         if (i+1) in corrP_SM:
             going_in_sm.append(corrP_SM[i+1])
             going_in_std.append(corrP_STD[i+1])
+            going_in_tot_bp.append(corrP_tot_BP[i+1])
         else:
             going_in_sm.append(0)
             going_in_std.append(0)
+            going_in_tot_bp.append(0)
     
     dataframe["corrP/SM+P"] = going_in_sm    
     dataframe["corrP/STD"] = going_in_std
+    dataframe["corrP/tot_BP"] = going_in_tot_bp
 
     return dataframe
 
@@ -2067,10 +2087,12 @@ def plotHeatmaps(outputTable, save_dir):
         "Parea": "Parea", 
         "conversion": "P/SM+P", 
         "ratio_to_IS": "P/STD",
+        "ratio_to_tot_bp": "P/tot_BP",
         "corrSMarea": "corrSMarea",
         "corrParea": "corrParea", 
         "corrected_conversion": "corrP/SM+P",
-        "corrected_ratio_to_IS": "corrP/STD"
+        "corrected_ratio_to_IS": "corrP/STD",
+        "corrected_ratio_to_tot_BP": "corrP/tot_BP",
     }
     for key, zvalue in zvalues.items():
         
