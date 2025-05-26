@@ -45,6 +45,7 @@ import glob
 #Import local scripts
 import getShimadzuData
 import getWatersData
+import getAgilentData
 
 
 
@@ -1754,6 +1755,8 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
         last_annotation = 0
         highest_mass = 0
         for peak in data:
+            if(wellno == 18):
+                print(peak[0], peak[1])
             if peak[1] > 20:
                 if math.isclose(peak[0], last_annotation, abs_tol = 3):
                     axes.annotate(peak[0], [peak[0]+15, peak[1]+20], ha="center", 
@@ -1783,6 +1786,7 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
 
     #label the graph and axes
     label = getUserReadableWell(wellno)
+    print(label)
     fig.suptitle(f'{cpname} ({mass1}): Well {label}')
     a2.set_xlabel("Time /min")
     a2.set_ylabel("AUs")
@@ -2442,7 +2446,7 @@ def main():
                         help = "Choose whether to search for and report frequently observed impurities. ")
 
     parser.add_argument("-i", "--instrument", action="store", type=str, dest = "instrument",
-                        help = "Select the data originated from, Waters or Shimadzu")
+                        help = "Select the data originated from, Waters, Shimadzu or Agilent")
 
     #Set options to global and parse arguments        
     times = {}
@@ -2540,6 +2544,14 @@ def main():
                 f.write(f'No .daml files found. Please specify a directory with .daml files present.')
                 f.close()
             sys.exit(2)
+    
+    if options.instrument == "Agilent":
+        if root_names[0][-4:].lower() != ".asr":
+            logging.error(f'LCMS data is not in the .asr format. Please use a .asr file format.')
+            with open(f'{save_dir}html_output.html', 'w') as f:
+                f.write(f'LCMS data is not in the .asr format. Please use a .asr file format.')
+                f.close()
+            sys.exit(2)
 
 
     times["Initialise Script"] = time.perf_counter() - time_start 
@@ -2564,6 +2576,9 @@ def main():
         getShimadzuData.init(options)
         [dataTable, chroma, sample_IDs, total_area_abs] = getShimadzuData.getData(root_names[0])
         logging.info(f'{len(dataTable.items())} .daml data sources were found in the folder specified.')
+    elif options.instrument == "Agilent":
+        getAgilentData.init(options)
+        [dataTable, chroma, sample_IDs, total_area_abs] = getAgilentData.getData(root_names[0])
     else:
         logging.error("This instrument is not currently supported by PyParse")
         sys.exit(2)

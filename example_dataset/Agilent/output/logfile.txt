@@ -1,0 +1,330 @@
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 7.6122532000000005 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 4.0633488 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 4.2101261 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 4.1188554 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 4.2815925 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:No chromatogram could be plotted. Data not found.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 4.0994695000000005 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.5369984 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.5842893 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.6947117 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.6829703 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.5641657 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.4673562 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.5051613 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.5864148 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.5758718 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.609460100000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.6277219999999994 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "pyparse.py", line 2947, in <module>
+    main()
+  File "pyparse.py", line 2581, in main
+    [dataTable, chroma, sample_IDs, total_area_abs] = getAgilentData.getData(root_names[0])
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\getAgilentData.py", line 306, in getData
+    if ioncount > peaks[retTime]["MS+ioncount"]:
+TypeError: '>' not supported between instances of 'str' and 'int'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.6037913 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "pyparse.py", line 2947, in <module>
+    main()
+  File "pyparse.py", line 2635, in main
+    hits = findHits(row, dataTable)
+  File "pyparse.py", line 344, in findHits
+    total_ms_plus = sum([i[1] for i in peak["MS+"]])
+TypeError: 'float' object is not iterable
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.664877300000001 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.7323886 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Agilent/output/.
+INFO:root:1 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:The output table was generated.
+INFO:root:Potential conflicts were searched for all compounds.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using Parea as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The HTML output was generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 5.5834435000000004 seconds.
