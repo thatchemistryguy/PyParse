@@ -310,16 +310,13 @@ def getData(filename):
                     if ioncount > peaks[retTime]["MS+ioncount"]:
                         peaks[retTime]["MS+"] = data
                         peaks[retTime]["MS+ioncount"] = ioncount
-                    if welltext == "C2":
-                        print(welltext, retTime, peaks[retTime]["peakID"], peaks[retTime]["areaAbs"])
-                        print(data)
 
                       
                 if "IonMode\tEsi" in lines[3] and "Polarity\tNegative" in lines[5]:
                     [data,ioncount] = getMSData(spectrum)
                     if ioncount > peaks[retTime]["MS-ioncount"]:
                         peaks[retTime]["MS-"] = data
-                        peaks[retTime]["MS-"] = ioncount
+                        peaks[retTime]["MS-ioncount"] = ioncount
                     
                 
                 #Placeholder if a sample Agilent ASR file with UV absorbance data
