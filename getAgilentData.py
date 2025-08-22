@@ -270,9 +270,6 @@ def getData(filename):
                             peaks[retTime]["areaAbs"] = peakAreaAbs
                             peaks[retTime]["pStart"] = float(peakWidth[0])
                             peaks[retTime]["pEnd"] = float(peakWidth[1])
-                            
-                            if welltext == "C2":
-                                print(welltext, retTime, peaks[retTime]["peakID"], peaks[retTime]["areaAbs"])
                                 
 
 
