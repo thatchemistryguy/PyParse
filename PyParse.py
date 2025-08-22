@@ -1755,8 +1755,7 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
         last_annotation = 0
         highest_mass = 0
         for peak in data:
-            if(wellno == 18):
-                print(peak[0], peak[1])
+
             if peak[1] > 20:
                 if math.isclose(peak[0], last_annotation, abs_tol = 3):
                     axes.annotate(peak[0], [peak[0]+15, peak[1]+20], ha="center", 
@@ -1786,7 +1785,7 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
 
     #label the graph and axes
     label = getUserReadableWell(wellno)
-    print(label)
+
     fig.suptitle(f'{cpname} ({mass1}): Well {label}')
     a2.set_xlabel("Time /min")
     a2.set_ylabel("AUs")

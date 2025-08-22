@@ -315,7 +315,6 @@ def getData(filename):
                         peaks[retTime]["MS-"] = data
                         peaks[retTime]["MS-ioncount"] = ioncount
                     
-                
                 #Placeholder if a sample Agilent ASR file with UV absorbance data
                 #for each peak is ever obtained. 
                 #elif lines[4] == "Type\tDAD ":
@@ -358,5 +357,5 @@ def getData(filename):
                 peaks[index]["area"] = round((peaks[index]["areaAbs"]*100) / total_area_abs[wellno], 2)
         
         masterTable[wellno] = peaks.values()  
-
+    print(masterTable)
     return [masterTable, chroma, sample_IDs, total_area_abs]
