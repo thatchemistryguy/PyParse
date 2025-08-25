@@ -1824,8 +1824,8 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
     annotate_peaks.sort(key = lambda x: x["time"])
     last_x_position = 0
     max_x = max(trace[0])
+    
     for index, i in enumerate(annotate_peaks):
-
         x_index = min(enumerate(trace[0]), 
                       key = lambda x: abs(x[1]-i["time"]))[0]
         if index < len(annotate_peaks) / 2:
@@ -1844,13 +1844,13 @@ def plotChroma(cpname, wellno, trace, pStart, pEnd, annotate_peaks, save_dir,
                 h_align = "right"
             else:
                 h_align = "left"
-
+        
         if index % 2 == 0:
-            plt.annotate(f'{i["cpname"]}: {i["time"]}', xy = (i["time"], trace[1][x_index]), 
+            plt.annotate(f'{i["cpname"]}: {str(round(float(i["time"]),2))}', xy = (i["time"], trace[1][x_index]), 
                         xytext = (i["time"]+offset, 120), horizontalalignment=h_align,
                         arrowprops = arrow_props)
         else:
-            plt.annotate(f'{i["cpname"]}: {i["time"]}', xy = (i["time"], trace[1][x_index]), 
+            plt.annotate(f'{i["cpname"]}: {str(round(float(i["time"]),2))}', xy = (i["time"], trace[1][x_index]), 
                         xytext = (i["time"]+offset, 110), horizontalalignment=h_align,
                         arrowprops = arrow_props)
         last_x_position = i["time"]+offset
