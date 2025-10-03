@@ -10,4 +10,4 @@ INFO:root:A set of pie-charts was generated using corrP/STD as the index.
 INFO:root:A histogram and donut chart were generated.
 INFO:root:The HTML output was generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 48.04536019999796 seconds.
+INFO:root:The analysis was completed in 50.04275459999917 seconds.
