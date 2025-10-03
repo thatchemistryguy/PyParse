@@ -2350,54 +2350,71 @@ def genAnalyticalTable(platemapDF, cpTable, save_dir, sample_IDs, products, SMs,
     #Add the remaining data from the platemapDF, containing info on IDs, amounts, quantity used, etc
 
     entry_types = ["desired product", "limiting reactant", "excess reactant", "internalstd", "base", "catalyst1", "catalyst2", "additive", "solvent1", "solvent2"]
-
-    for index, row in platemapDF.iterrows():
+    #Up to 10 columns each are allowed for byproducts and excess reactants. Note that more than 10 different compounds
+    #are permitted in this category, as each column can allow multiple compounds. 
+    for i in range(1, 11):
+        entry_types.append(f'byproduct{i}')
+        entry_types.append(f'excess reactant{i}')
+    for _, row in platemapDF.iterrows():
         well_as_num = convertWellToNum(row["well"])
+        
         for entry in entry_types:
-            if f'{entry} smiles' in row and row[entry+" smiles"] != "":
-                if entry == "solvent1" or entry == "solvent2":
-                    amount_unit = "uL"
-                else:
-                    amount_unit = "umol"
-                
-                #Ensure that catalysts and co-catalysts are all given the same analyte class
-                if entry == "catalyst1" or entry == "catalyst2":
-                    a_class = "catalyst"
-                else:
-                    a_class = entry
+            if f'{entry} smiles' in row:
+                if row[entry+" smiles"] != "":
+                    if entry == "solvent1" or entry == "solvent2":
+                        amount_unit = "uL"
+                    else:
+                        amount_unit = "umol"
 
-                #generate a canonical smiles for use as an index
+                    #Ensure that catalysts and co-catalysts are all given the same analyte class
+                    if entry == "catalyst1" or entry == "catalyst2":
+                        a_class = "catalyst"
+                    elif "byproduct" in entry:
+                        a_class = "byproduct"
+                    elif "excess reactant" in entry:
+                        a_class = "excess reactant"
+                    else:
+                        a_class = entry
 
-                try:
-                    mol = Chem.MolFromSmiles(row[entry+" smiles"].strip())
-                    c_smiles = Chem.MolToSmiles(mol)
-                except:
-                    c_smiles = row[entry+" smiles"]
-                
-                if f'{entry} amount' in row and row[entry +" amount"] != "":
-                    aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Expected Amount", row[entry +" amount"], 
-                                "Amount of analyte expected in plate.", amount_unit).__dict__)
+                    #generate a canonical smiles for use as an index
+                    try:
+                        mol = Chem.MolFromSmiles(row[entry+" smiles"].strip())
+                        c_smiles = Chem.MolToSmiles(mol)
 
-                if f'{entry} id' in row and row[entry +" id"] != "":
-                    aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte ID", row[entry +" id"], 
-                                    "ID of analyte in well.", "N/A").__dict__)
+                    except:
+                        c_smiles = row[entry+" smiles"]
+                    
+                    if f'{entry} amount' in row:
+                        if row[entry +" amount"] != "":
+                            aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Expected Amount", row[entry +" amount"], 
+                                    "Amount of analyte expected in plate.", amount_unit).__dict__)
 
-                if f'{entry} name' in row and row[entry +" name"] != "":
-                    aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte Name", row[entry +" name"], 
-                                    "Name of analyte in well.", "N/A").__dict__)
-        if "time" in row and row["time"] != "":
+                    if f'{entry} id' in row:
+                        if row[entry +" id"] != "":
+                            aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte ID", row[entry +" id"], 
+                                            "ID of analyte in well.", "N/A").__dict__)
+                    if f'{entry} name' in row:
+                        if row[entry +" name"] != "":
+                            aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte Name", row[entry +" name"], 
+                                            "Name of analyte in well.", "N/A").__dict__)
+
+        if "time" in row:
             aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Time", "plate parameter", "Time", row["time"], 
-                        "Reaction time prior to analysis.", "h").__dict__)
+                            "Reaction time prior to analysis.", "h").__dict__)
 
-        if "temperature" in row and row["temperature"] != "":    
+        if "temperature" in row:
             aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Temperature", "plate parameter", "Temperature", row["temperature"], 
-                        "Reaction temperature prior to analysis", "C").__dict__)
-        if "irradiation_power" in row and row["irradiation_power"] != "":
-            aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Power", "plate parameter", "Irradiation Power", row["irradiation_power"], 
-                            "Irradiation power applied", "mW per well").__dict__)
-        if "irradiation_wavelength" in row and row["irradiation_wavelength"] != "":
-            aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Wavelength", "plate parameter", "Irradiation Wavelength", row["irradiation_wavelength"], 
-                            "Irradiation wavelength applied", "nm").__dict__)
+                            "Reaction temperature prior to analysis", "C").__dict__)
+
+        if "irradiation_power" in row:
+            if(row["irradiation_power"] != ""):
+                aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Power", "plate parameter", "Irradiation Power", row["irradiation_power"], 
+                                "Irradiation power applied", "mW per well").__dict__)
+        if "irradiation_wavelength" in row:
+            if(row["irradiation_wavelength"] != ""):
+                aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Wavelength", "plate parameter", "Irradiation Wavelength", row["irradiation_wavelength"], 
+                                "Irradiation wavelength applied", "nm").__dict__)
+
 
 
 
