@@ -39,7 +39,7 @@ INFO:root:A set of pie-charts was generated using Parea as the index.
 INFO:root:A histogram and donut chart were generated.
 INFO:root:The HTML output was generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 8.5871629 seconds.
+INFO:root:The analysis was completed in 13.7263977 seconds.
 INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
 INFO:root:24 wells were found in the rpt.
@@ -81,4 +81,4 @@ INFO:root:A set of pie-charts was generated using Parea as the index.
 INFO:root:A histogram and donut chart were generated.
 INFO:root:The HTML output was generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 10.764571 seconds.
+INFO:root:The analysis was completed in 9.644369 seconds.

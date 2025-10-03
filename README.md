@@ -30,6 +30,25 @@ You can also find our published user-guide for chemists at our peer-reviewed art
 ```
 (Saves all output tables, data and visualisations to "new_output_directory".)
 
+New!! About This Branch
+-------------------
+
+This branch, genAnalyticalTable, generates a .csv file containing all possible information about every analyte for every well in the plate. It is designed to encompass everything, in a machine-readable format ready
+for upload to a database or similar. 
+<p align="center">
+	<img src="https://github.com/user-attachments/assets/f3d12331-44ab-42fc-bb9a-5aff86b6b006" width="700">
+</p>
+
+It is most useful when used in conjunction with [PyParse_designer](https://github.com/thatchemistryguy/PyParse_designer), which a simple and lightweight tool to help the user generate fully detailed platemaps
+with minimal effort. When used, the user gets a full end-to-end workflow to design the plate, analyse the data, and prepare this data for long term storage in a database. 
+
+Workflow in a Nutshell:
+
+1. PyParse_designer is used to define every parameter for every well in the plate
+2. This platemap is then combined with the reaction UPLC-MS data in PyParse, which looks to assign peaks to analytes.
+3. PyParse generates an analytical table, which includes information about both the inputs (catalyst amount, ID, temperature, etc) and the outputs (product percentage area, retention time observed, m/z values, etc)
+4. The user uploads this analytical table to a global data lake for long-term storage, for future interrogation, and to facilitate the creation of machine-learning models.
+
 Citation
 -----------
 

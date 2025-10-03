@@ -1,18 +1,18 @@
-well,well-index,desired product smiles
-A1,0,Cc1cc(-c2ccc(O)cc2C)n[nH]1
-B1,1,Cc1cc(-c2ccccc2C)n[nH]1
-C1,2,COc1ccccc1-c1cc(C)[nH]n1
-D1,3,Cc1cc(-c2ccccc2O)n[nH]1
-E1,4,Cc1cc(-c2cc(Cl)ccc2Cl)n[nH]1
-F1,5,Cc1ccc(C)c(-c2cc(C)[nH]n2)c1
-G1,6,Cc1cc(-c2ccc(C#N)cc2C)n[nH]1
-H1,7,Cc1cc(-c2ccc(Cl)cc2C)n[nH]1
-A2,8,Cc1cc(-c2ccc(C(F)(F)F)cc2C)n[nH]1
-B2,9,Cc1cc(-c2ccc(C(F)(F)F)cc2F)n[nH]1
-C2,10,Cc1cc(-c2cc(CO)ccc2Cl)n[nH]1
-D2,11,Cc1cc(-c2sccc2C)n[nH]1
-E2,12,Cc1cc(-c2c(C)noc2C)n[nH]1
-F2,13,Cc1cc(-c2cn(C)c3ccccc23)n[nH]1
-G2,14,Cc1cc(-c2cc3ccccc3n2C)n[nH]1
-H2,15,Cc1cc(-c2cn[nH]c2)n[nH]1
-A3,16,Cc1cc(-c2ccoc2)n[nH]1
+well,desired product smiles
+A1,Cc1cc(-c2ccc(O)cc2C)n[nH]1
+B1,Cc1cc(-c2ccccc2C)n[nH]1
+C1,COc1ccccc1-c1cc(C)[nH]n1
+D1,Cc1cc(-c2ccccc2O)n[nH]1
+E1,Cc1cc(-c2cc(Cl)ccc2Cl)n[nH]1
+F1,Cc1ccc(C)c(-c2cc(C)[nH]n2)c1
+G1,Cc1cc(-c2ccc(C#N)cc2C)n[nH]1
+H1,Cc1cc(-c2ccc(Cl)cc2C)n[nH]1
+A2,Cc1cc(-c2ccc(C(F)(F)F)cc2C)n[nH]1
+B2,Cc1cc(-c2ccc(C(F)(F)F)cc2F)n[nH]1
+C2,Cc1cc(-c2cc(CO)ccc2Cl)n[nH]1
+D2,Cc1cc(-c2sccc2C)n[nH]1
+E2,Cc1cc(-c2c(C)noc2C)n[nH]1
+F2,Cc1cc(-c2cn(C)c3ccccc23)n[nH]1
+G2,Cc1cc(-c2cc3ccccc3n2C)n[nH]1
+H2,Cc1cc(-c2cn[nH]c2)n[nH]1
+A3,Cc1cc(-c2ccoc2)n[nH]1
