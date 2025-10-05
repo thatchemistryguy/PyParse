@@ -58,6 +58,20 @@ def convertWellToNum(well):
         logging.info("The well specified implies an unsupported plate.")
         sys.exit(2)
 
+
+class rawData:
+    def __init__(self, inputfile):
+        with open(inputfile, errors = "ignore") as f:
+            fullText = f.read()
+            self.wellData = fullText.split("[SAMPLE]")[1:] #Split the file into individual wells
+           
+
+    
+    
+    
+
+
+
 def importStructures(filename, save_dir):
     """
     From a given CSV, with defined header names, and one row per well, 
