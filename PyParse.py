@@ -600,6 +600,10 @@ def main():
 
     times["Save .CSV Outputs"] = time.perf_counter() - pre_csvs
 
+    #Log the time taken to complete the run. 
+    total_time = time.perf_counter() - time_start
+    times["Total time"] = total_time
+
     #build the HTML output file
     buildHTML(save_dir, cpTable.cpTable, options.analysis_name, times = times)
 
@@ -610,8 +614,7 @@ def main():
     #if options.gen_atable == "True":
     #    genAnalyticalTable(platemapDF, compoundDF, save_dir, sample_IDs, products, SMs, by_products, internalSTD)
 
-    #Log the time taken to complete the run. 
-    total_time = time.perf_counter() - time_start
+    
     logging.info(f'The analysis was completed in {total_time} seconds.')
     print(f'The analysis was completed in {round(total_time, 2)} seconds.')
 
