@@ -3060,7 +3060,7 @@ def main():
 
     
     #Generate the HTML output. 
-    times["Total time"] = time.perf_counter() - pre_donut
+    times["Total time"] = time.perf_counter() - time_start
     buildHTML(save_dir, compoundDF, all_compounds, impurities, options.analysis_name, times = times)
     logging.info('The HTML output was generated.')
     
