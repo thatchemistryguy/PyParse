@@ -3025,21 +3025,17 @@ def main():
 
     #Search for impurities that haven't been specified
     if options.find_freq_imp == "True":
+        pre_imp = time.perf_counter()
         impurities = findImpurities(dataTable, compoundDF, save_dir, chroma)
+        times["Find Impurities"] = time.perf_counter() - pre_imp
     else:
         impurities = []
 
     #Generate location heatmaps based on the provided heatmap
     genLocationHeatmaps(compoundDF, save_dir)
 
-    #Generate the HTML output. 
-    times["Total time"] = time.perf_counter() - pre_donut
-    buildHTML(save_dir, compoundDF, all_compounds, impurities, options.analysis_name, times = times)
-    logging.info('The HTML output was generated.')
-    
-    
-    
     #Generate an csv of the output table.
+    pre_csvs = time.perf_counter()
     if options.gen_csv == "True":
         csv = outputTable.to_csv(f'{save_dir}outputTable.csv', index = False)
         newslice = compoundDF.loc[:, ["name", "g_smiles", "mass1", "mass2", "mass3",
@@ -3060,6 +3056,17 @@ def main():
                         filename = os.path.join(path, file)
                         dst = f'{path.split("/")[-1]}/{file}'
                         myzip.write(filename, arcname = dst)
+    times["Generate .CSV Files"] = time.perf_counter() - pre_csvs
+
+    
+    #Generate the HTML output. 
+    times["Total time"] = time.perf_counter() - pre_donut
+    buildHTML(save_dir, compoundDF, all_compounds, impurities, options.analysis_name, times = times)
+    logging.info('The HTML output was generated.')
+    
+    
+    
+    
     
     #Generates and saves an analytical table containing all information concerning inputs and
     #outputs of the plate. 
