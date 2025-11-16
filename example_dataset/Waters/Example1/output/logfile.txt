@@ -82,3 +82,561 @@ INFO:root:A histogram and donut chart were generated.
 INFO:root:The HTML output was generated.
 INFO:root:The CSV outputs were generated.
 INFO:root:The analysis was completed in 9.644369 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 15.119659100004355 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.949354099997436 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.853252600005362 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.90247129999625 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.85937579999154 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.470878499996616 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 888, in getConflicts
+    new_slice["intersection"] = new_slice.apply(lambda brow: len(set(brow["locations"]).intersection(set(row["locations"]))))
+    ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 4312, in __setitem__
+    self._set_item_frame_value(key, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 4470, in _set_item_frame_value
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Cannot set a DataFrame with multiple columns to the single column intersection
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 888, in getConflicts
+    new_slice["intersection"] = new_slice.apply(lambda brow: len(set(brow["locations"]).intersection(set(row["locations"]))), axis = 1)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 4312, in __setitem__
+    self._set_item_frame_value(key, value)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 4470, in _set_item_frame_value
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Cannot set a DataFrame with multiple columns to the single column intersection
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'intersection'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 891, in getConflicts
+    close_compounds = new_slice.loc[new_slice["intersection"] > 0].apply(lambda brow: brow["name"], axis = 1)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'intersection'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'intersection'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 891, in getConflicts
+    close_compounds = new_slice.loc[new_slice["intersection"] > 0].apply(lambda brow: brow["name"], axis = 1)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'intersection'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'intersection'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 891, in getConflicts
+    close_compounds = new_slice.loc[new_slice["intersection"] > 0].apply(lambda brow: brow["name"], axis = 1)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'intersection'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'intersection'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 891, in getConflicts
+    close_compounds = new_slice.loc[new_slice["intersection"] > 0].apply(lambda brow: brow["name"], axis = 1)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'intersection'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 894, in getConflicts
+    if len(close_compounds) > 0:
+           ^^^^^^^^^^^^^^^
+NameError: name 'close_compounds' is not defined
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 894, in getConflicts
+    if len(close_compounds) > 0:
+           ^^^^^^^^^^^^^^^
+NameError: name 'close_compounds' is not defined
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 894, in getConflicts
+    if len(close_compounds) > 0:
+           ^^^^^^^^^^^^^^^
+NameError: name 'close_compounds' is not defined
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 910, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 888, in getConflicts
+    new_slice["intersection"] = new_slice["locations"].apply(lambda x: len(set(x).intersection(set(row["locations"]))), axis = 1)
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\series.py", line 4943, in apply
+    ).apply()
+      ~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1422, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1502, in apply_standard
+    mapped = obj._map_values(
+        mapper=curried, na_action=action, convert=self.convert_dtype
+    )
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\base.py", line 925, in _map_values
+    return algorithms.map_array(arr, mapper, na_action=na_action, convert=convert)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\algorithms.py", line 1743, in map_array
+    return lib.map_infer(values, mapper, convert=convert)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/lib.pyx", line 2999, in pandas._libs.lib.map_infer
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1491, in curried
+    return func(x, *self.args, **self.kwargs)
+TypeError: Assignment.findPotentialConflicts.<locals>.getConflicts.<locals>.<lambda>() got an unexpected keyword argument 'axis'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+ERROR:root:A fatal exception occurred. Contact administrator.
+Traceback (most recent call last):
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 626, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 517, in main
+    cpTable.findPotentialConflicts()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 911, in findPotentialConflicts
+    self.cpTable = self.cpTable.apply(getConflicts, axis = 1)
+                   ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
+    return op.apply().__finalize__(self, method="apply")
+           ~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 916, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
+    results, res_index = self.apply_series_generator()
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
+    results[i] = self.func(v, *self.args, **self.kwargs)
+                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\cpAssignment.py", line 889, in getConflicts
+    new_slice["intersection"] = new_slice["locations"].apply(lambda x: len(set(x).intersection(set(row["locations"]))), axis = 1)
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\series.py", line 4943, in apply
+    ).apply()
+      ~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1422, in apply
+    return self.apply_standard()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1502, in apply_standard
+    mapped = obj._map_values(
+        mapper=curried, na_action=action, convert=self.convert_dtype
+    )
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\base.py", line 925, in _map_values
+    return algorithms.map_array(arr, mapper, na_action=na_action, convert=convert)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\algorithms.py", line 1743, in map_array
+    return lib.map_infer(values, mapper, convert=convert)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/lib.pyx", line 2999, in pandas._libs.lib.map_infer
+  File "E:\Installations\Anaconda_2025\envs\PyParse-3140\Lib\site-packages\pandas\core\apply.py", line 1491, in curried
+    return func(x, *self.args, **self.kwargs)
+TypeError: Assignment.findPotentialConflicts.<locals>.getConflicts.<locals>.<lambda>() got an unexpected keyword argument 'axis'
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.754348300004494 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.57387030000973 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The output files were saved to example_dataset/Waters/Example1/output/.
+INFO:root:24 wells were found in the rpt.
+INFO:root:24 compounds were imported.
+INFO:root:Duplicate assignments were removed.
+INFO:root:A heatmap was generated using Parea as the index.
+INFO:root:A set of pie-charts was generated using corrP/STD as the index.
+INFO:root:A histogram and donut chart were generated.
+INFO:root:The CSV outputs were generated.
+INFO:root:The analysis was completed in 12.831868699999177 seconds.

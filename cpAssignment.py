@@ -139,7 +139,7 @@ class Assignment:
             except:
                 if ("Cl" in smiles or "Br" in smiles) and stage == "mass2":
                     mol = Chem.MolFromSmiles(smiles)
-                    return round(Descriptors.ExactMolWt(mol), 2) + 2
+                    return round(Descriptors.ExactMolWt(mol)+2, 2)
                 else:
                     return 0
             
@@ -201,15 +201,16 @@ class Assignment:
             new_slice["mass_conf"] = 0
             new_slice["MS_plus"] = "-"
             new_slice["MS_minus"] = "-"
-
-            return pd.concat([grouped, new_slice], axis=0).to_dict("records")                      
+            if len(new_slice.index) != 0:
+                return pd.concat([grouped, new_slice], axis=0).to_dict("records")
+            else:
+                return grouped.to_dict("records")                     
 
         self.cpTable["hits"] = self.cpTable.apply(getMatches, axis = 1)
     
     def clusterHits(self, hits, lcData, time_abs_tol = 0.025):
         
-        df = lcData.loc[lcData.index.isin(hits)]
-        df.sort_values("time", inplace = True)
+        df = lcData.loc[lcData.index.isin(hits)].sort_values("time")
 
         clusters = []
         for index in df.index:
@@ -883,22 +884,23 @@ class Assignment:
             new_slice = self.cpTable.loc[((( self.cpTable["time"] - row["time"]).abs() < 0.02)
                                         & ( self.cpTable["name"] != row["name"])
                                         & ( self.cpTable["time"] != 0))]
-            
-            close_compounds = new_slice.apply(lambda brow: brow["name"], axis = 1)
-                                              
+            text = "No potential conflicts found."
+            if len(new_slice.index) > 0:                            
+                new_slice["intersection"] = new_slice["locations"].apply(lambda x: len(set(x).intersection(set(row["locations"]))))
 
-            if len(close_compounds) > 0:
-                text = "<strong>The compound was found to have a similar retention time as "
-                for i, name in enumerate(close_compounds):
-                    if i != len(close_compounds)-1:
-                        text = f'{text}{name}, '
-                    elif len(close_compounds) > 1:
-                        text = f'{text}and {name}. '
-                    else:
-                        text = f'{text}{name}. '
-                text = text + "The user should check this result manually.</strong>"
-            else:
-                text = "No potential conflicts found."
+                close_compounds = new_slice.loc[new_slice["intersection"] > 0].apply(lambda brow: brow["name"], axis = 1)
+                                                
+
+                if len(close_compounds) > 0:
+                    text = "<strong>The compound was found to have a similar retention time as "
+                    for i, name in enumerate(close_compounds):
+                        if i != len(close_compounds)-1:
+                            text = f'{text}{name}, '
+                        elif len(close_compounds) > 1:
+                            text = f'{text}and {name}. '
+                        else:
+                            text = f'{text}{name}. '
+                    text = text + "The user should check this result manually.</strong>"
 
             row["conflicts"] = text
             return row
@@ -1034,9 +1036,8 @@ class Assignment:
             
             #get all rows in msData that have the right combonations of both well and peakID
             result = (msData.loc[(msData["MStype"] == MStype) & 
-                                 (msData.set_index(["well", "peakID"]).index.isin(valid_combos))])
+                                 (msData.set_index(["well", "peakID"]).index.isin(valid_combos))]).sort_values("time")
 
-            result.sort_values("time", inplace = True)
 
             #We need to find which m/z were commonly observed across this set of peaks. 
             #In this sorted data frame, find the difference between each successive row, 
@@ -1153,21 +1154,23 @@ class Assignment:
             
             impurities.append(entry)
         
-        #Turn the list of impurities into a datafram
         
-        df = pd.DataFrame(impurities)
-        df.index = list(df["name"])
-        
-        self.cpTable = pd.concat([self.cpTable, df], axis=0)
-            
-        #If 1 or more impurities were found, plot a hit validation graph to display these. 
-        #Set standard matplotlib graph size
-        plt.rcParams["figure.figsize"] = (12, 6)
         
         if len(clusters) > 0:
+
+            #Turn the list of impurities into a dataframe
+        
+            df = pd.DataFrame(impurities)
+            df.index = list(df["name"])
+            self.cpTable = pd.concat([self.cpTable, df], axis=0)
+                
+            #If 1 or more impurities were found, plot a hit validation graph to display these. 
+            #Set standard matplotlib graph size
+            plt.rcParams["figure.figsize"] = (12, 6)
             fig, ax = plt.subplots()
             total_wells = self.plate_col_no * self.plate_row_no
             ax.set_xlim(-total_wells*0.25, total_wells*1.1)
+
             #Plot a hit validation graph for all clusters to more easily display the results.
             #Save this to the graphs folder. 
             palette = cm.rainbow(np.linspace(0, 1, len(clusters)))

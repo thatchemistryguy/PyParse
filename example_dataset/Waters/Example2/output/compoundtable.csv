@@ -1,20 +1,20 @@
-name,g_smiles,mass1,mass2,mass3,time,mass-,mass+,best_well,best_purity,overlaps,conflicts
-Product1,OCC1=COC(C2=CC(C=CC=C3)=C3N=C2)=N1,226.07,0.0,0,0.71,225.1,227.24,D6,70.51,No peak overlap detected.,No potential conflicts found.
-phenol bp,OC1=CC2=CC=CC=C2N=C1,145.05,0.0,0,0.48,144.01,146.13,A5,25.42,No peak overlap detected.,No potential conflicts found.
-Reactant1,BrC1=CC2=CC=CC=C2N=C1,206.97,208.97,0,1.04,206.29,208.11,C10,61.89,No peak overlap detected.,No potential conflicts found.
-Dibenzylaniline,C1(N(CC2=CC=CC=C2)CC3=CC=CC=C3)=CC=CC=C1,273.15,0.0,0,1.49,-,274.28,D10,23.31,No peak overlap detected.,No potential conflicts found.
-Impurity0,,0.0,0.0,0,0.37,[],"[231.28, 243.21, 244.23, 292.24, 293.18]",A3,7.33,[],[]
-Impurity1,,0.0,0.0,0,0.41,[172.07],"[120.17, 174.15, 175.18, 214.19, 231.27]",B2,8.97,[],[]
-Impurity2,,0.0,0.0,0,0.52,[],"[241.22, 242.19]",B3,7.26,[],[]
-Impurity3,,0.0,0.0,0,0.58,[],[173.2],B6,3.1,[],[]
-Impurity4,,0.0,0.0,0,0.71,[],"[227.24, 228.25]",D2,55.74,[],[]
-Impurity5,,0.0,0.0,0,0.79,[],"[130.13, 225.21]",A1,70.55,[],[]
-Impurity6,,0.0,0.0,0,0.83,[],[],B9,52.94,[],[]
-Impurity7,,0.0,0.0,0,0.96,[213.25],"[355.33, 440.37, 451.31, 452.32, 470.2]",C6,1.52,[],[]
-Impurity8,,0.0,0.0,0,1.02,[322.25],"[354.3, 355.31]",C7,61.77,[],[]
-Impurity9,,0.0,0.0,0,1.06,[],"[257.23, 258.23]",B10,28.77,[],[]
-Impurity10,,0.0,0.0,0,1.12,"[166.11, 255.44]",[],A12,16.2,[],[]
-Impurity11,,0.0,0.0,0,1.15,"[213.16, 255.35]","[352.31, 353.4]",B6,8.92,[],[]
-Impurity12,,0.0,0.0,0,1.28,"[212.18, 219.18]",[],B1,16.29,[],[]
-Impurity13,,0.0,0.0,0,1.41,[212.18],"[295.21, 296.23]",A10,22.14,[],[]
-Impurity14,,0.0,0.0,0,1.64,[],[],B2,7.53,[],[]
+name,canonSMILES,mass1,mass2,mass3,time,mass-,mass+,best_well,best_purity,overlaps,conflicts
+Product1,OCc1coc(-c2cnc3ccccc3c2)n1,226.07,0.0,0,0.7107,225.17,227.26,D6,70.51,No peak overlap detected.,No potential conflicts found.
+Reactant1,Brc1cnc2ccccc2c1,206.97,208.97,0,1.0428,-,208.11,C10,61.89,No peak overlap detected.,No potential conflicts found.
+Dibenzylaniline,c1ccc(CN(Cc2ccccc2)c2ccccc2)cc1,273.15,0.0,0,1.4873,-,274.27,D10,23.31,No peak overlap detected.,No potential conflicts found.
+phenol bp,Oc1cnc2ccccc2c1,145.05,0.0,0,0.4794,144.01,146.13,A5,25.42,No peak overlap detected.,No potential conflicts found.
+Impurity0,,0.0,0.0,0,0.3677,"[np.float64(220.98), np.float64(223.93), np.float64(151.02), np.float64(241.18), np.float64(249.33)]","[np.float64(280.26), np.float64(292.24), np.float64(293.18), np.float64(186.16), np.float64(214.18)]",A3,7.33,No peak overlap detected.,No potential conflicts found.
+Impurity1,,0.0,0.0,0,0.4144,"[np.float64(292.87), np.float64(301.28), np.float64(320.57), np.float64(374.44), np.float64(460.78)]","[np.float64(175.25), np.float64(214.33), np.float64(175.22), np.float64(197.27), np.float64(214.25)]",B2,8.97,No peak overlap detected.,No potential conflicts found.
+Impurity2,,0.0,0.0,0,0.5194,"[np.float64(148.11), np.float64(155.23), np.float64(164.9), np.float64(198.17), np.float64(213.25)]","[np.float64(114.09), np.float64(121.13), np.float64(195.16), np.float64(196.28), np.float64(212.2)]",B3,7.26,No peak overlap detected.,No potential conflicts found.
+Impurity3,,0.0,0.0,0,0.5757,"[np.float64(538.26), np.float64(540.56), np.float64(586.04), np.float64(118.08), np.float64(125.21)]","[np.float64(334.23), np.float64(174.23), np.float64(232.32), np.float64(306.26), np.float64(231.27)]",B6,3.1,No peak overlap detected.,No potential conflicts found.
+Impurity4,,0.0,0.0,0,0.7132,"[np.float64(273.43), np.float64(630.61), np.float64(835.16), np.float64(773.67), np.float64(676.71)]","[np.float64(289.19), np.float64(227.24), np.float64(228.24), np.float64(228.27), np.float64(228.26)]",D2,55.74,<strong>Peak overlap detected!</strong>,No potential conflicts found.
+Impurity5,,0.0,0.0,0,0.7869,"[np.float64(474.8), np.float64(213.28), np.float64(692.65), np.float64(567.61), np.float64(569.66)]","[np.float64(131.12), np.float64(211.27), np.float64(225.2), np.float64(226.28), np.float64(243.23)]",A1,70.55,No peak overlap detected.,No potential conflicts found.
+Impurity6,,0.0,0.0,0,0.8215,"[np.float64(195.03), np.float64(203.13), np.float64(211.25), np.float64(212.08), np.float64(213.33)]","[np.float64(228.25), np.float64(228.26), np.float64(228.24), np.float64(228.24), np.float64(228.23)]",B9,52.94,No peak overlap detected.,No potential conflicts found.
+Impurity7,,0.0,0.0,0,0.959,"[np.float64(691.05), np.float64(764.56), np.float64(852.04), np.float64(227.22), np.float64(255.74)]","[np.float64(226.35), np.float64(280.27), np.float64(440.37), np.float64(441.29), np.float64(451.31)]",C6,1.52,No peak overlap detected.,No potential conflicts found.
+Impurity8,,0.0,0.0,0,1.0111,"[np.float64(207.18), np.float64(211.1), np.float64(212.13), np.float64(227.33), np.float64(265.23)]","[np.float64(180.18), np.float64(355.31), np.float64(459.33), np.float64(460.35), np.float64(461.39)]",C7,61.77,No peak overlap detected.,No potential conflicts found.
+Impurity9,,0.0,0.0,0,1.0611,"[np.float64(220.18), np.float64(218.67), np.float64(498.49), np.float64(529.14), np.float64(287.0)]","[np.float64(258.23), np.float64(257.24), np.float64(258.24), np.float64(349.38), np.float64(350.38)]",B10,28.77,No peak overlap detected.,No potential conflicts found.
+Impurity10,,0.0,0.0,0,1.1261,"[np.float64(598.36), np.float64(265.16), np.float64(278.97), np.float64(288.06), np.float64(235.18)]","[np.float64(355.33), np.float64(274.19), np.float64(274.23), np.float64(354.32), np.float64(274.21)]",A12,16.2,No peak overlap detected.,No potential conflicts found.
+Impurity11,,0.0,0.0,0,1.1507,"[np.float64(316.61), np.float64(486.62), np.float64(207.99), np.float64(213.16), np.float64(165.74)]","[np.float64(382.38), np.float64(280.18), np.float64(353.33), np.float64(283.22), np.float64(312.29)]",B6,8.92,No peak overlap detected.,No potential conflicts found.
+Impurity12,,0.0,0.0,0,1.2757,"[np.float64(860.95), np.float64(867.51), np.float64(888.64), np.float64(933.35), np.float64(281.04)]","[np.float64(285.2), np.float64(288.72), np.float64(304.28), np.float64(354.24), np.float64(355.29)]",B1,16.29,No peak overlap detected.,No potential conflicts found.
+Impurity13,,0.0,0.0,0,1.4094,"[np.float64(212.18), np.float64(213.15), np.float64(214.11), np.float64(214.14), np.float64(331.51)]","[np.float64(438.36), np.float64(439.37), np.float64(440.37), np.float64(495.35), np.float64(438.39)]",A10,22.14,No peak overlap detected.,No potential conflicts found.
+Impurity14,,0.0,0.0,0,1.6515,"[np.float64(205.84), np.float64(207.69), np.float64(233.15), np.float64(134.79), np.float64(210.5)]","[np.float64(483.43), np.float64(484.43), np.float64(503.43), np.float64(628.58), np.float64(502.45)]",B2,7.53,No peak overlap detected.,No potential conflicts found.

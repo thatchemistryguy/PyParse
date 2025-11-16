@@ -283,7 +283,7 @@ def main():
                         help = "Choose whether to search for and report frequently observed impurities. ")
 
     parser.add_argument("-i", "--instrument", action="store", type=str, dest = "instrument",
-                        help = "Select the data originated from, Waters or Shimadzu")
+                        help = "Select the type of machine the data originated from, Waters, Agilent or Shimadzu")
 
     #Set options to global and parse arguments        
     times = {}
@@ -461,8 +461,14 @@ def main():
         sys.exit(2)
 
     #Sort the compounds in the table by their type. 
-    cpTable.cpTable["type"] = pd.Categorical(cpTable.cpTable["type"], ["Product", "Reactant", "InternalSTD", "Byproduct"])
-    cpTable.cpTable.sort_values("type", inplace=True)
+    all_products = list(cpTable.cpTable.loc[cpTable.cpTable["type"] == "Product", "name"])
+    all_reactants = list(cpTable.cpTable.loc[cpTable.cpTable["type"] == "Reactant", "name"])
+    all_stds = list(cpTable.cpTable.loc[cpTable.cpTable["type"] == "InternalSTD", "name"])
+    all_byprods = list(cpTable.cpTable.loc[cpTable.cpTable["type"] == "Byproduct", "name"])
+    all_cmps = all_products + all_reactants + all_stds + all_byprods
+
+    cpTable.cpTable["name"] = pd.Categorical(cpTable.cpTable["name"], all_cmps)
+    cpTable.cpTable.sort_values("name", inplace=True)
 
     #For each compound, find all hits using the dataTable, validate them, and append 
     #them to a list ready for insertion into the compoundDF pandas dataframe
@@ -529,7 +535,7 @@ def main():
     if options.plate_row_no * options.plate_col_no < 97:
         #Get a list of byproduct names so that the plotPieCharts fn knows which columns 
         #to look up in the output table. 
-        byproducts = cpTable.cpTable.loc[cpTable.cpTable["type"] == "Byproduct", "name"]
+        byproducts = cpTable.cpTable.loc[cpTable.cpTable["type"] == "Byproduct", "name"].values
         pre_pie = time.perf_counter()
         #Alter the piechart output depending on whether an internalSTD was specified
         #in the platemap or not. 

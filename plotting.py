@@ -261,15 +261,18 @@ def plotHitValidationGraph(row, lcData, save_dir, plate_col_no, plate_row_no):
     
     #Find the largest peak area, and the minimum/maximum retention times
     #of the hits to be plotted
-    allHits = row["final_result"]["green"] + row["final_result"]["discarded"]
+    unused_hits = row["final_result"]["discarded"]
+    green_hits = row["final_result"]["green"]
     for cluster in row["discarded_clusters"]:
         for key, value in cluster.items():
-                allHits = allHits + value
+                unused_hits = unused_hits + value
     
-    new_slice = lcData.loc[lcData.index.isin(allHits)]
-    max_size = new_slice["area"].max() if len(allHits) > 0 else 0
-    max_time = new_slice["time"].max() if len(allHits) > 0 else 0
-    min_time = new_slice["time"].min() if len(allHits) > 0 else 0
+    all_hits = green_hits + unused_hits
+
+    full_slice = lcData.loc[lcData.index.isin(all_hits)]
+    max_size = full_slice["area"].max() if len(all_hits) > 0 else 0
+    max_time = full_slice["time"].max() if len(all_hits) > 0 else 0
+    min_time = full_slice["time"].min() if len(all_hits) > 0 else 0
 
     
     #Used to calculate the size of each hit on the graph
@@ -299,9 +302,16 @@ def plotHitValidationGraph(row, lcData, save_dir, plate_col_no, plate_row_no):
         ax.set_xlim(-total_wells*0.2, total_wells*1.1)
         ax.set_ylim(y_lims[0] - (y_lims[1]-y_lims[0])/10, y_lims[1] + (y_lims[1]-y_lims[0])/10)
        
-
-        ax.scatter(new_slice["well"], new_slice["time"], s = new_slice["area"].apply(lambda x: math.ceil(x * size_ratio)**2))
+        #Plot the green points
+        green_slice = lcData.loc[lcData.index.isin(green_hits)]
+        ax.scatter(green_slice["well"], green_slice["time"], s = green_slice["area"].apply(lambda x: math.ceil(x * size_ratio)**2),
+                   marker = "o", color = "black")
         
+        #Plot the unused points
+        unused_slice = lcData.loc[lcData.index.isin(unused_hits)]
+        ax.scatter(unused_slice["well"], unused_slice["time"], s = unused_slice["area"].apply(lambda x: math.ceil(x * size_ratio)**2),
+                   marker = "v", color = "red")
+
         """
         #Plot all hits that were used in the analysis
         for i in row["final_result"]["green"]:
