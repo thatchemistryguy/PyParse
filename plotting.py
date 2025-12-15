@@ -423,7 +423,7 @@ def plotHeatmaps(outputTable, save_dir, plate_row_no, plate_col_no):
         yLabels = [chr(ord('@')+i) for i in range(1, plate_row_no+1)]
         
         ax = sns.heatmap(pdTable, xticklabels=xLabels, yticklabels=yLabels, cmap = "viridis",
-                        annot = labels, cbar_kws={"label": zvalue}, fmt="")
+                        annot = labels, cbar_kws={"label": zvalue, "pad": 0.01}, fmt="")
         ax.xaxis.set_ticks_position("top")
         
         #Save heatmap to output directory
@@ -698,7 +698,7 @@ def plotPieCharts(zvalue, outputTable, save_dir, by_products, plate_row_no, plat
             fig.suptitle("Fixed Diameter Trellised Pie Charts", y=0.9)
         else:
             fig.suptitle(f'Trellised Pie Charts Sized by {zvalue}', y=0.9)
-        
+
         #Save graph to output directory
         plt.savefig(f'{save_dir}graphs/piecharts_{chart_type}.jpg', format="jpg")
         plt.close()
