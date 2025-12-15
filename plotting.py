@@ -235,14 +235,14 @@ def plotChroma(row, cpTable, lcData, msData, traceData, save_dir, plate_col_no, 
 
         #Fill to highlight the peak of interest 
         if pStart != 0 and pEnd != 0:
-            a2.fill_between(trace[0], second_curve, trace[1], color="red")
+            a2.fill_between(trace[0], second_curve, trace[1], color="cornflowerblue")
 
         #Set the number of tick points for each axis. 
         a2.locator_params(axis='y', nbins=6)
         a2.locator_params(axis='x', nbins=20)
 
         #Save graph to output directory. 
-        plt.savefig(f'{save_dir}graphs/chroma-{row["name"]}-best.jpg', format="jpg")
+        plt.savefig(f'{save_dir}graphs/chroma-{row["stdname"]}-best.jpg', format="jpg")
         plt.close()
 
 def plotHitValidationGraph(row, lcData, save_dir, plate_col_no, plate_row_no):
@@ -366,7 +366,7 @@ def plotHitValidationGraph(row, lcData, save_dir, plate_col_no, plate_row_no):
         plt.xlabel("Well")
         plt.ylabel("Retention Time /min")
         
-        plt.savefig(f'{save_dir}graphs/hits-{row["name"]}.jpg', format="jpg")
+        plt.savefig(f'{save_dir}graphs/hits-{row["stdname"]}.jpg', format="jpg")
         plt.close()
 
 def plotHeatmaps(outputTable, save_dir, plate_row_no, plate_col_no):
@@ -540,7 +540,7 @@ def genLocationHeatmaps(row, save_dir, plate_col_no, plate_row_no):
         ax.xaxis.set_ticks_position("top")
         
         #Save heatmap to output directory
-        plt.savefig(f'{save_dir}graphs/loc_heatmap_{row["name"]}.jpg', format="jpg")
+        plt.savefig(f'{save_dir}graphs/loc_heatmap_{row["stdname"]}.jpg', format="jpg")
         plt.close()   
 
 def plotPieCharts(zvalue, outputTable, save_dir, by_products, plate_row_no, plate_col_no):

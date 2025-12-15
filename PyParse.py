@@ -106,11 +106,12 @@ def buildHTML(save_dir, cpTable, analysis_name, times = {}):
     template = env.get_template("html_template.html")
 
     cptablerows = cpTable.to_dict(orient="records")
-    
+    cpnames = list(cpTable.apply(lambda row: [row["name"], row["stdname"]], axis = 1))
 
+    print(cpnames)
     with open(f'{save_dir}/html_output.html', "w") as fo:
         fo.write(template.render(
-            cpnames = list(cpTable.loc[cpTable["type"] != "Impurity", "name"]),
+            cpnames = cpnames,
             imp_no = len(cpTable.loc[cpTable["type"] == "Impurity"].index),
             cptablerows = cptablerows, 
             save_dir = save_dir,
@@ -171,7 +172,7 @@ def main():
                         plate_col_no = 0,
                         plate_row_no = 0,
 
-                        points_per_trace = 500,
+                        points_per_trace = 2000,
                         
                         mass_or_area = "mass_conf",
                         plot_type = "Parea", 
@@ -535,7 +536,7 @@ def main():
     if options.plate_row_no * options.plate_col_no < 97:
         #Get a list of byproduct names so that the plotPieCharts fn knows which columns 
         #to look up in the output table. 
-        byproducts = cpTable.cpTable.loc[cpTable.cpTable["type"] == "Byproduct", "name"].values
+        byproducts = cpTable.cpTable.loc[cpTable.cpTable["type"] == "Byproduct", "stdname"].values
         pre_pie = time.perf_counter()
         #Alter the piechart output depending on whether an internalSTD was specified
         #in the platemap or not. 
@@ -573,7 +574,7 @@ def main():
     logging.info(f'A histogram and donut chart were generated.')
 
     #Generate a set of PNG files to depict each compound
-    cpTable.cpTable.apply(lambda row: generateMol(row["canonSMILES"], row["name"], save_dir), axis = 1)
+    cpTable.cpTable.apply(lambda row: generateMol(row["canonSMILES"], row["stdname"], save_dir), axis = 1)
 
     #Generate a location map for each compound
     cpTable.cpTable.apply(plotting.genLocationHeatmaps, args=(save_dir, options.plate_col_no, options.plate_row_no,), axis = 1)
@@ -585,7 +586,7 @@ def main():
     pre_csvs = time.perf_counter()
     if options.gen_csv == "True":
         csv = output.df.to_csv(f'{save_dir}outputTable.csv', index = False)
-        newslice = cpTable.cpTable.loc[:, ["name", "canonSMILES", "mass1", "mass2", "mass3",
+        newslice = cpTable.cpTable.loc[:, ["name", "stdname", "canonSMILES", "mass1", "mass2", "mass3",
                                 "time", "mass-", "mass+", "best_well", "best_purity", 
                                 "overlaps", "conflicts"]]
 

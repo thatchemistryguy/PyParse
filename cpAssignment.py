@@ -67,6 +67,9 @@ class Assignment:
         for col in self.inputCSV:
             if col in type_dic or ("byproduct" in col and "smiles" in col):
                 cpname_column = f'{col.split(" smiles")[0]} name'
+
+                #edit the cpname to remove any spaces which might interfere with 
+                #variable creation down the line. 
                 cprt_column = f'{col.split(" smiles")[0]} rt'
                 
                 #group the input CSV by canonical smiles in that column, aggregated the wells into a list
@@ -76,6 +79,7 @@ class Assignment:
                 for index, row in groupeddf.iterrows():
                     cpindex = row[col]
                     cptype = type_dic[col] if col in type_dic else "Byproduct"
+                    
                     #get a name for the compound if one was provided
                     name = ""
                     if cpname_column in self.inputCSV.columns:
@@ -89,11 +93,20 @@ class Assignment:
                             name = "InternalSTD"
                         elif col in counter:
                             name = f'{type_dic[col]}{counter[col]}'
-                            counter[col] = counter[col] + 1
                         elif "byproduct" in col:
                             name = f'Byproduct{counter["byproduct"]}'
-                            counter["byproduct"] = counter["byproduct"] + 1
                     
+                    #Generate a standardised name for use in html output generation/file naming. 
+                    if col == "internalstd smiles":
+                        stdname = "InternalSTD"
+                    elif col in counter:
+                        stdname = f'{type_dic[col]}{counter[col]}'
+                        counter[col] = counter[col] + 1
+                    elif "byproduct" in col:
+                        stdname = f'Byproduct{counter["byproduct"]}'
+                        counter["byproduct"] = counter["byproduct"] + 1
+                    
+
                     #get a rentention time for the compound if one was provided
                     rt = 0
                     if cprt_column in self.inputCSV.columns:
@@ -107,6 +120,7 @@ class Assignment:
                         "type": cptype,
                         "locations": row["well"],
                         "name": name,
+                        "stdname": stdname,
                         "rt": rt,
                         "comments": []
                     }
@@ -882,13 +896,13 @@ class Assignment:
 
 
             new_slice = self.cpTable.loc[((( self.cpTable["time"] - row["time"]).abs() < 0.02)
-                                        & ( self.cpTable["name"] != row["name"])
+                                        & ( self.cpTable["stdname"] != row["stdname"])
                                         & ( self.cpTable["time"] != 0))]
             text = "No potential conflicts found."
             if len(new_slice.index) > 0:                            
                 new_slice["intersection"] = new_slice["locations"].apply(lambda x: len(set(x).intersection(set(row["locations"]))))
 
-                close_compounds = new_slice.loc[new_slice["intersection"] > 0].apply(lambda brow: brow["name"], axis = 1)
+                close_compounds = new_slice.loc[new_slice["intersection"] > 0].apply(lambda brow: brow["stdname"], axis = 1)
                                                 
 
                 if len(close_compounds) > 0:
@@ -1141,6 +1155,7 @@ class Assignment:
                 entry[column] = ""
                 
             entry["name"] = f'Impurity{index}'
+            entry["stdname"] = f'Impurity{index}'
             entry["type"] = "Impurity"
             [entry["mass1"], entry["mass2"], entry["mass3"]] = [0,0,0]
             entry["mass-"] = mass_minus
@@ -1157,11 +1172,10 @@ class Assignment:
         
         
         if len(clusters) > 0:
-
             #Turn the list of impurities into a dataframe
         
             df = pd.DataFrame(impurities)
-            df.index = list(df["name"])
+            df.index = list(df["stdname"])
             self.cpTable = pd.concat([self.cpTable, df], axis=0)
                 
             #If 1 or more impurities were found, plot a hit validation graph to display these. 

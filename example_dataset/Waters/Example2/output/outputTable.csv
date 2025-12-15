@@ -1,4 +1,4 @@
-well_no,Well,canonSMILES,SMarea,SMareaAbs,Parea,PareaAbs,STDarea,STDareaAbs,Uarea,UareaAbs,corrSMarea,corrParea,corrSTDarea,P/SM+P,P/STD,phenol bparea,phenol bpareaAbs,corrphenol bparea,phenol bp/STD,corrP/STD,corrP/SM+P,SampleID
+well_no,Well,canonSMILES,SMarea,SMareaAbs,Parea,PareaAbs,STDarea,STDareaAbs,Uarea,UareaAbs,corrSMarea,corrParea,corrSTDarea,P/SM+P,P/STD,Byproduct1area,Byproduct1areaAbs,corrByproduct1area,Byproduct1/STD,corrP/STD,corrP/SM+P,SampleID
 1,A1,OCc1coc(-c2cnc3ccccc3c2)n1,0.0,0.0,0.0,0.0,9.68,144698.4688,90.32,1350138.3516,0.0,0.0,0.41527241527241526,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,SAW2140-6-A1-A1
 2,A2,OCc1coc(-c2cnc3ccccc3c2)n1,0.0,0.0,0.0,0.0,7.71,157452.1875,87.21000000000001,1781177.5567,0.0,0.0,0.3307593307593308,0.0,0.0,5.08,103736.3594,0.1998426435877262,0.66,0.0,0.0,SAW2140-6-A2-A1
 3,A3,OCc1coc(-c2cnc3ccccc3c2)n1,0.0,0.0,2.87,58236.9141,7.94,161379.5938,89.19,1812022.2462,0.0,0.04070344631967097,0.3406263406263407,1.0,0.36,0.0,0.0,0.0,0.0,0.01679888007466169,1.0,SAW2140-6-A3-A1

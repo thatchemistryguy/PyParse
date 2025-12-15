@@ -40,6 +40,8 @@
 
     </style>
 
+    <title>{{ analysis_name }}</title>
+
     </head>
 
     <body data-bs-scroll="scroll" data-bs-target="navbar">
@@ -65,8 +67,8 @@
             <li class="nav-item">
                 <input id="cp_search" class="form-control" type="search" placeholder="Search for Compound" aria-label="Search for Compound">
                 <ul id="search_options" class="downdown-menu">
-                    {% for cpname in cpnames %}
-                    <li id = "{{ cpname }}"><a onclick='clearList()' href='#header_{{ cpname }}'>{{ cpname }}</a></li>
+                    {% for row in cptablerows %}
+                    <li id = "{{ row["stdname"] }}"><a onclick='clearList()' href='#header_{{ row["stdname"] }}'>{{ row["name"] }}</a></li>
                     {% endfor %}
                 </ul>
             </li>
@@ -263,10 +265,10 @@
                     {% else %}
                         <tr>
                     {% endif %}
-                    <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
+                    <td><a href="#header_{{ row["stdname"] }}">{{ row["name"] }}</a></td>
                     <td>
-                        <img src="structures/{{ row["name"] }}.png"></img><br>
-                        <button class="btn btn-outline-secondary btn-sm btn-platemap" data-bs-toggle="modal" data-bs-target="#modal-platemap-{{ row["name"] }}">Click to View Platemap</button>  
+                        <img src="structures/{{ row["stdname"] }}.png"></img><br>
+                        <button class="btn btn-outline-secondary btn-sm btn-platemap" data-bs-toggle="modal" data-bs-target="#modal-platemap-{{ row["stdname"] }}">Click to View Platemap</button>  
                     </td>
                     <td>{{ row["mass1"] }}</td>
                     <td>{{ row["mass2"] }}</td>
@@ -288,15 +290,15 @@
 
         {% for row in cptablerows %}
             {% if row["type"] != "Impurity" %}
-                <h3 id = "header_{{ row["name"] }}">{{ row["name"] }}</h3>
+                <h3 id = "header_{{ row["stdname"] }}">{{ row["name"] }}</h3>
 
                 <div class="container-lg logs">
-                    <div class="accordion" id="accordion-{{ row["name"] }}">
+                    <div class="accordion" id="accordion-{{ row["stdname"] }}">
                         <div class="accordion-item">
-                            <h2 class="accordion-header no-margin" id="heading1-{{ row["name"] }}">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-{{ row["name"] }}" aria-expanded="true" aria-controls="collapse1-{{ row["name"] }}">Key Logs</button>
+                            <h2 class="accordion-header no-margin" id="heading1-{{ row["stdname"] }}">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-{{ row["stdname"] }}" aria-expanded="true" aria-controls="collapse1-{{ row["stdname"] }}">Key Logs</button>
                             </h2>
-                            <div id="collapse1-{{ row["name"] }}" class="accordion-collapse collapse show" aria-labelledby="heading1-{{ row["name"] }}">
+                            <div id="collapse1-{{ row["stdname"] }}" class="accordion-collapse collapse show" aria-labelledby="heading1-{{ row["stdname"] }}">
                                 <div class="accordion-body">
                                     {% set counter = [] %}
                                     {% for comment in row["comments"] %}
@@ -312,10 +314,10 @@
                     
                     {% if row["comments"]|length > counter|length %}
                         <div class="accordion-item">
-                            <h2 class="accordion-header no-margin" id="heading2-{{ row["name"] }}">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-{{ row["name"] }}" aria-expanded="false" aria-controls="collapse2-{{ row["name"] }}">Additional Logs</button>
+                            <h2 class="accordion-header no-margin" id="heading2-{{ row["stdname"] }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-{{ row["stdname"] }}" aria-expanded="false" aria-controls="collapse2-{{ row["stdname"] }}">Additional Logs</button>
                             </h2>
-                            <div id="collapse2-{{ row["name"] }}" class="accordion-collapse collapse" aria-labelledby="heading2-{{ row["name"] }}" data-bs-parent="#accordion-{{ row["name"] }}">
+                            <div id="collapse2-{{ row["stdname"] }}" class="accordion-collapse collapse" aria-labelledby="heading2-{{ row["stdname"] }}" data-bs-parent="#accordion-{{ row["stdname"] }}">
                                 <div class="accordion-body">
                                 {% for comment in row["comments"] %}
                                     {% if "<strong>" not in comment and "were found for" not in comment and "Validation" not in comment %}
@@ -330,15 +332,15 @@
                     </div>
                 </div>
             
-                {% set fname = save_dir ~ "graphs/hits-" ~ row["name"] ~ ".jpg" %}
-                {% set name = save_dir ~ "graphs/chroma-" ~ row["name"] ~ "-best.jpg" %}
+                {% set fname = save_dir ~ "graphs/hits-" ~ row["stdname"] ~ ".jpg" %}
+                {% set name = save_dir ~ "graphs/chroma-" ~ row["stdname"] ~ "-best.jpg" %}
                 
                 {% if path.exists(fname) %}
-                    <div class="container-fluid"><img class="graph" src="graphs/hits-{{ row["name"] }}.jpg" alt=""></img></div>
+                    <div class="container-fluid"><img class="graph" src="graphs/hits-{{ row["stdname"] }}.jpg" alt=""></img></div>
                 {% endif %}
 
                 {% if path.exists(name) %}
-                    <div class="container-fluid"><img class="graph" src="graphs/chroma-{{ row["name"] }}-best.jpg"></img></div>
+                    <div class="container-fluid"><img class="graph" src="graphs/chroma-{{ row["stdname"] }}-best.jpg"></img></div>
                 {% endif %}
             {% endif %}
         {% endfor %}
@@ -367,8 +369,8 @@
                         {% if row["type"] == "Impurity" %}
                             
                             <tr>
-                                <td><a href="#header_{{ row["name"] }}">{{ row["name"] }}</a></td>
-                                <td><button class="btn btn-outline-secondary btn-sm btn-platemap" data-bs-toggle="modal" data-bs-target="#modal-platemap-{{ row["name"] }}">Click to View Platemap</button></td>  
+                                <td><a href="#header_{{ row["stdname"] }}">{{ row["name"] }}</a></td>
+                                <td><button class="btn btn-outline-secondary btn-sm btn-platemap" data-bs-toggle="modal" data-bs-target="#modal-platemap-{{ row["stdname"] }}">Click to View Platemap</button></td>  
                                 <td>{{ row["time"] }}</td>
                                 <td>{{ row["mass-"] }}</td>
                                 <td>{{ row["mass+"] }}</td>
@@ -383,15 +385,15 @@
 
             {% for row in cptablerows %}
                 {% if row["type"] == "Impurity" %}
-                    <h3 id = "header_{{ row["name"] }}">{{ row["name"] }}</h3>
+                    <h3 id = "header_{{ row["stdname"] }}">{{ row["name"] }}</h3>
 
                     <div class="container-lg logs">
-                        <div class="accordion" id="accordion-{{ row["name"] }}">
+                        <div class="accordion" id="accordion-{{ row["stdname"] }}">
                             <div class="accordion-item">
-                                <h2 class="accordion-header no-margin" id="heading1-{{ row["name"] }}">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-{{ row["name"] }}" aria-expanded="true" aria-controls="collapse1-{{ row["name"] }}">Key Logs</button>
+                                <h2 class="accordion-header no-margin" id="heading1-{{ row["stdname"] }}">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-{{ row["stdname"] }}" aria-expanded="true" aria-controls="collapse1-{{ row["stdname"] }}">Key Logs</button>
                                 </h2>
-                                <div id="collapse1-{{ row["name"] }}" class="accordion-collapse collapse show" aria-labelledby="heading1-{{ row["name"] }}">
+                                <div id="collapse1-{{ row["stdname"] }}" class="accordion-collapse collapse show" aria-labelledby="heading1-{{ row["stdname"] }}">
                                     <div class="accordion-body">
                                         {% for comment in row["comments"] %}
                                             {{ comment }}<br>
@@ -401,9 +403,9 @@
                             </div>
                         </div>
                     </div>
-                    {% set name = save_dir ~ "graphs/chroma-" ~ row["name"] ~ "-best.jpg" %}
+                    {% set name = save_dir ~ "graphs/chroma-" ~ row["stdname"] ~ "-best.jpg" %}
                     {% if path.exists(name) %}
-                        <div class="container-fluid"><img class="graph" src="graphs/chroma-{{ row["name"] }}-best.jpg"></img></div>
+                        <div class="container-fluid"><img class="graph" src="graphs/chroma-{{ row["stdname"] }}-best.jpg"></img></div>
                     {% endif %}
                 {% endif %}
             {% endfor %}
@@ -449,16 +451,16 @@
         <br>
         
         {% for row in cptablerows %}
-            <div id = "modal-platemap-{{ row["name"] }}" class="modal" tabindex="-1">
+            <div id = "modal-platemap-{{ row["stdname"] }}" class="modal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
 
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5 no-margin" id="modal-platemap-{{ row["name"] }}-label">Platemap for {{ row["name"] }}</h1>
+                            <h1 class="modal-title fs-5 no-margin" id="modal-platemap-{{ row["stdname"] }}-label">Platemap for {{ row["name"] }}</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <img src="graphs/loc_heatmap_{{ row["name"] }}.jpg" class="loc_heatmap"></img>
+                            <img src="graphs/loc_heatmap_{{ row["stdname"] }}.jpg" class="loc_heatmap"></img>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -483,9 +485,9 @@
                 })
                 if(search.value != "") {
                     let myregex = new RegExp(search.value.toLowerCase())
-                    let matches = search_options.filter(x => myregex.test(x.toLowerCase()))
+                    let matches = search_options.filter(x => myregex.test(x[0].toLowerCase()))
                     matches.forEach(x => {
-                        let docObject = document.querySelector("#"+x)
+                        let docObject = document.querySelector("#"+x[1])
                         docObject.setAttribute("style", "display:block")
                     })
                 }
