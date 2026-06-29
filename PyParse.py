@@ -26,9 +26,6 @@ import time
 import logging
 import argparse
 import re
-import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-import seaborn as sns
 import pandas as pd
 import math
 from statistics import mean
@@ -38,9 +35,10 @@ from rdkit.Chem import Descriptors
 from rdkit.Chem import Draw
 import zipfile
 from jinja2 import Environment, PackageLoader
-import numpy as np
-import matplotlib.cm as cm
+
 import glob
+import json
+import shutil
 
 import getWatersData
 import cpAssignment
@@ -81,11 +79,12 @@ def generateMol(smiles, name, save_dir):
     _discard = AllChem.Compute2DCoords(mol)
     Draw.MolToFile(mol, f'{save_dir}structures/{name}.png', size=(200, 150))
 
-def buildHTML(save_dir, cpTable, analysis_name, times = {}):
+def buildHTML(rawData, lcData, traceData, heatmapData, save_dir, cpTable, analysis_name, times = {}):
     """
     Build a HTML output file using jinja2 and a html_template
     that is stored in the directory "templates". 
     
+    :param rawData: A rawWatersData object (see getWatersData.py)
     :param save_dir: A string designating the output directory
     :param cpTable: Pandas datatable containing all information on 
                         the compounds used for analysis
@@ -103,27 +102,35 @@ def buildHTML(save_dir, cpTable, analysis_name, times = {}):
         loader = PackageLoader("PyParse", "templates")
     )
 
-    template = env.get_template("html_template.html")
+    template = env.get_template("html_template_plotly.html")
 
     cptablerows = cpTable.to_dict(orient="records")
-    cpnames = list(cpTable.apply(lambda row: [row["name"], row["stdname"]], axis = 1))
+    
 
-    print(cpnames)
     with open(f'{save_dir}/html_output.html', "w") as fo:
         fo.write(template.render(
-            cpnames = cpnames,
+            cpnames = list(cpTable.loc[cpTable["type"] != "Impurity", "name"]),
             imp_no = len(cpTable.loc[cpTable["type"] == "Impurity"].index),
             cptablerows = cptablerows, 
             save_dir = save_dir,
             path = path,
             times = times,
             round = round,
-            pt = options.plot_type, 
+            plot_type = options.plot_type, 
             analysis_name = analysis_name,
-            options = vars(options)
+            options = vars(options),
+
+            cpData = cpTable.to_json(None, orient="records", indent=0),
+            heatmapData = json.dumps(heatmapData),
+            SampleTable = rawData.rawSampleTable.to_json(None, orient="records", indent=0),
+            DADTable = lcData.to_json(None, orient="records", indent=0),
+            MSTable = rawData.rawMSTable.to_json(None, orient="records", indent=0),
+            TraceTable = traceData.to_json(None, orient="records", indent=0),
+            UVTable = rawData.rawUVTable.to_json(None, orient="records", indent=0) 
             )
         )
-    fo.close() 
+    fo.close()
+
 
 def main():
 
@@ -172,7 +179,7 @@ def main():
                         plate_col_no = 0,
                         plate_row_no = 0,
 
-                        points_per_trace = 2000,
+                        points_per_trace = 500,
                         
                         mass_or_area = "mass_conf",
                         plot_type = "Parea", 
@@ -335,15 +342,20 @@ def main():
 
     #make sub-directories to store all graphs and pictures of structures
     try: 
-        os.mkdir(f'{save_dir}/graphs')
-    except OSError as error:
-        logging.debug("Graphs directory already exists.")
-    try: 
         os.mkdir(f'{save_dir}/structures')
     except OSError as error:
         logging.debug("Structures directory already exists.")
+    try:
+        os.mkdir(f'{save_dir}/resources')
+    except OSError as error:
+        logging.debug("Resources directory already exists.")
 
-        #Check to ensure the root names of the data file/folder and csv file are correct, i.e. they exist
+    #Copy across the plotly chroma javascript file to the resources subfolder of the save_dir
+    shutil.copyfile("templates/plotly_chroma.js", f'{save_dir}/resources/plotly_chroma.js')
+    shutil.copyfile("templates/plotly_heatmap.js", f'{save_dir}/resources/plotly_heatmap.js')
+    shutil.copyfile("templates/plotly_validation.js", f'{save_dir}/resources/plotly_validation.js')
+
+    #Check to ensure the root names of the data file/folder and csv file are correct, i.e. they exist
     for name in [root_names[0], root_names[1]]:
         if not os.access(name,os.R_OK) or not os.path.exists(name):
             logging.error(f'Input file/folder {name} does not exist. Please use an appropriate input file/folder.')
@@ -391,6 +403,9 @@ def main():
         #Determine how the file records the well (e.g. "A,1", 1, "1,1", etc)
         #Note that this must be done before processing the data
         rawData.getWellFormat() 
+
+        #Process the sample metadata
+        rawData.processSamples()
         
         #Process the data types in turn
         rawData.processDAD()
@@ -428,6 +443,32 @@ def main():
     else:
         lcData = rawData.rawELSDTable
         traceData = rawData.rawTraceTable.loc[rawData.rawTraceTable["detector_type"] == "ELSD"]
+
+    #Add the peakID to each point in the trace, so that it can be used to label the trace in the plotly output.  
+
+    #Originally a locate on the pandas dataframe was used, but this function gets called 
+    #approximately 2000 times per sample and it was too slow.
+    #Creating a dictionary first was found to be ~3 times quicker. 
+    peakID_dict = {}
+
+    for _, row in lcData.iterrows():
+        if row["filename"] not in peakID_dict:
+            peakID_dict[row["filename"]] = []
+        peakID_dict[row["filename"]].append([row["pStart"], row["pEnd"], row["peakID"]])
+
+    
+    total_rows = len(rawData.rawTraceTable.index)
+    def getpeakID(row):      
+        result = -1
+        if row["filename"] in peakID_dict:
+            filtered_list = filter(lambda x: row["time"] >= x[0], peakID_dict[row["filename"]])
+            
+            for x in filtered_list:
+                if row["time"] <= x[1]:
+                    result = x[2]
+        return result
+
+    traceData["peakID"] = traceData.apply(getpeakID, axis=1)
 
     #Import the structure data from the comma-separated values platemap file provided
     #by the user to initiate the compoundDF. 
@@ -495,11 +536,11 @@ def main():
     logging.info(f'Duplicate assignments were removed.')
 
     #Find impurities
-    if options.find_freq_imp == "True":
-        pre_imp = time.perf_counter()
-        cpTable.findImpurities(lcData, msData, save_dir, options.time_abs_tol, 
-                                options.min_no_of_wells, options.mass_abs_tol)
-        times["Finding Impurities"] = time.perf_counter() - pre_imp
+    #if options.find_freq_imp == "True":
+    #    pre_imp = time.perf_counter()
+    #    cpTable.findImpurities(lcData, msData, save_dir, options.time_abs_tol, 
+    #                            options.min_no_of_wells, options.mass_abs_tol)
+    #    times["Finding Impurities"] = time.perf_counter() - pre_imp
 
     #Generate the output dataframe, used to facilitate plotting of graphs
     #Provide this with a list of the sample IDs for each well and 
@@ -512,7 +553,7 @@ def main():
     #setBestWell relys on the output dataframe to run; setBestMS, setBestTime and setBestPurity 
     # are, by definition, the strongest m/z, retention time of the peak selected or peak area in 
     #that BestWell. Thus, these four  functions can only be run once the output dataframe has been run
-    cpTable.setBestWell(output.df, lcData, options.plot_type)
+    cpTable.setBestWell(output.df, lcData, rawData.rawSampleTable, options.plot_type)
     cpTable.setBestMS(lcData)
     cpTable.setBestTime(lcData)
     cpTable.setBestPurity(lcData)
@@ -523,20 +564,20 @@ def main():
     #compounds because the intensity of the other compound swamped it. 
     cpTable.findPotentialConflicts()
 
-    #Plot the heatmaps
+    #convert the output df to a format suitable for plotly
     pre_heatmap = time.perf_counter()
-    plotting.plotHeatmaps(output.df, save_dir, options.plate_row_no, options.plate_col_no)
-    times["Generate Heatmap"] = time.perf_counter() - pre_heatmap
-    logging.info(f'A heatmap was generated using {options.plot_type} '
-                f'as the index.')
+    heatmapData = plotting.converttoHeatMapData(output.df, options.plate_row_no, options.plate_col_no)
+    times["Generate Heatmap Data"] = time.perf_counter() - pre_heatmap
+
 
     #Return a series of piecharts to the user, as long as it's not larger than
     #a 96 well plate. For larger plates, the piecharts become too small to be
     #useful. 
+    """
     if options.plate_row_no * options.plate_col_no < 97:
         #Get a list of byproduct names so that the plotPieCharts fn knows which columns 
         #to look up in the output table. 
-        byproducts = cpTable.cpTable.loc[cpTable.cpTable["type"] == "Byproduct", "stdname"].values
+        byproducts = cpTable.cpTable.loc[cpTable.cpTable["type"] == "Byproduct", "name"].values
         pre_pie = time.perf_counter()
         #Alter the piechart output depending on whether an internalSTD was specified
         #in the platemap or not. 
@@ -552,32 +593,36 @@ def main():
                         f'as the index.')
         times["Generate Piechart"] = time.perf_counter() - pre_pie
 
+    """
+
 
     #Plot a hit validation graph for each compound in the cpTable
     pre_val_graphs = time.perf_counter()
-    cpTable.cpTable.apply(plotting.plotHitValidationGraph, args = (lcData, save_dir, options.plate_col_no,
-                                                                   options.plate_row_no,), axis = 1)
+    #cpTable.cpTable.apply(plotting.plotHitValidationGraph, args = (lcData, save_dir, options.plate_col_no,
+    #                                                               options.plate_row_no,), axis = 1)
     times["Generate Hit Validation Graphs"] = time.perf_counter() - pre_val_graphs
 
     #Plot an annotated chromatogram for each compound in the cpTable
+    """
     pre_chroma = time.perf_counter()
     cpTable.cpTable.apply(plotting.plotChroma, args=(cpTable.cpTable, lcData, msData, 
                                                      traceData, save_dir, options.plate_col_no,
                                                      options.filter_by_rt,), axis = 1)
     times["Generate Annotated Chromatograms"] = time.perf_counter() - pre_chroma
+    """
 
     #Plot a histogram and donut chart of Parea as a measure of plate success. 
     pre_donut = time.perf_counter()
-    plotting.plotHistogram(output.df, save_dir)
-    plotting.plotDonut(output.df, save_dir)
+    #plotting.plotHistogram(output.df, save_dir)
+    #plotting.plotDonut(output.df, save_dir)
     times["Generate Histogram and Donut"] = time.perf_counter() - pre_donut
     logging.info(f'A histogram and donut chart were generated.')
 
     #Generate a set of PNG files to depict each compound
-    cpTable.cpTable.apply(lambda row: generateMol(row["canonSMILES"], row["stdname"], save_dir), axis = 1)
+    cpTable.cpTable.apply(lambda row: generateMol(row["canonSMILES"], row["name"], save_dir), axis = 1)
 
     #Generate a location map for each compound
-    cpTable.cpTable.apply(plotting.genLocationHeatmaps, args=(save_dir, options.plate_col_no, options.plate_row_no,), axis = 1)
+    #cpTable.cpTable.apply(plotting.genLocationHeatmaps, args=(save_dir, options.plate_col_no, options.plate_row_no,), axis = 1)
 
     #Determine if there are any overlapping peaks for the best well of each compound. 
     cpTable.findOverlap(lcData)
@@ -586,7 +631,7 @@ def main():
     pre_csvs = time.perf_counter()
     if options.gen_csv == "True":
         csv = output.df.to_csv(f'{save_dir}outputTable.csv', index = False)
-        newslice = cpTable.cpTable.loc[:, ["name", "stdname", "canonSMILES", "mass1", "mass2", "mass3",
+        newslice = cpTable.cpTable.loc[:, ["name", "canonSMILES", "mass1", "mass2", "mass3",
                                 "time", "mass-", "mass+", "best_well", "best_purity", 
                                 "overlaps", "conflicts"]]
 
@@ -612,7 +657,7 @@ def main():
     times["Total time"] = total_time
 
     #build the HTML output file
-    buildHTML(save_dir, cpTable.cpTable, options.analysis_name, times = times)
+    buildHTML(rawData, lcData, traceData, heatmapData, save_dir, cpTable.cpTable, options.analysis_name, times = times)
 
     
     
@@ -628,9 +673,9 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
+    #try:
         print("Running analysis....")
         main()
-    except Exception as e:
-        print(e)
-        logging.exception("A fatal exception occurred. Contact administrator.")
+    #except Exception as e:
+    #    print(e)
+    #    logging.exception("A fatal exception occurred. Contact administrator.")

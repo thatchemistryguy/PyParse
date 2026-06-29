@@ -60,10 +60,10 @@ class Output:
                         outputTable[lcData.at[i, "well"]]["Uarea"] = outputTable[lcData.at[i, "well"]]["Uarea"] - lcData.at[i, "area"]
                         outputTable[lcData.at[i, "well"]]["UareaAbs"] = outputTable[lcData.at[i, "well"]]["UareaAbs"] - lcData.at[i, "areaAbs"]
                         
-                    elif row["stdname"] in byproducts:
-                        name = f'{row["stdname"]}area'
-                        corr_name = f'corr{row["stdname"]}area'
-                        abs_name = f'{row["stdname"]}areaAbs'
+                    elif row["name"] in byproducts:
+                        name = f'{row["name"]}area'
+                        corr_name = f'corr{row["name"]}area'
+                        abs_name = f'{row["name"]}areaAbs'
                         outputTable[lcData.at[i, "well"]][name] = lcData.at[i, "area"]
                         outputTable[lcData.at[i, "well"]][abs_name] = lcData.at[i, "areaAbs"]
                         outputTable[lcData.at[i, "well"]][corr_name] = lcData.at[i, "area"] / max_area
@@ -91,7 +91,10 @@ class Output:
         
         outputTable = {}
         
-        byproducts = list(cpTable.loc[cpTable["type"] == "Byproduct", "stdname"])
+        products = list(cpTable.loc[cpTable["type"] == "Product", "name"])
+        internalSTD = list(cpTable.loc[cpTable["type"] == "InternalSTD", "name"])
+        SMs = list(cpTable.loc[cpTable["type"] == "Reactant", "name"])
+        byproducts = list(cpTable.loc[cpTable["type"] == "Byproduct", "name"])
         #generate the structure of the table so that it is independant of the 
         #hits that are found
 
@@ -155,7 +158,7 @@ class Output:
         
         self.df["P/STD"] = self.df.apply(lambda row: round(row["PareaAbs"] / row["STDareaAbs"], 2) 
                                              if row["STDareaAbs"] != 0 else 0, axis = 1)
-        for by_prod in byproducts:
+        for byprod in byproducts:
             name_std = f'{by_prod}/STD'
             name = f'{by_prod}areaAbs'
             self.df[name_std] = self.df.apply(lambda row: round(row[name] / row["STDareaAbs"], 2) 

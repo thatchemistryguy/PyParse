@@ -5,11 +5,7 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import Descriptors
 import logging
 from statistics import mean
-import math
-import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-import matplotlib.cm as cm
-import numpy as np
+
 
 import plate_tools
 
@@ -67,9 +63,6 @@ class Assignment:
         for col in self.inputCSV:
             if col in type_dic or ("byproduct" in col and "smiles" in col):
                 cpname_column = f'{col.split(" smiles")[0]} name'
-
-                #edit the cpname to remove any spaces which might interfere with 
-                #variable creation down the line. 
                 cprt_column = f'{col.split(" smiles")[0]} rt'
                 
                 #group the input CSV by canonical smiles in that column, aggregated the wells into a list
@@ -79,7 +72,6 @@ class Assignment:
                 for index, row in groupeddf.iterrows():
                     cpindex = row[col]
                     cptype = type_dic[col] if col in type_dic else "Byproduct"
-                    
                     #get a name for the compound if one was provided
                     name = ""
                     if cpname_column in self.inputCSV.columns:
@@ -93,20 +85,11 @@ class Assignment:
                             name = "InternalSTD"
                         elif col in counter:
                             name = f'{type_dic[col]}{counter[col]}'
+                            counter[col] = counter[col] + 1
                         elif "byproduct" in col:
                             name = f'Byproduct{counter["byproduct"]}'
+                            counter["byproduct"] = counter["byproduct"] + 1
                     
-                    #Generate a standardised name for use in html output generation/file naming. 
-                    if col == "internalstd smiles":
-                        stdname = "InternalSTD"
-                    elif col in counter:
-                        stdname = f'{type_dic[col]}{counter[col]}'
-                        counter[col] = counter[col] + 1
-                    elif "byproduct" in col:
-                        stdname = f'Byproduct{counter["byproduct"]}'
-                        counter["byproduct"] = counter["byproduct"] + 1
-                    
-
                     #get a rentention time for the compound if one was provided
                     rt = 0
                     if cprt_column in self.inputCSV.columns:
@@ -114,17 +97,17 @@ class Assignment:
                         potential_rt = [x for x in rt_series if x != ""]
                         if len(potential_rt) != 0:
                             rt = potential_rt[0]
-                            
-                    new_entry = {
-                        "canonSMILES": cpindex,
-                        "type": cptype,
-                        "locations": row["well"],
-                        "name": name,
-                        "stdname": stdname,
-                        "rt": rt,
-                        "comments": []
-                    }
-                    compound_list.append(new_entry)
+
+                    if cpindex != "":        
+                        new_entry = {
+                            "canonSMILES": cpindex,
+                            "type": cptype,
+                            "locations": row["well"],
+                            "name": name,
+                            "rt": rt,
+                            "comments": []
+                        }
+                        compound_list.append(new_entry)
         
         self.cpTable = pd.DataFrame(compound_list)
         
@@ -267,7 +250,7 @@ class Assignment:
             return row
                        
         def selectCluster_ifrt(row):
-            comments = row["comments"]
+
             #If the user has specified a retention time, we should select only the cluster 
             #that is closest to that retention time, and within the specified time_abs_tol
             if row["rt"] != 0:
@@ -563,6 +546,8 @@ class Assignment:
                     
             row["refined_clusters"] = refined_clusters
             row["discarded_clusters"] = discarded_clusters
+            row["comments"].append(f'{len(discarded_clusters)} clusters were discarded after refinement'
+                                 ' by mass confidence. ')
             return row
 
         def selectClusterBySize(row):
@@ -607,8 +592,19 @@ class Assignment:
                             refined_clusters2.append(cluster)
                         else:
                             discarded_clusters.append(cluster)
+            
+            row["comments"].append(f'{len(row["refined_clusters"]) - len(refined_clusters2)} clusters were discarded after refinement'
+                                 ' by size comparison. ')
+
+            if len(refined_clusters2) > 1:
+                row["comments"].append(f'<strong>High Priority: More than one cluster was found for {row["name"]}. ' 
+                                            'User MUST perform their own analysis.</strong>')
+
             row["refined_clusters"] = refined_clusters2
             row["discarded_clusters"] = discarded_clusters
+
+
+            
             return row
         
         def indexClusterByWells(row):
@@ -794,6 +790,8 @@ class Assignment:
         self.cpTable = self.cpTable.apply(indexClusterByWells, axis = 1)
         
         self.cpTable = self.cpTable.apply(finalResult, axis = 1)
+
+        
     
     
     def removeDupAssigns(self, lcData, mass_or_area):
@@ -896,13 +894,13 @@ class Assignment:
 
 
             new_slice = self.cpTable.loc[((( self.cpTable["time"] - row["time"]).abs() < 0.02)
-                                        & ( self.cpTable["stdname"] != row["stdname"])
+                                        & ( self.cpTable["name"] != row["name"])
                                         & ( self.cpTable["time"] != 0))]
             text = "No potential conflicts found."
             if len(new_slice.index) > 0:                            
                 new_slice["intersection"] = new_slice["locations"].apply(lambda x: len(set(x).intersection(set(row["locations"]))))
 
-                close_compounds = new_slice.loc[new_slice["intersection"] > 0].apply(lambda brow: brow["stdname"], axis = 1)
+                close_compounds = new_slice.loc[new_slice["intersection"] > 0].apply(lambda brow: brow["name"], axis = 1)
                                                 
 
                 if len(close_compounds) > 0:
@@ -924,7 +922,7 @@ class Assignment:
             print("Necessary column, 'time', not present in dataframe. Run 'setBestWell' and 'setBestTime' first.")
     
     
-    def setBestWell(self, outputTable, lcData, plot_type):
+    def setBestWell(self, outputTable, lcData, sampleTable, plot_type):
 
         def bestWellPerRow(row):
 
@@ -962,6 +960,12 @@ class Assignment:
                 
             row["best_wellno"] = best_well
             row["best_well"] = plate_tools.getUserReadableWell(best_well, self.plate_col_no) if best_well > -1 else "None found."
+
+            best_sample_filename = list(sampleTable.loc[sampleTable["well"] == best_well, "filename"])
+            if len(best_sample_filename) > 0:
+                row["best_sample_filename"] = best_sample_filename[0]
+            else:
+                row["best_sample_filename"] = "None found."
             return row
 
         self.cpTable = self.cpTable.apply(bestWellPerRow, axis = 1)
@@ -992,25 +996,32 @@ class Assignment:
     def setBestTime(self, lcData):
 
         def bestTimePerRow(row): 
-            best_well = row["best_wellno"]
-            best_time = best_purity = lcData.loc[(lcData.index.isin(row["final_result"]["green"])) 
-                                                 & (lcData["well"] == row["best_wellno"]), "time"].values[0] 
-            
-            row["time"] = best_time
+            if len(row["final_result"]["green"]) >0:
+                best_well = row["best_wellno"]
+                best_time = lcData.loc[(lcData.index.isin(row["final_result"]["green"])) 
+                                                    & (lcData["well"] == row["best_wellno"]), "time"].values[0] 
+                
+                row["time"] = best_time
+            else:
+                row["time"] = 0
             return row
         
         self.cpTable = self.cpTable.apply(bestTimePerRow, axis = 1)
     
     def setBestPurity(self, lcData):
         def bestPurityPerRow(row): 
-            best_well = row["best_wellno"]
-            best_purity = lcData.loc[(lcData.index.isin(row["final_result"]["green"])) 
-                                     & (lcData["well"] == row["best_wellno"]), "area"].values[0] 
-            row["best_purity"] = best_purity
+            if len(row["final_result"]["green"]) >0:
+                best_well = row["best_wellno"]
+                best_purity = lcData.loc[(lcData.index.isin(row["final_result"]["green"])) 
+                                        & (lcData["well"] == row["best_wellno"]), "area"].values[0] 
+                row["best_purity"] = best_purity
+            else:
+                row["best_purity"] = 0
             
             return row
         
         self.cpTable = self.cpTable.apply(bestPurityPerRow, axis = 1)
+
 
     def findOverlap(self, lcData):
         """
@@ -1023,12 +1034,15 @@ class Assignment:
         def overlapPerRow(row):
             
             new_slice = lcData.loc[(lcData.index.isin(row["final_result"]["green"])) & (lcData["well"] == row["best_wellno"])]
-            overlapping_peaks = lcData.loc[((lcData["pStart"] == new_slice.iloc[0]["pEnd"]) | (lcData["pEnd"] == new_slice.iloc[0]["pStart"])) 
-                                            & (lcData["well"] == row["best_wellno"])]
+            if len(new_slice.index) > 0:
+                overlapping_peaks = lcData.loc[((lcData["pStart"] == new_slice.iloc[0]["pEnd"]) | (lcData["pEnd"] == new_slice.iloc[0]["pStart"])) 
+                                                & (lcData["well"] == row["best_wellno"])]
 
-            if len(overlapping_peaks.index) > 0:
-                row["overlaps"] = "<strong>Peak overlap detected!</strong>"
-            else:
+                if len(overlapping_peaks.index) > 0:
+                    row["overlaps"] = "<strong>Peak overlap detected!</strong>"
+                else:
+                    row["overlaps"] = "No peak overlap detected."
+            else: 
                 row["overlaps"] = "No peak overlap detected."
             return row
 
@@ -1037,179 +1051,7 @@ class Assignment:
         else: 
             print("Necessary column, 'best_wellno', not present in dataframe. Run 'setBestWell' first.")
 
-    def findImpurities(self, lcData, msData, save_dir, time_abs_tol = 0.025, min_no_of_wells = 5, mass_abs_tol = 0.5):
-        
-        #Define function to get a list of wells from a cluster, 
-        #without any duplicates
-        def unique_wells(cluster):
-            unique_wells = lcData.loc[lcData.index.isin(cluster), "well"].nunique()
-            return unique_wells
-        
-        #Define sub-function to find common ions for a cluster of peaks
-        def findCommonIons(valid_combos, MStype):
-            
-            #get all rows in msData that have the right combonations of both well and peakID
-            result = (msData.loc[(msData["MStype"] == MStype) & 
-                                 (msData.set_index(["well", "peakID"]).index.isin(valid_combos))]).sort_values("time")
-
-
-            #We need to find which m/z were commonly observed across this set of peaks. 
-            #In this sorted data frame, find the difference between each successive row, 
-            #mark any difference where the it is larger than mass_abs_tol as True,
-            #then apply cumulative sum that counts the number of "Trues" seen so far
-            #which is effectively a grouping index. 
-            groupings = (result.groupby(result["MSvalue"].diff()
-                                        .gt(mass_abs_tol)
-                                        .cumsum())
-                                        .apply(lambda row: list(row.index)))
-
-
-            #Filter the ions down to those which appear in at least 80% of the peaks    
-            filtered = [group for group in groupings if len(group) > len(cluster)*0.8]
-
-            #Filter to just the top 5 most commonly observed peaks, to guarantee a maximum
-            #number of 5 mass ions reported. 
-            filtered = sorted(groupings, key = lambda x: len(x))[0:5]
-            
-            #get the mean value for each grouping, then return as a list
-            return_ions = []
-            for group in filtered:
-                return_ions.append(msData.loc[msData.index.isin(group),"MSvalue"].mean())
-
-            return return_ions
-        
-        #Get a list of all the peaks that have been assigned to a compound
-        assigned_peaks = []
-        self.cpTable.apply(lambda row: assigned_peaks.extend(row["final_result"]["green"]), axis = 1)
-        
-        #And therefore find a listof all the peaks that have not been assigned!
-        unassigned_peaks = lcData.loc[lcData.index.isin(assigned_peaks) == False].index
-        
-        [clusters, clusterbands] = self.clusterHits(unassigned_peaks, lcData, time_abs_tol)
-        
-        #filter to only those clusters where there are sufficient number of unique wells
-        clusters = [i for i in clusters if unique_wells(i) > min_no_of_wells]
-        
-        impurities = []
-        
-        for index, cluster in enumerate(clusters):
-            
-            new_slice = lcData.loc[lcData.index.isin(cluster)]
-            new_slice = new_slice.loc[new_slice["area"] == new_slice["area"].max(), ["well", "peakID", "area"]]
-            mean_rt = round(lcData.loc[lcData.index.isin(cluster), "time"].mean(), 4)
-            
-            valid_combos = [(lcData.at[peak, "well"], lcData.at[peak, "peakID"]) for peak in cluster]
-            mass_plus = findCommonIons(valid_combos, "+")
-            mass_minus = findCommonIons(valid_combos, "-")
-            
-            comments = []
-        
-            #Criteria to determine when a comment is added:
-            #   -Cluster typically occurs in a particular column
-            #   -Cluster typically occurs in a particular row
-            #   -Cluster typically occurs for a particular compound in the platemap
-            #   -Cluster is independant of position (i.e. whole plate) - this overrides all of the above
-            #   -describe how many wells contained this impurity
-            observed_unique_wells = unique_wells(cluster)
-            comments.append(f'This impurity was observed in {observed_unique_wells} wells.')
-
-            if observed_unique_wells == self.plate_row_no * self.plate_col_no:
-                comments.append("This impurity was observed in every well of the plate.")
-            elif observed_unique_wells > 0.5 * self.plate_row_no * self.plate_col_no:
-                comments.append("This impurity was observed across the majority of the plate.")
-            else:
-                #Build a matrix of where the compound was observed, then iterate through each row/column in turn?
-                columns = {}
-                rows = {}
-                for i in cluster:
-                    wellno = lcData.at[i, "well"]
-                    row = math.floor((wellno-1)/self.plate_col_no) + 1
-                    column = ((wellno-1) % self.plate_col_no) + 1
-                    if row in rows:
-                        rows[row] = rows[row] + 1
-                    else:
-                        rows[row] = 1
-                    if column in columns:
-                        columns[column] = columns[column] + 1
-                    else:
-                        columns[column] = 1
-
-                for cindex, column in columns.items():
-                    if column > 0.8 * self.plate_row_no:
-                        comments.append(f'Impurity is frequently observed in column {cindex}.')
-                for rindex, row in rows.items():
-                    if row > 0.8 * self.plate_col_no:
-                        comments.append(f'Impurity is frequently observed in row {chr(ord("@")+(rindex)+1)}.')
-                if len(columns.keys()) < 0.5 * self.plate_col_no:
-                    readable_cols = [str(i) for i in sorted([int(j) for j in columns.keys()])]
-                    comments.append(f'Impurity was only observed in columns {", ".join(readable_cols)}.')
-                if len(rows.keys()) < 0.5 * self.plate_row_no:
-                    readable_rows = sorted([chr(ord("@")+(x)) for x in rows.keys()])
-                    comments.append(f'Impurity was only observed in rows {", ".join(readable_rows)}.')
-                    
-            #Append this data to a new dictionary, to ultimately build into a dataframe that will be concatonated 
-            #with self.cpTable
-            entry = {}
-            #get the columns that should be filled 
-            for column in self.cpTable.columns:
-                entry[column] = ""
-                
-            entry["name"] = f'Impurity{index}'
-            entry["stdname"] = f'Impurity{index}'
-            entry["type"] = "Impurity"
-            [entry["mass1"], entry["mass2"], entry["mass3"]] = [0,0,0]
-            entry["mass-"] = mass_minus
-            entry["mass+"] = mass_plus
-            entry["final_result"] = {
-                "green": cluster,
-                "discarded": []
-            }
-            entry["cluster_bands"] = clusterbands
-            entry["comments"] = comments
-            
-            impurities.append(entry)
-        
-        
-        
-        if len(clusters) > 0:
-            #Turn the list of impurities into a dataframe
-        
-            df = pd.DataFrame(impurities)
-            df.index = list(df["stdname"])
-            self.cpTable = pd.concat([self.cpTable, df], axis=0)
-                
-            #If 1 or more impurities were found, plot a hit validation graph to display these. 
-            #Set standard matplotlib graph size
-            plt.rcParams["figure.figsize"] = (12, 6)
-            fig, ax = plt.subplots()
-            total_wells = self.plate_col_no * self.plate_row_no
-            ax.set_xlim(-total_wells*0.25, total_wells*1.1)
-
-            #Plot a hit validation graph for all clusters to more easily display the results.
-            #Save this to the graphs folder. 
-            palette = cm.rainbow(np.linspace(0, 1, len(clusters)))
-
-            for index, cluster in enumerate(clusters):
-                x = []
-                y = []
-                for i in cluster:
-                    x.append(lcData.at[i, "well"])
-                    y.append(lcData.at[i, "time"])
-                plt.scatter(x, y, color = palette[index])
-
-                #Annotate the graph with the average retention time of each cluster
-
-                mean_rt = round(lcData.loc[lcData.index.isin(cluster), "time"].mean(), 2)
-
-                ax.annotate(f'Imp{index}: {mean_rt} min.', [-total_wells*0.22, mean_rt], 
-                            verticalalignment='center')     
-
-            #Label the graph and axes, and save to the output directory.   
-            plt.title("All Frequent Impurities Found")
-            plt.xlabel("Well")
-            plt.ylabel("Retention Time /min")
-            plt.savefig(f'{save_dir}/graphs/impuritychart.jpg', format = "jpg")    
-            plt.close()
+    
             
         
         
