@@ -1,3 +1,5 @@
+
+#External Libraries
 import sys
 import pandas as pd
 from rdkit import Chem
@@ -5,12 +7,43 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import Descriptors
 import logging
 from statistics import mean
+import math
 
-
+#Internal Libraries
 import plate_tools
 
 class Assignment:
+
+    """
+    Processes the platemap defined by the user and creates a Pandas DataFrame with a row for each compound
+    along with the wells it is expected in. 
+    
+    This object is designed to work in partnership and parallel to an Object for the LCMS data, e.g. getWatersData.rawWatersData
+
+    In this class are functions used to find hits by comparison of the compound with the data in the LCMS data Object,
+    refine them, then store a "final_result" as a new column. This final_result is a list of all the peaks that have been 
+    assigned to the compound in that row, as the index for the corresponding row in the lcData DataFrame, which is provided
+    post-initialisation (e.g. rawWatersData.rawDADTable). 
+
+    The following are descriptions of the Pandas dataframes that will be generated for this object:
+
+    self.cpTable = pd.DataFrame(columns=['canonSMILES', 'type', 'locations', 'name', 'rt', 'comments', 'mass1', 'mass2', 'mass3', 'hits', 
+    'clusters', 'culster_bands', 'refined_clusters', 'discarded_clusters', 'final_result'])
+    """
+
     def __init__(self, filename, plate_col_no, plate_row_no):   
+
+        """
+        Initialises the Assignment object. Requires the platemap to be provided, as well as the number of 
+        rows+cols in the plate. 
+
+        :param filename: a string describing the file location of the .csv platemap. 
+        :param plate_row_no: an integer describing the number of rows in the plate, as specified by the user
+        :param plate_col_no: an integer describing the number of columns in the plate, as specified by the user
+        
+        :return: A python object, containing a DataFrame created from the .csv platemap. 
+        """
+
         #read csv file into dataframe
         #replace empty cells with an empty string
         #convert all column names to lower case and remove whitespace
@@ -21,8 +54,16 @@ class Assignment:
         self.plate_col_no = plate_col_no
         self.plate_row_no = plate_row_no
         
-    #Fn to convert a well name like B5 to machine format (11)
+    
     def convertWellToNum(self, wells):
+        """
+        Function to convert a list human-readable well like B5 into machine format like 
+        the number 11. 
+
+        :param wells: A list of strings, each describing one well. 
+
+        :return: A list of integers, where each integer corresponds to a well number. 
+        """
         result = []
         
         for well in wells:
@@ -37,18 +78,43 @@ class Assignment:
                 sys.exit(2)
         return result
     
-    #Fn to convert smiles into canonicalised smiles
+    
     def getCanonSmiles(self, smiles):
+        """
+        Fn to convert smiles into canonicalised smiles
+
+        :param smiles: A string, representing a SMILES molecule
+        :return: A string, representing a canonicalised SMILES. 
+        """
+
         mol = Chem.MolFromSmiles(smiles.strip())
         return Chem.MolToSmiles(mol)
             
     def generateCPTable(self):
+        """
+        Takes the self.inputCSV dataframe (the platemap the user provided) and 
+        performs an unpivot operation with additional santisation to create a Pandas
+        DataFrame where each compound is it's own row with a list of expected locations
+        and expected mass ions. 
+
+        :return: DataFrame of compounds. 
+        self.cpTable = pd.DataFrame(columns=['canonSMILES', 'type', 'locations', 'name', 'rt', 'comments', 'mass1', 'mass2', 'mass3', 'hits', 
+        'clusters', 'culster_bands', 'refined_clusters', 'discarded_clusters', ])
+        """
+
+        
         compound_list = []
+
+        #The following describe the standardised column names the user should have used in the 
+        #platemap, with the associated compound type next to them. 
         type_dic = {
             "desired product smiles": "Product",
             "limiting reactant smiles":"Reactant",
             "internalstd smiles": "InternalSTD"
         }
+
+        #In the absence of the user providing a name for the compound, this counter allows
+        #auto-naming using incremental values. 
         counter = {
             "desired product smiles": 1,
             "limiting reactant smiles": 1,
@@ -60,6 +126,7 @@ class Assignment:
             if col in type_dic or ("byproduct" in col and "smiles" in col):
                 self.inputCSV[col] = self.inputCSV[col].apply(self.getCanonSmiles)
         
+        #For each column in the platemap, extract information based on standardised column names. 
         for col in self.inputCSV:
             if col in type_dic or ("byproduct" in col and "smiles" in col):
                 cpname_column = f'{col.split(" smiles")[0]} name'
@@ -109,17 +176,30 @@ class Assignment:
                         }
                         compound_list.append(new_entry)
         
+        #Create DataFrame from the compound list. 
         self.cpTable = pd.DataFrame(compound_list)
         
         #set the index to be the canonicalised smiles
         self.cpTable.index = list(self.cpTable["canonSMILES"])
         
-        #convert the "A1" style well IDs into a integer, to allow matching to a well in the rawData
+        #convert the "A1" style well IDs in the "locations" column into a integer, 
+        #to allow matching to a well in the LCMS rawData (e.g. getWatersData.rawWatersData)
         self.cpTable["locations"] = self.cpTable["locations"].apply(self.convertWellToNum)
     
 
     
     def generateEMs(self, calc_boc):
+
+        """
+        Generate Exact Molecular Weights for each compound in the cpTable DataFrame. 
+        May generate up to three different masses that will be used for searching for hits, 
+        accounting for halide isotopes and Boc protecting group degradation patterns as they
+        fly through the mass spec. 
+        
+        :param calc_boc: string, either "True" or "False"
+
+        :return: Updated cpTable with the new columns "mass1", "mass2" and "mass3". 
+        """
         
         def getMW(smiles):
             mol = Chem.MolFromSmiles(smiles)
@@ -150,61 +230,6 @@ class Assignment:
             smirks2 = "[NX3,n:1][C](=[O])[O][C]([CH3])([CH3])[CH3]>>[*:1][H]"
             self.cpTable["mass3"] = self.cpTable["canonSMILES"].apply(lambda smiles: transform_and_getMW(smiles, smirks2, "mass3"))
             
-
-    def findHits(self, msData, lcData, mass_abs_tol = 0.5, min_massconf_threshold = 10, 
-                                      time_abs_tol = 0.025, calc_higherions = "True"):
-        
-        def getMatches(compound):
-            
-            def getMassWithHighestConf(row):
-
-                MS_plus = list(df.loc[(df.index.isin(MS_hits)) & (df["MStype"] == "+") &
-                                       (df["MSintensity"] == row["max_intensity"]), "MSvalue"])
-                MS_minus = list(df.loc[(df.index.isin(MS_hits)) & (df["MStype"] == "-") &
-                                       (df["MSintensity"] == row["max_intensity"]), "MSvalue"])
-                row["MS_plus"] = MS_plus[0] if len(MS_plus) > 0 else "-"
-                row["MS_minus"] = MS_minus[0] if len(MS_minus) > 0 else "-"
-                
-                return row
-            
-            df = msData.loc[msData["well"].isin(compound["locations"])]
-            
-            MS_hits = []
-            
-            for mass in [compound["mass1"], compound["mass2"], compound["mass3"]]:
-                hits = df.loc[(df["MStype"] == "+") & 
-                                   ((abs(df["MSvalue"] - (mass + 1.01)) <= mass_abs_tol) |
-                                    (abs(df["MSvalue"] - (mass + 2.02)/2) <= mass_abs_tol) |
-                                    (abs(df["MSvalue"] - (mass + 3.03)/3) <= mass_abs_tol))]
-                MS_hits = MS_hits + list(hits.index.values)
-                
-                hits = df.loc[(df["MStype"] == "-") & 
-                                   (abs(df["MSvalue"] - (mass - 1.01)) <= mass_abs_tol)]
-                MS_hits = MS_hits + list(hits.index.values)
-            
-            grouped = (df[df.index.isin(MS_hits)].groupby(["well", "peakID"], as_index = False)
-                        .agg(mass_conf = ("perc_intensity", "sum"), max_intensity = ("MSintensity", "max")))
-            grouped = grouped.apply(getMassWithHighestConf, axis = 1)
-           
-            grouped = grouped.loc[grouped["mass_conf"] >= min_massconf_threshold]
-            grouped = grouped.drop("max_intensity", axis=1)
-            
-            #fetch any peaks where the time matches the retention time provided
-            
-            new_slice = lcData.loc[lcData["well"].isin(compound["locations"]) & 
-                                  (abs(lcData["time"] - compound["rt"]) < time_abs_tol), ["well", "peakID"]]
-            #For these additional hits, set the requisite columns so that the two sets of hits can be merged into a 
-            #single dataframe. 
-            new_slice["mass_conf"] = 0
-            new_slice["MS_plus"] = "-"
-            new_slice["MS_minus"] = "-"
-            if len(new_slice.index) != 0:
-                return pd.concat([grouped, new_slice], axis=0).to_dict("records")
-            else:
-                return grouped.to_dict("records")                     
-
-        self.cpTable["hits"] = self.cpTable.apply(getMatches, axis = 1)
-    
     def clusterHits(self, hits, lcData, time_abs_tol = 0.025):
         
         df = lcData.loc[lcData.index.isin(hits)].sort_values("time")
@@ -232,20 +257,134 @@ class Assignment:
             
         return [clusters, clusterbands]
         
-    def validateHits(self, lcData, msData, uvData, time_abs_tol = 0.025, massconf_threshold = 0.5, uv_abs_tol = 10,
+    def findHits(self, msData, lcData, mass_abs_tol = 0.5, min_massconf_threshold = 10, 
+                                    time_abs_tol = 0.025, calc_higherions = "True"):
+        """
+        This function operates on the full cpTable finding hits for each compound (row)
+        in said table. It does this by either finding peaks in the lcData DataFrame that have 
+        a retention time close to that specified by the user in the platemap (optional) or
+        by finding m/z values in the msData that are close to the exact mass expected. 
+
+        :param msData: Pandas DataFrame, containing mass spec data
+        :param lcData: Pandas DataFrame, containing LC peak data
+        :param mass_abs_tol: float
+        :param min_massconf_threshold: float
+        :param time_abs_tol: float
+        :param calc_higherions: string, either "True" or "False"
+
+        :return: An updated cpTable with a new column, "hits"
+        """
+
+        def findHitsForRow(row):
+
+            def getMassWithHighestConf(mass_row, df):
+                """
+                From all the matching MS+ and MS- ions, fetch the one with the largest intensity.    
+                """
+                MS_plus = list(df.loc[(df.index.isin(MS_hits)) & (df["MStype"] == "+") &
+                                        (df["MSintensity"] == mass_row["max_intensity"]), "MSvalue"])
+                MS_minus = list(df.loc[(df.index.isin(MS_hits)) & (df["MStype"] == "-") &
+                                        (df["MSintensity"] == mass_row["max_intensity"]), "MSvalue"])
+                mass_row["MS_plus"] = MS_plus[0] if len(MS_plus) > 0 else "-"
+                mass_row["MS_minus"] = MS_minus[0] if len(MS_minus) > 0 else "-"
+                
+                return mass_row
+        
+            #Filter the msData DataFrame to only those locations we're interested in
+            #for this compound. 
+            df = msData.loc[msData["well"].isin(row["locations"])]
+            
+            MS_hits = []
+            
+            for mass in [row["mass1"], row["mass2"], row["mass3"]]:
+                if calc_higherions == "True":
+                    hits = df.loc[(df["MStype"] == "+") & 
+                                    ((abs(df["MSvalue"] - (mass + 1.01)) <= mass_abs_tol) |
+                                        (abs(df["MSvalue"] - (mass + 2.02)/2) <= mass_abs_tol) |
+                                        (abs(df["MSvalue"] - (mass + 3.03)/3) <= mass_abs_tol))]
+                else:
+                    hits = df.loc[(df["MStype"] == "+") & 
+                                    (abs(df["MSvalue"] - (mass + 1.01)) <= mass_abs_tol)]
+                
+                MS_hits = MS_hits + list(hits.index.values)
+                
+                hits = df.loc[(df["MStype"] == "-") & 
+                                    (abs(df["MSvalue"] - (mass - 1.01)) <= mass_abs_tol)]
+                MS_hits = MS_hits + list(hits.index.values)
+            
+            grouped = (df[df.index.isin(MS_hits)].groupby(["well", "peakID"], as_index = False)
+                        .agg(mass_conf = ("perc_intensity", "sum"), max_intensity = ("MSintensity", "max")))
+            grouped = grouped.apply(getMassWithHighestConf, args=(df,), axis = 1)
+            
+            grouped = grouped.loc[grouped["mass_conf"] >= min_massconf_threshold]
+            grouped = grouped.drop("max_intensity", axis=1)
+            
+            #fetch any peaks where the time matches the retention time provided
+            
+            new_slice = lcData.loc[lcData["well"].isin(row["locations"]) & 
+                                    (abs(lcData["time"] - row["rt"]) < time_abs_tol), ["well", "peakID"]]
+            #For these additional hits, set the requisite columns so that the two sets of hits can be merged into a 
+            #single dataframe. 
+            new_slice["mass_conf"] = 0
+            new_slice["MS_plus"] = "-"
+            new_slice["MS_minus"] = "-"
+
+            if len(new_slice.index) != 0:
+                row["hits"] = pd.concat([grouped, new_slice], axis=0).to_dict("records")
+            else:
+                row["hits"] = grouped.to_dict("records")                     
+
+            return row
+
+        #Apply the above function to all rows in the cpTable. 
+        self.cpTable = self.cpTable.apply(findHitsForRow, axis=1)
+        
+        
+    def validateHits(self, lcData, uvData, time_abs_tol = 0.025, massconf_threshold = 0.5, uv_abs_tol = 10,
                     uv_cluster_threshold = 0.5, uv_match_threshold = 0.5, cluster_size_threshold = 0.8, min_no_of_wells = 5,
                     validate = "True", mass_or_area = "mass_conf"):
+        """
+        This function operates on the full cpTable validating the hits for each compound 
+        and ultimately delivering a new column called "final_result". Other columns added 
+        are "clusters", "refined_clusters", "discarded_clusters", "comments" and "clusters_indexed_by_well".
+        The "final_result" column contains the hits that should be used to build the output heatmap. 
+
+        :param lcData: Pandas DataFrame, containing LC peak data
+        :param uvData: Pandas DataFrame, containing uv absorbance data
+        :param time_abs_tol: float
+        :param min_massconf_threshold: float
+        :param uv_abs_tol: integer
+        :param uv_cluster_threshold: float
+        :param uv_match_threshold: float
+        :param cluster_size_threshold: float, between 0 and 1
+        :param min_no_of_wells: integer, >1
+        :param validate: string, either "True" or "False"
+        :param mass_or_area: string, either "mass_conf" or "area"
+
+
+        :return: An updated cpTable with several new columns, most importantly "final_result".
+        """
               
         def clusterRow(row):
-                
-            relevant_indexes = []
+            """
+            Groups the hits so that ones with similar retention times are in the same group. 
+
+            :param row: A row from a Pandas DataFrame, that must contain columns called "hits"
+                                    and "comments"
+                                    
+            :return: The amended row, where the hits have been grouped and these groups placed into a 
+                    new column called "clusters". A second column called "cluster_bands" is also added which
+                    details the mean retention time for each cluster. 
+            """    
+            hits = []
             for hit in row["hits"]:
-                relevant_indexes = (relevant_indexes + list(lcData[(lcData["well"] == hit["well"]) & 
+                hits = (hits + list(lcData[(lcData["well"] == hit["well"]) & 
                                                                 (lcData["peakID"] == hit["peakID"])].index.values)) 
-            
-            outcome = self.clusterHits(relevant_indexes, lcData, time_abs_tol)
-            row["clusters"] = outcome[0]
-            row["cluster_bands"] = outcome[1]
+
+            cluster_result = self.clusterHits(hits, lcData, time_abs_tol)
+
+            row["clusters"] = cluster_result[0]
+            row["cluster_bands"] = cluster_result[1]
 
             return row
                        
@@ -289,10 +428,9 @@ class Assignment:
             and those where another peak closer to the mid-value was found
             in the same well into "discarded". 
 
-            :param cluster: list of dictionaries, where each dictionary is a hit
-            :param comments: A list of comments for that structure so far.
+            :param row: A row from a Pandas DataFrame, that must contain a column called "clusters"
 
-            :return: List comprising [a dictionary for the refined cluster, list of comments]
+            :return: The amended row, where the clusters have been refined into green, orange and discarded categories. 
             """
 
             [clusters, comments, expected_rt] = [row["clusters"], row["comments"], row["rt"]]
@@ -376,11 +514,11 @@ class Assignment:
             and refines them by ensuring all peaks have a similar mass confidence
             to the cluster's mean. Those which do are left in "green"; 
             those which don't are moved to the "orange" category.
+            The "mass confidence" is just the relative intensity of the ion for that eluting peak. 
 
-            :param cluster: a dict, with list of dicts for each header
-            :param comments: A list of comments for the compound so far
+            :param row: A row from a Pandas DataFrame, that must contain columns called "clusters" and "comments"
 
-            :return: List comprising [a dictionary for the refined cluster, list of comments]
+            :return: The amended row, where the clusters have been refined and comments added to the "comments" column
             """
             refined_clusters = []
             for cluster in row["clusters"]:
@@ -424,11 +562,9 @@ class Assignment:
             of UV maxima. Those which do are left in "green", those which
             don't are moved to the "orange" category
 
-            :param cluster: a dict, with list of dicts for each header
-            :param UVdatafound: boolean for whether the rpt data contains UV data
-            :param comments: A list of comments for that structure so far
-
-            :return: List comprising [a dictionary for the refined cluster, list of comments]
+            :param row: A row from a Pandas DataFrame, that must contain columns called "clusters" and "comments"
+            
+            :return: The amended row, where the clusters have been refined and comments added to the "comments" column
             """
             refined_clusters = []
             
@@ -505,10 +641,10 @@ class Assignment:
             which cluster has the highest mean massConf. If more than one cluster
             has a close-to-highest-mean massconf, take them all. 
 
-            :param clusters: a list of dictionaries, with list of dictionaries for each header
-            :return refined_clusters: a list of dictionaries, with list of dictionaries for each header
-
-            :return discarded_clusters: a list of dictionaries, with list of dictionaries for each header
+            :param row: A row from a Pandas DataFrame, that must contain columns called "clusters" and "comments"
+            
+            :return: The amended row, where selected clusters have been added to a new column called "refined_clusters"  and
+                    deselected clusters added to a new column called "discarded_clusters". Additional comments also added. 
             """
             
             refined_clusters = []
@@ -557,10 +693,11 @@ class Assignment:
             which cluster is the largest. If more than one cluster
             has a close-to-largest size, take them all. 
 
-            :param clusters: a list of dictionaries, with list of dictionaries for each header
-            :return refined_clusters: a list of dictionaries, with list of dictionaries for each header
-
-            :return discarded_clusters: a list of dictionaries, with list of dictionaries for each header
+            :param row: A row from a Pandas DataFrame, that must contain columns called "refined_clusters", "discarded_clusters"
+                        and "comments"
+                        
+            :return: The amended row, where selected clusters have been added to a new column called "refined_clusters"  and
+                    deselected clusters added to a new column called "discarded_clusters". Additional comments also added. 
             """
 
             refined_clusters2 = []
@@ -602,12 +739,62 @@ class Assignment:
 
             row["refined_clusters"] = refined_clusters2
             row["discarded_clusters"] = discarded_clusters
-
-
-            
+        
             return row
         
+        
+            
+        def refine_and_select(row): 
+            """
+            This function runs all the validation functions (refineClustersByTime, refineClustersByMassConf, 
+            refineClustersByUV, selectClusterByMassConf, selectClusterBySize). It will do so if there are 
+            sufficient wells to perform refinement. If not, this function reverts to the simplest strategy of 
+            assuming all hits are "green". 
+
+            :param row: A row from a Pandas DataFrame, that must contain columns called "hits", "clusters" and "comments"
+                                    
+            :return: The amended row, where hits have been refined, selected clusters have been added to a new column called "refined_clusters"  and
+                     deselected clusters added to a new column called "discarded_clusters". Additional comments also added. 
+            """
+            if len(row["hits"]) > min_no_of_wells and validate == "True":
+                row = refineClustersByTime(row)
+                row = refineClustersByMassConf(row)
+                row = refineClustersByUV(row)
+                row = selectClusterByMassConf(row)
+                row = selectClusterBySize(row)
+            else:
+                refined_clusters = []
+                for cluster in row["clusters"]:
+                    refined_cluster = {
+                        "green": [],
+                        "orange": [], 
+                        "discarded": []
+                    }
+                    for i in cluster:
+                        refined_cluster["green"].append(i)
+                    refined_clusters.append(refined_cluster)
+                row["refined_clusters"] = refined_clusters
+                row["discarded_clusters"] = []
+                
+                if validate != "True":
+                    row["comments"].append("Validation was not performed as requested by the user.")
+                else:
+                    row["comments"].append(f'Validation was not performed for {row["name"]} as '
+                                        'there were insufficient hits.')
+            return row
+
         def indexClusterByWells(row):
+            """
+            This function sorts all the hits from the refined clusters, whether they're
+            green, orange, or discarded into lists that are indexed by the well those hits
+            come from. This allows easier decision analysis by the "finalResult" function to
+            select just a single hit for each well. 
+
+            :param row: A row from a Pandas DataFrame, that must contain columns called "refined_clusters"
+
+            :return: The amended row, where hits in the refined_clusters have been reindexed and placed into
+                    a new column called "clusters_indexed_by_well". 
+            """
             cluster_by_well = {}
             for cluster in row["refined_clusters"]:
                 for i in cluster["green"]:
@@ -642,38 +829,21 @@ class Assignment:
                     
             row["clusters_indexed_by_well"] = cluster_by_well
             return row
-            
-        def refine_and_select(row): 
-            #If there are sufficient wells to perform refine and select a cluster, do so. 
-            #Otherwise, simply mark all hits as "green" fill in the necessary table structure. 
-            if len(row["hits"]) > min_no_of_wells and validate == "True":
-                row = refineClustersByTime(row)
-                row = refineClustersByMassConf(row)
-                row = refineClustersByUV(row)
-                row = selectClusterByMassConf(row)
-                row = selectClusterBySize(row)
-            else:
-                refined_clusters = []
-                for cluster in row["clusters"]:
-                    refined_cluster = {
-                        "green": [],
-                        "orange": [], 
-                        "discarded": []
-                    }
-                    for i in cluster:
-                        refined_cluster["green"].append(i)
-                    refined_clusters.append(refined_cluster)
-                row["refined_clusters"] = refined_clusters
-                row["discarded_clusters"] = []
-                
-                if validate != "True":
-                    row["comments"].append("Validation was not performed as requested by the user.")
-                else:
-                    row["comments"].append(f'Validation was not performed for {row["name"]} as '
-                                        'there were insufficient hits.')
-            return row
         
         def finalResult(row):
+
+            """
+            This final function in the validateHits sueprfunction sorts through the hits that have been clusters,
+            refined and reindexed by well, and gives an output that can be used ready for creating heatmaps and 
+            other visualisations. 
+            The "final_result" column is simply a list of all the LC peaks that should be used to create visualisations, 
+            provided as just the DataFrame index for that LC peak in the lcData DataFrame that was provided. 
+
+            :param row: A Pandas DataFrame row that contains a column called "clusters_indexed_by_well"
+            :return: The amended row where a new column called "final_result" has been added. Comments also added to 
+                    "comments" column. 
+
+            """
             final_result = {
                 "green": [],
                 "discarded": []    
@@ -780,7 +950,9 @@ class Assignment:
             return row
         
 
-                
+
+        #Each set of functions is called in turn to validate the hits for each row
+        #in the cpTable DataFrame. 
             
         self.cpTable = self.cpTable.apply(clusterRow, axis = 1)
         self.cpTable = self.cpTable.apply(selectCluster_ifrt, axis = 1)
@@ -800,12 +972,12 @@ class Assignment:
         to two different compounds. If this has happened, the internalSTD
         (if present) takes first priority, limiting reactant is second priority,
         product third priority and finally a by-product is lowest priority.
+        If a compound gives up a hit to a higher priority compound, a next-best option
+        is sought from the list of hits that were discarded in the final result. 
 
-        :param compoundDF: Pandas dataframe
-        :param internalSTD: A string representing the name of the internal standard
-        :param SMs: A list of starting material names
-        :param products: A list of product names
-        :param by_products: A list of by_product names
+
+        :param lcData: Pandas dataframe, containing columns called "type", "final_result" and "comments". 
+        :param mass_or_area: A string, either "mass_conf" or "area". 
 
         :return: compoundDF as Pandas dataframe
         """
@@ -864,9 +1036,7 @@ class Assignment:
                                                    f'{mass_or_area}.</strong>')
                         
                         #finally, append the now unwanted peak into the discard pile
-                        row["final_result"]["discarded"].append(j)
-                            
-                        
+                        row["final_result"]["discarded"].append(j)   
                             
                     else:
                         to_keep.append(j)
@@ -1029,7 +1199,7 @@ class Assignment:
         happens to overlap with any other peaks in the lc for that well, based on how the pStart and pEnd
         times reported. 
         
-        :param lcData: Pandas daaframe containing lcData, taken from a PyParse import (e.g. getWatersData.py -> rawWatersData.rawDADTable) 
+        :param lcData: Pandas dataframe containing lcData, taken from a PyParse import (e.g. getWatersData.py -> rawWatersData.rawDADTable) 
         """
         def overlapPerRow(row):
             
@@ -1051,7 +1221,163 @@ class Assignment:
         else: 
             print("Necessary column, 'best_wellno', not present in dataframe. Run 'setBestWell' first.")
 
-    
+    def findImpurities(self, lcData, msData, time_abs_tol = 0.025, min_no_of_wells = 5, mass_abs_tol = 0.5):
+
+        """
+        Find unassigned peaks that have similar retention times and added them as compounds
+        to the cpTable. 
+
+        :param lcData: Pandas Dataframe
+        :param msData: Pandas Dataframe
+        :param time_abs_tol: float (optional)
+        :param min_no_of_wells: integer (optional)
+        :param mass_abs_tol: float (optional)
+
+        :return: Updated cpTable with additional rows, one per common impurity
+        """
             
+        #Define function to get a list of wells from a cluster, 
+        #without any duplicates
+        def unique_wells(cluster):
+            unique_wells = lcData.loc[lcData.index.isin(cluster), "well"].nunique()
+            return unique_wells
+        
+        #Define sub-function to find common ions for a cluster of peaks
+        def findCommonIons(valid_combos, MStype):
+            
+            #get all rows in msData that have the right combonations of both well and peakID
+            result = (msData.loc[(msData["MStype"] == MStype) & 
+                                (msData.set_index(["well", "peakID"]).index.isin(valid_combos))]).sort_values("time")
+
+
+            #We need to find which m/z were commonly observed across this set of peaks. 
+            #In this sorted data frame, find the difference between each successive row, 
+            #mark any difference where the it is larger than mass_abs_tol as True,
+            #then apply cumulative sum that counts the number of "Trues" seen so far
+            #which is effectively a grouping index. 
+            groupings = (result.groupby(result["MSvalue"].diff()
+                                        .gt(mass_abs_tol)
+                                        .cumsum())
+                                        .apply(lambda row: list(row.index)))
+
+
+            #Filter the ions down to those which appear in at least 80% of the peaks    
+            filtered = [group for group in groupings if len(group) > len(cluster)*0.8]
+
+            #Filter to just the top 5 most commonly observed peaks, to guarantee a maximum
+            #number of 5 mass ions reported. 
+            filtered = sorted(groupings, key = lambda x: len(x))[0:5]
+            
+            #get the mean value for each grouping, then return as a list
+            return_ions = []
+            for group in filtered:
+                return_ions.append(msData.loc[msData.index.isin(group),"MSvalue"].mean())
+
+            return return_ions
+        
+        #Get a list of all the peaks that have been assigned to a compound
+        assigned_peaks = []
+        self.cpTable.apply(lambda row: assigned_peaks.extend(row["final_result"]["green"]), axis = 1)
+        
+        #And therefore find a listof all the peaks that have not been assigned!
+        unassigned_peaks = lcData.loc[lcData.index.isin(assigned_peaks) == False].index
+        
+        [clusters, clusterbands] = self.clusterHits(unassigned_peaks, lcData, time_abs_tol)
+        
+        #filter to only those clusters where there are sufficient number of unique wells
+        clusters = [i for i in clusters if unique_wells(i) > min_no_of_wells]
+        
+        impurities = []
+        
+        for index, cluster in enumerate(clusters):
+            
+            new_slice = lcData.loc[lcData.index.isin(cluster)]
+            new_slice = new_slice.loc[new_slice["area"] == new_slice["area"].max(), ["well", "peakID", "area"]]
+            mean_rt = round(lcData.loc[lcData.index.isin(cluster), "time"].mean(), 4)
+            
+            valid_combos = [(lcData.at[peak, "well"], lcData.at[peak, "peakID"]) for peak in cluster]
+            mass_plus = findCommonIons(valid_combos, "+")
+            mass_minus = findCommonIons(valid_combos, "-")
+            
+            comments = []
+        
+            #Criteria to determine when a comment is added:
+            #   -Cluster typically occurs in a particular column
+            #   -Cluster typically occurs in a particular row
+            #   -Cluster typically occurs for a particular compound in the platemap
+            #   -Cluster is independant of position (i.e. whole plate) - this overrides all of the above
+            #   -describe how many wells contained this impurity
+            observed_unique_wells = unique_wells(cluster)
+            comments.append(f'This impurity was observed in {observed_unique_wells} wells.')
+
+            if observed_unique_wells == self.plate_row_no * self.plate_col_no:
+                comments.append("This impurity was observed in every well of the plate.")
+            elif observed_unique_wells > 0.5 * self.plate_row_no * self.plate_col_no:
+                comments.append("This impurity was observed across the majority of the plate.")
+            else:
+                #Build a matrix of where the compound was observed, then iterate through each row/column in turn?
+                columns = {}
+                rows = {}
+                for i in cluster:
+                    wellno = lcData.at[i, "well"]
+                    row = math.floor((wellno-1)/self.plate_col_no) + 1
+                    column = ((wellno-1) % self.plate_col_no) + 1
+                    if row in rows:
+                        rows[row] = rows[row] + 1
+                    else:
+                        rows[row] = 1
+                    if column in columns:
+                        columns[column] = columns[column] + 1
+                    else:
+                        columns[column] = 1
+
+                for cindex, column in columns.items():
+                    if column > 0.8 * self.plate_row_no:
+                        comments.append(f'Impurity is frequently observed in column {cindex}.')
+                for rindex, row in rows.items():
+                    if row > 0.8 * self.plate_col_no:
+                        comments.append(f'Impurity is frequently observed in row {chr(ord("@")+(rindex)+1)}.')
+                if len(columns.keys()) < 0.5 * self.plate_col_no:
+                    readable_cols = [str(i) for i in sorted([int(j) for j in columns.keys()])]
+                    comments.append(f'Impurity was only observed in columns {", ".join(readable_cols)}.')
+                if len(rows.keys()) < 0.5 * self.plate_row_no:
+                    readable_rows = sorted([chr(ord("@")+(x)) for x in rows.keys()])
+                    comments.append(f'Impurity was only observed in rows {", ".join(readable_rows)}.')
+                    
+            #Append this data to a new dictionary, to ultimately build into a dataframe that will be concatonated 
+            #with self.cpTable
+            entry = {}
+            #get the columns that should be filled 
+            for column in self.cpTable.columns:
+                entry[column] = ""
+                
+            entry["name"] = f'Impurity{index}'
+            entry["locations"] = list(lcData.loc[lcData.index.isin(cluster), "well"].unique())
+            entry["canonSMILES"] = "[*]"
+            entry["stdname"] = f'Impurity{index}'
+            entry["type"] = "Impurity"
+            [entry["mass1"], entry["mass2"], entry["mass3"]] = [0,0,0]
+            entry["time"] = mean_rt
+            entry["mass-"] = mass_minus
+            entry["mass+"] = mass_plus
+            entry["final_result"] = {
+                "green": cluster,
+                "discarded": []
+            }
+            entry["cluster_bands"] = clusterbands
+            entry["comments"] = comments
+            impurities.append(entry)
         
         
+        
+        if len(clusters) > 0:
+            #Turn the list of impurities into a dataframe
+        
+            df = pd.DataFrame(impurities)
+            df.index = list(df["stdname"])
+            df = df.drop("stdname", axis=1)
+            self.cpTable = pd.concat([self.cpTable, df], axis=0)
+                    
+                
+            
+            

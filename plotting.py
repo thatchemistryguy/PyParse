@@ -1,7 +1,22 @@
+#External Libaries
 import math
 
 
 def converttoHeatMapData(outputTable, plate_row_no, plate_col_no):
+
+    """
+    Takes the outputTable DataFrame (see genOutput.py) and reformats the 
+    data so that it's in a format that's ready for Plotly to conver into a heatmap. 
+
+    :param outputTable: Pandas DataFrame
+    :param plate_row_no: Integer, describing the number of rows in the plate
+    :param plate_col_no: Integer, describing the number of columns in the plate
+
+    :return: Python dictionary, where each entry is a dictionary containing lists and strings. 
+    """
+
+    #Define all the different types of heatmap that are required. 
+    #Each entry must correspond to a value in the outputTable. 
     hm_types = {
         "SMarea": "SMarea",
         "Parea": "Parea", 

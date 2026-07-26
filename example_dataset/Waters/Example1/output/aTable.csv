@@ -85,7 +85,7 @@ B5,ELP11455-17-1,CC(C)(C)OC(=O)N1CCN(C(=O)OCC2c3ccccc3-c3ccccc32)CC1C(=O)O,desir
 B5,ELP11455-17-1,CC(C)(C)OC(=O)N1CCN(C(=O)OCC2c3ccccc3-c3ccccc32)CC1C(=O)O,desired product,98.59,Percentage Area,%,LCMS UV Peak percentage area
 B5,ELP11455-17-1,CC(C)(C)OC(=O)N1CCN(C(=O)OCC2c3ccccc3-c3ccccc32)CC1C(=O)O,desired product,406852.875,Area Absolute,AU,LCMS UV Peak absolute area
 B6,ELP11455-18-1,CC(C)(C)OC(=O)N1CCN(c2ccnc(Cl)n2)CC1,desired product,1.2758,Retention Time,min,Time at which compound elutes
-B6,ELP11455-18-1,CC(C)(C)OC(=O)N1CCN(c2ccnc(Cl)n2)CC1,desired product,243.12,ES+,Da/Q,Positive m/z
+B6,ELP11455-18-1,CC(C)(C)OC(=O)N1CCN(c2ccnc(Cl)n2)CC1,desired product,299.12,ES+,Da/Q,Positive m/z
 B6,ELP11455-18-1,CC(C)(C)OC(=O)N1CCN(c2ccnc(Cl)n2)CC1,desired product,-,ES-,Da/Q,Negative m/z
 B6,ELP11455-18-1,CC(C)(C)OC(=O)N1CCN(c2ccnc(Cl)n2)CC1,desired product,7.13,Percentage Area,%,LCMS UV Peak percentage area
 B6,ELP11455-18-1,CC(C)(C)OC(=O)N1CCN(c2ccnc(Cl)n2)CC1,desired product,29122.3867,Area Absolute,AU,LCMS UV Peak absolute area

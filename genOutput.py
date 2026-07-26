@@ -1,9 +1,34 @@
-import math
+#External Libraries
 import pandas as pd
+from rdkit import Chem
+
+#Internal Libaries
 import plate_tools
 
 class Output:
+
+    """
+    Takes the assigned peaks from a cpTable (see cpAssignment.py) and lcData (see, e.g. getWatersData.py) 
+    and produces a Pandas Dataframe summarising the results for each well. Facilitates the creation of 
+    heatmaps. 
+
+    The following are descriptions of the Pandas dataframes that will be generated for this object:
+
+    self.df = pd.DataFrame(columns =['well_no', 'Well', 'canonSMILES', 'SMarea', 'SMareaAbs', 'Parea', 'PareaAbs', 
+    'STDarea', 'STDareaAbs', 'Uarea', 'UareaAbs', 'corrSMarea', 'corrParea', corrSTDarea', 'P/SM+P', 'P/STD'])
+    self.aTable = pd.DataFrame(columns =['well', 'well_ID', 'Reaction_ID', 'analyte_smiles', 'analyte_class', 
+                                'data_entry', 'data_type', 'data_units', 'data_description'])
+    """
+    
     def __init__(self, sample_IDs, plate_col_no, plate_row_no):
+        """
+        Initialise the Output object. 
+        :param sample_IDs: a list of strings
+        :param plate_col_no: integer, describing number of columns in plate
+        :param plate_row_no: integer, describing number of rows in plate
+
+        :return: The initialised Output object. 
+        """
         self.plate_col_no = plate_col_no
         self.plate_row_no = plate_row_no
         self.sample_IDs = sample_IDs
@@ -17,12 +42,8 @@ class Output:
         """
         Reformats the validated hits into a pandas table ready for visualisation and export. 
 
-        :param compoundDF: The pandas datatable containing all compounds with their respective hits.
-        :param internalSTD: the name of the internalSTD
-        :param SMs: a list of indices for the starting materials
-        :param products: a list of indices for the products
-        :param by_products: a list of indices for the by-products
-        :param total_area_abs: A float corresponding to the sum of all peak_area_absolutes
+        :param cpTable: Pandas DataFrame, describing compounds and their assigned peaks
+        :param lcData: Pandas DataFrame, describing the LC peak data. 
 
         :return: A Pandas table named outputTable
 
@@ -170,4 +191,162 @@ class Output:
 
         #Add the sample IDs to the dataframe
         self.df["SampleID"] = self.sample_IDs
+
+    def genAnalyticalTable(self, platemapDF, cpTable, lcData, sample_IDs, products, SMs, by_products, standards, plate_col_no):
+        """ 
+        Generate an analytical table that includes all input and output information
+        for a plate, including reagent amounts, IDs, plate temperature, irradiation
+        power, etc. 
+        There is a row for each piece of information, for each reagent, product or
+        plate parameter, for each well in the plate. 
+        The column headers are based on the assumption that the co-repository, "PyParse_designer",
+        was used to generate the platemap. Other methods of generating the required platemap 
+        may need to edit the column headers used below. 
+        
+        :param platemapDF: Pandas datatable containing the full platemap
+        :param cpTable: Pandas datatable containing the full output by compound
+        :param lcData: Pandas DataFrame containing LC peak data
+        :param sample_IDs: Dictionary of all sample IDs, indexed by well number
+        :param products/SMs/by_products/internalSTD: List of names of compounds, by each compound type
+
+        :output: Pandas DataFrame added to the Output object. 
+        """
+
+        class analyteRow:
+            def __init__(self, well, wellID, sample_ID, smiles, analyte_class, data_type, data_value, data_desc, data_unit):
+                self.well = well
+                self.well_ID = wellID
+                self.Reaction_ID = sample_ID
+                self.analyte_smiles = smiles
+                self.analyte_class = analyte_class
+                self.data_entry = data_value
+                self.data_type = data_type
+                self.data_units = data_unit
+                self.data_description = data_desc
+                
+        aTable = []
+
+        for index, compound in cpTable.iterrows():
             
+            if compound["name"] in products:
+                a_class = "desired product"
+            elif compound["name"] in by_products:
+                a_class = "byproduct"
+            elif compound["name"] in SMs:
+                a_class = "limiting reactant"
+            elif compound["name"] in standards:
+                a_class = "internalstd"
+            else:
+                a_class = "impurity"
+
+            for well in compound["locations"]:
+                well_name = plate_tools.getUserReadableWell(well, plate_col_no)
+                valid_hit = [i for i in compound["final_result"]["green"] if well == lcData.at[i, "well"]]
+
+                if len(valid_hit) > 0:
+                    valid_hit = valid_hit[0]
+                    MS_plus = "-"
+                    MS_minus = "-"
+                    
+                    peakID = -1
+                    for i in compound["final_result"]["green"]:
+                        if lcData.at[i, "well"] == well:
+                            peakID = lcData.at[i, "peakID"]
+    
+                    
+                    if peakID > -1 and a_class != "impurity":
+                        for hit in compound["hits"]:
+                            if hit["well"] == well and hit["peakID"] == peakID:
+                                MS_plus = hit["MS_plus"]
+                                MS_minus = hit["MS_minus"]
+                    
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Retention Time", lcData.at[valid_hit, "time"], "Time at which compound elutes", "min").__dict__)
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "ES+", MS_plus, "Positive m/z", "Da/Q").__dict__)
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "ES-", MS_minus, "Negative m/z", "Da/Q").__dict__)
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Percentage Area", lcData.at[valid_hit, "area"], "LCMS UV Peak percentage area", "%").__dict__)
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Area Absolute", lcData.at[valid_hit, "areaAbs"], "LCMS UV Peak absolute area", "AU").__dict__)
+                #If no hit was found, capture in the table that the product was expected but not observed. 
+                else: 
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Retention Time", 0, "Time at which compound elutes", "min").__dict__)
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "ES+", 0, "Positive m/z", "Da/Q").__dict__)
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "ES-", 0, "Negative m/z", "Da/Q").__dict__)
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Percentage Area", 0, "LCMS UV Peak percentage area", "%").__dict__)
+                    aTable.append(analyteRow(well, well_name, sample_IDs[well], index, a_class, "Area Absolute", 0, "LCMS UV Peak absolute area", "AU").__dict__)
+            
+        #Add the remaining data from the platemapDF, containing info on IDs, amounts, quantity used, etc
+
+        entry_types = ["desired product", "limiting reactant", "excess reactant", "internalstd", "base", "catalyst1", "catalyst2", "additive", "solvent1", "solvent2"]
+        #Up to 10 columns each are allowed for byproducts and excess reactants. Note that more than 10 different compounds
+        #are permitted in this category, as each column can allow multiple compounds. 
+        for i in range(1, 11):
+            entry_types.append(f'byproduct{i}')
+            entry_types.append(f'excess reactant{i}')
+        for _, row in platemapDF.iterrows():
+            well_as_num = plate_tools.convertWellToNum(row["well"], plate_col_no)
+            
+            for entry in entry_types:
+                if f'{entry} smiles' in row:
+                    if row[entry+" smiles"] != "":
+                        if entry == "solvent1" or entry == "solvent2":
+                            amount_unit = "uL"
+                        else:
+                            amount_unit = "umol"
+
+                        #Ensure that catalysts and co-catalysts are all given the same analyte class
+                        if entry == "catalyst1" or entry == "catalyst2":
+                            a_class = "catalyst"
+                        elif "byproduct" in entry:
+                            a_class = "byproduct"
+                        elif "excess reactant" in entry:
+                            a_class = "excess reactant"
+                        else:
+                            a_class = entry
+
+                        #generate a canonical smiles for use as an index
+                        try:
+                            mol = Chem.MolFromSmiles(row[entry+" smiles"].strip())
+                            c_smiles = Chem.MolToSmiles(mol)
+
+                        except:
+                            c_smiles = row[entry+" smiles"]
+                        
+                        if f'{entry} amount' in row:
+                            if row[entry +" amount"] != "":
+                                aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Expected Amount", row[entry +" amount"], 
+                                        "Amount of analyte expected in plate.", amount_unit).__dict__)
+
+                        if f'{entry} id' in row:
+                            if row[entry +" id"] != "":
+                                aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte ID", row[entry +" id"], 
+                                                "ID of analyte in well.", "N/A").__dict__)
+                        if f'{entry} name' in row:
+                            if row[entry +" name"] != "":
+                                aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], c_smiles, a_class, "Analyte Name", row[entry +" name"], 
+                                                "Name of analyte in well.", "N/A").__dict__)
+
+            if "time" in row:
+                aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Time", "plate parameter", "Time", row["time"], 
+                                "Reaction time prior to analysis.", "h").__dict__)
+
+            if "temperature" in row:
+                aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Temperature", "plate parameter", "Temperature", row["temperature"], 
+                                "Reaction temperature prior to analysis", "C").__dict__)
+
+            if "irradiation_power" in row:
+                if(row["irradiation_power"] != ""):
+                    aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Power", "plate parameter", "Irradiation Power", row["irradiation_power"], 
+                                    "Irradiation power applied", "mW per well").__dict__)
+            if "irradiation_wavelength" in row:
+                if(row["irradiation_wavelength"] != ""):
+                    aTable.append(analyteRow(well_as_num, row["well"], sample_IDs[well_as_num], "Irradiation Wavelength", "plate parameter", "Irradiation Wavelength", row["irradiation_wavelength"], 
+                                    "Irradiation wavelength applied", "nm").__dict__)
+
+
+
+
+        #Build the Pandas dataframe and sort it inplace
+        self.aTable = pd.DataFrame(aTable)
+        self.aTable.sort_values(["well", "analyte_smiles"], inplace = True)
+        del self.aTable["well"]
+
+

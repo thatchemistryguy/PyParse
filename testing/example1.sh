@@ -1,2 +1,0 @@
-python PyParse.py "example_dataset/Waters/Example1/example_rpt.rpt" "example_dataset/Waters/Example1/example_platemap.csv" -o "example_dataset/Waters/Example1/output"
-python PyParse.py "example_dataset/Waters/Example2/LC-MS Data for 48-Well Plate.rpt" "example_dataset/Waters/Example2/PyParse_designer_platemap.csv" -o "example_dataset/Waters/Example2/output"

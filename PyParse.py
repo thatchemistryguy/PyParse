@@ -17,7 +17,7 @@ limitations under the License.
 Authors: Joe Mason, Francesco Rianjongdee, Harry Wilders, David Fallon
 """
 
-
+#External Libraries
 import os
 import sys
 from os import path
@@ -25,13 +25,10 @@ from os import path
 import time
 import logging
 import argparse
-import re
 import pandas as pd
-import math
 from statistics import mean
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from rdkit.Chem import Descriptors
 from rdkit.Chem import Draw
 import zipfile
 from jinja2 import Environment, PackageLoader
@@ -40,28 +37,12 @@ import glob
 import json
 import shutil
 
+#Internal Libraries
 import getWatersData
 import cpAssignment
 import genOutput
 import plotting
 
-def getUserReadableWell(wellno, plate_col_no):
-    """
-    Converts the well as a number into a user-friendly string,
-    e.g. well 11 becomes "B5" for a 4*6 well plate. 
-
-    :param wellno: An integer representing a specific well on the plate
-    
-    :return: A string representing a specific well on the plate
-    """
-    
-    rowVal = math.floor((wellno-1) / plate_col_no)
-    colVal = (wellno) % plate_col_no
-    if colVal == 0:
-        colVal = plate_col_no
-    
-    label = f'{chr(ord("@")+(rowVal)+1)}{colVal}'
-    return label
 
 def generateMol(smiles, name, save_dir):
     """
@@ -517,10 +498,12 @@ def main():
     pre_hit_and_val = time.perf_counter()
 
     #Find hits for each compound
-    cpTable.findHits(msData, lcData)
+    cpTable.findHits(msData, lcData, options.mass_abs_tol, 
+                    options.min_massconf_threshold, options.time_abs_tol,
+                    options.calc_higherions)
 
     #Validate the hits for each compound
-    cpTable.validateHits(lcData, msData, uvData, options.time_abs_tol, options.massconf_threshold, 
+    cpTable.validateHits(lcData, uvData, options.time_abs_tol, options.massconf_threshold, 
                          options.uv_abs_tol, options.uv_cluster_threshold, options.uv_match_threshold, 
                          options.cluster_size_threshold, options.min_no_of_wells, options.validate, 
                          options.mass_or_area)
@@ -534,13 +517,6 @@ def main():
 
     cpTable.removeDupAssigns(lcData, options.mass_or_area)
     logging.info(f'Duplicate assignments were removed.')
-
-    #Find impurities
-    #if options.find_freq_imp == "True":
-    #    pre_imp = time.perf_counter()
-    #    cpTable.findImpurities(lcData, msData, save_dir, options.time_abs_tol, 
-    #                            options.min_no_of_wells, options.mass_abs_tol)
-    #    times["Finding Impurities"] = time.perf_counter() - pre_imp
 
     #Generate the output dataframe, used to facilitate plotting of graphs
     #Provide this with a list of the sample IDs for each well and 
@@ -570,53 +546,11 @@ def main():
     times["Generate Heatmap Data"] = time.perf_counter() - pre_heatmap
 
 
-    #Return a series of piecharts to the user, as long as it's not larger than
-    #a 96 well plate. For larger plates, the piecharts become too small to be
-    #useful. 
-    """
-    if options.plate_row_no * options.plate_col_no < 97:
-        #Get a list of byproduct names so that the plotPieCharts fn knows which columns 
-        #to look up in the output table. 
-        byproducts = cpTable.cpTable.loc[cpTable.cpTable["type"] == "Byproduct", "name"].values
-        pre_pie = time.perf_counter()
-        #Alter the piechart output depending on whether an internalSTD was specified
-        #in the platemap or not. 
-        if internalSTD != "":
-            plotting.plotPieCharts(options.plot_type, output.df, save_dir, byproducts, 
-                           options.plate_row_no, options.plate_col_no)
-            logging.info(f'A set of pie-charts was generated using corrP/STD '
-                        f'as the index.')
-        else:
-            plotting.plotPieCharts(options.plot_type, output.df, save_dir, byproducts, 
-                           options.plate_row_no, options.plate_col_no)
-            logging.info(f'A set of pie-charts was generated using Parea '
-                        f'as the index.')
-        times["Generate Piechart"] = time.perf_counter() - pre_pie
-
-    """
-
-
     #Plot a hit validation graph for each compound in the cpTable
     pre_val_graphs = time.perf_counter()
     #cpTable.cpTable.apply(plotting.plotHitValidationGraph, args = (lcData, save_dir, options.plate_col_no,
     #                                                               options.plate_row_no,), axis = 1)
     times["Generate Hit Validation Graphs"] = time.perf_counter() - pre_val_graphs
-
-    #Plot an annotated chromatogram for each compound in the cpTable
-    """
-    pre_chroma = time.perf_counter()
-    cpTable.cpTable.apply(plotting.plotChroma, args=(cpTable.cpTable, lcData, msData, 
-                                                     traceData, save_dir, options.plate_col_no,
-                                                     options.filter_by_rt,), axis = 1)
-    times["Generate Annotated Chromatograms"] = time.perf_counter() - pre_chroma
-    """
-
-    #Plot a histogram and donut chart of Parea as a measure of plate success. 
-    pre_donut = time.perf_counter()
-    #plotting.plotHistogram(output.df, save_dir)
-    #plotting.plotDonut(output.df, save_dir)
-    times["Generate Histogram and Donut"] = time.perf_counter() - pre_donut
-    logging.info(f'A histogram and donut chart were generated.')
 
     #Generate a set of PNG files to depict each compound
     cpTable.cpTable.apply(lambda row: generateMol(row["canonSMILES"], row["name"], save_dir), axis = 1)
@@ -626,6 +560,13 @@ def main():
 
     #Determine if there are any overlapping peaks for the best well of each compound. 
     cpTable.findOverlap(lcData)
+
+    #Find impurities if the option to do so is set
+    if options.find_freq_imp == "True":
+        pre_imp = time.perf_counter()
+        cpTable.findImpurities(lcData, msData, options.time_abs_tol, 
+                                options.min_no_of_wells, options.mass_abs_tol)
+        times["Finding Impurities"] = time.perf_counter() - pre_imp
 
     #Generate an csv of the output table.
     pre_csvs = time.perf_counter()
@@ -658,13 +599,14 @@ def main():
 
     #build the HTML output file
     buildHTML(rawData, lcData, traceData, heatmapData, save_dir, cpTable.cpTable, options.analysis_name, times = times)
-
-    
     
     #Generates and saves an analytical table containing all information concerning inputs and
     #outputs of the plate. 
-    #if options.gen_atable == "True":
-    #    genAnalyticalTable(platemapDF, compoundDF, save_dir, sample_IDs, products, SMs, by_products, internalSTD)
+    if options.gen_atable == "True":
+        output.genAnalyticalTable(cpTable.inputCSV, cpTable.cpTable, lcData, rawData.sample_IDs, all_products, all_reactants, 
+                                  all_byprods, all_stds, options.plate_col_no)
+        output.aTable.to_csv(f'{save_dir}aTable.csv', index = False, header = True)
+
 
     
     logging.info(f'The analysis was completed in {total_time} seconds.')
@@ -673,9 +615,9 @@ def main():
 
 
 if __name__ == "__main__":
-    #try:
+    try:
         print("Running analysis....")
         main()
-    #except Exception as e:
-    #    print(e)
-    #    logging.exception("A fatal exception occurred. Contact administrator.")
+    except Exception as e:
+        print(e)
+        logging.exception("A fatal exception occurred. Contact administrator.")

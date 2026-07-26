@@ -192,6 +192,9 @@ launch.json
 #conda
 .conda
 
+#checkpoints
+.ipynb_checkpoints
+
 #pycache
 __pycache__
 

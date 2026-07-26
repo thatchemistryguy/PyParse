@@ -1,205 +1,76 @@
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 9.982684999999037 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The analysis was completed in 2.7286041999977897 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 9.815790700000434 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The analysis was completed in 2.712530400000105 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 10.022953800000323 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 10.138780899998892 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The analysis was completed in 2.6994785999995656 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 9.843215499999133 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The analysis was completed in 2.7420329000015045 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-ERROR:root:A fatal exception occurred. Contact administrator.
-Traceback (most recent call last):
-  File "E:\Installations\Anaconda_2025\envs\PyParse-3137\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
-    return self._engine.get_loc(casted_key)
-           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
-  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
-  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
-  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
-  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
-KeyError: 'name'
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 633, in <module>
-    main()
-    ~~~~^^
-  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 615, in main
-    buildHTML(save_dir, cpTable.cpTable, options.analysis_name, times = times)
-    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 109, in buildHTML
-    cpnames = [cpTable.apply(lambda row: [row["name"], row["stdname"]], axis = 0)]
-               ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "E:\Installations\Anaconda_2025\envs\PyParse-3137\Lib\site-packages\pandas\core\frame.py", line 10401, in apply
-    return op.apply().__finalize__(self, method="apply")
-           ~~~~~~~~^^
-  File "E:\Installations\Anaconda_2025\envs\PyParse-3137\Lib\site-packages\pandas\core\apply.py", line 916, in apply
-    return self.apply_standard()
-           ~~~~~~~~~~~~~~~~~~~^^
-  File "E:\Installations\Anaconda_2025\envs\PyParse-3137\Lib\site-packages\pandas\core\apply.py", line 1063, in apply_standard
-    results, res_index = self.apply_series_generator()
-                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "E:\Installations\Anaconda_2025\envs\PyParse-3137\Lib\site-packages\pandas\core\apply.py", line 1081, in apply_series_generator
-    results[i] = self.func(v, *self.args, **self.kwargs)
-                 ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\nosam\OneDrive\Documents\GitHub\PyParse\PyParse.py", line 109, in <lambda>
-    cpnames = [cpTable.apply(lambda row: [row["name"], row["stdname"]], axis = 0)]
-                                          ~~~^^^^^^^^
-  File "E:\Installations\Anaconda_2025\envs\PyParse-3137\Lib\site-packages\pandas\core\series.py", line 1133, in __getitem__
-    return self._get_value(key)
-           ~~~~~~~~~~~~~~~^^^^^
-  File "E:\Installations\Anaconda_2025\envs\PyParse-3137\Lib\site-packages\pandas\core\series.py", line 1249, in _get_value
-    loc = self.index.get_loc(label)
-  File "E:\Installations\Anaconda_2025\envs\PyParse-3137\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
-    raise KeyError(key) from err
-KeyError: 'name'
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The analysis was completed in 2.7142348999987007 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 9.665353700000196 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The analysis was completed in 2.730601999995997 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 9.886613300001045 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The analysis was completed in 2.8762816000016755 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 9.746549999999843 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The analysis was completed in 2.8193501999994623 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 10.30708709999999 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
+INFO:root:The analysis was completed in 2.8072222999981022 seconds.
+INFO:root:PyParse was run from the following directory: C:\Users\nosam\Documents\GitHub\PyParse.
 INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
 INFO:root:48 wells were found in the rpt.
 INFO:root:4 compounds were imported.
 INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
 INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 10.353927699999986 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
-INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
-INFO:root:48 wells were found in the rpt.
-INFO:root:4 compounds were imported.
-INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
-INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 10.883425899999565 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
-INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
-INFO:root:48 wells were found in the rpt.
-INFO:root:4 compounds were imported.
-INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
-INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 9.972336000000723 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
-INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
-INFO:root:48 wells were found in the rpt.
-INFO:root:4 compounds were imported.
-INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
-INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 10.06771259999914 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
-INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
-INFO:root:48 wells were found in the rpt.
-INFO:root:4 compounds were imported.
-INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
-INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 10.583067100000335 seconds.
-INFO:root:PyParse was run from the following directory: C:\Users\nosam\OneDrive\Documents\GitHub\PyParse.
-INFO:root:The output files were saved to example_dataset/Waters/Example2/output/.
-INFO:root:48 wells were found in the rpt.
-INFO:root:4 compounds were imported.
-INFO:root:Duplicate assignments were removed.
-INFO:root:A heatmap was generated using Parea as the index.
-INFO:root:A set of pie-charts was generated using corrP/STD as the index.
-INFO:root:A histogram and donut chart were generated.
-INFO:root:The CSV outputs were generated.
-INFO:root:The analysis was completed in 10.090142200000628 seconds.
+INFO:root:The analysis was completed in 2.731222499998694 seconds.
