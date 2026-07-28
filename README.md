@@ -4,7 +4,7 @@
 Welcome to PyParse!
 ===================================
 
-Authors: [Joe Mason](https://github.com/thatchemistryguy), Francesco Rianjongdee, Harry Wilders, [David Fallon](https://github.com/fallonda)
+Authors: [Joe Mason](https://github.com/thatchemistryguy)
 
 
 Description
