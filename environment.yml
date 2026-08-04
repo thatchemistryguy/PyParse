@@ -1,0 +1,36 @@
+name: PyParse
+channels:
+  - defaults
+dependencies:
+  - bzip2=1.0.8=h2bbff1b_6
+  - ca-certificates=2026.7.16=haa95532_0
+  - expat=2.8.2=hd7fb8db_1
+  - libexpat=2.8.2=hd7fb8db_1
+  - libffi=3.4.8=h42d73b9_3
+  - libmpdec=4.0.1=h1c6eee0_0
+  - libzlib=1.3.2=h1c6eee0_0
+  - lz4-c=1.9.4=h1c6eee0_5
+  - openssl=3.5.7=hbb43b14_0
+  - pip=26.1.2=pyh0d26453_0
+  - python=3.14.0=h3bc0a5a_101_cp314
+  - python_abi=3.14=4_cp314
+  - sqlite=3.53.2=hee5a0db_0
+  - tk=8.6.15=hf199647_0
+  - ucrt=10.0.22621.0=haa95532_0
+  - vc=14.3=h2df5915_12
+  - vc14_runtime=14.44.35208=h4927774_12
+  - vs2015_runtime=14.44.35208=ha6b5a95_12
+  - xz=5.8.2=h53af0af_0
+  - zlib=1.3.2=h1c6eee0_0
+  - zstd=1.5.7=h56299aa_0
+  - pip:
+      - jinja2==3.1.6
+      - markupsafe==3.0.3
+      - numpy==2.5.1
+      - pandas==3.0.5
+      - pillow==12.3.0
+      - python-dateutil==2.9.0.post0
+      - rdkit==2026.3.5
+      - six==1.17.0
+      - tzdata==2026.3
+prefix: C:\Users\joseph.mason\AppData\Local\anaconda3\envs\PyParse
