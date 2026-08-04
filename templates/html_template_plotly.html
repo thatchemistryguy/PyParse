@@ -1,0 +1,528 @@
+<html>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-3.3.0.min.js" charset="utf-8"></script>
+    <script src="resources/plotly_chroma.js"></script>
+    <script src="resources/plotly_heatmap.js"></script>
+    <script src="resources/plotly_validation.js"></script>
+
+
+    <style>
+        #pageContent {
+            position: relative;
+            left:2%;
+            width:96%;
+        }
+
+        #heatmap_container {
+            margin:auto;
+            width: 1200px;
+            height: 600px;
+        }
+
+        #heatmap_buttons_container {
+            margin:auto;
+        }
+
+        #heatmap_buttons_container button {
+            margin: 1px;
+        }
+
+        #well_cp_search_container button {
+            height: 42px;
+            margin-left: 1px;
+            margin-right: 1px;
+        }
+
+        #cp_well_search {
+            width: 200px;
+            margin-left: 1px;
+            margin-right: 1px;
+        }
+
+
+        .container-fluid {
+            justify-content: center;
+        }
+        .btn-platemap {
+            width:200px;
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        .loc_heatmap {
+            width:600px;
+            height:300px;
+        }
+
+        .navbar-side .side-collapse {
+            top: 0px;
+            bottom: 0;
+            left: -2px;
+            width: 0px;
+            position: fixed;
+            overflow: auto;
+            transition: all 0.3s cubic-bezier(.87, -.41, .19, 1.44);
+            border-right: solid rgb(0, 140, 255) 2px;
+            background-color: aliceblue;
+        }
+
+        .list-group {
+            position: relative;
+            top: 50px;
+        }
+
+        #openNavbar {
+            top: 50px;
+            left: 2px;
+            height: 100%;
+            width: 1%;
+            position: fixed;
+            z-index: 9999999;
+        }
+        .navbar-side .side-collapse.open {
+            left:1.1%;
+            width: 95%;
+            z-index: 9999998;
+        }
+
+
+        .rotate-90 {
+            transform-origin: 0 50%;
+            transform: rotate(270deg);
+            translate: 0px 100px;
+            width: 200px;
+        }
+
+    </style>
+
+    </head>
+
+    <body data-bs-scroll="scroll" data-bs-target="navbar">
+        <nav id="navbar" class="navbar bg-light sticky-top">
+            <a style="margin-left: 1%;" class="navbar-brand" href="#">PyParse</a>
+            <ul class="nav navbar-pills">
+
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="#PlateAnalysis">Plate Analysis</a>
+            </li> -->
+
+            <li class="nav-item">
+                <input id="cp_search" class="form-control" type="search" placeholder="Search for Compound" aria-label="Search for Compound">
+                <ul id="search_options" class="downdown-menu">
+                    {% for cpname in cpnames %}
+                    <li id = "{{ cpname }}"><a class="dropdown-item" onclick='searchCompound("{{ cpname }}")' href='#cmp-detail-container'>{{ cpname }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            </ul>
+        </nav>
+        <button data-toggle="collapse-side" data-target=".side-collapse" type="button" id="openNavbar" data-bs-toggle="button" class="btn btn-secondary navbar-toggle"><p class="rotate-90">Compound Table</p></button>
+
+        <nav class="navbar navbar-default navbar-side navbar-static-top">
+            <div class="navbar-default side-collapse">
+                <div class="navbar-collapse">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>Name</th>
+                                <th>Structure</th>
+                                <th>Mass1</th>
+                                <th>Mass2</th>
+                                <th>Mass3</th>
+                                <th>Time</th>
+                                <th>m/z-</th>
+                                <th>m/z+</th>
+                                <th>Best Well</th>
+                                <th>Purity of Best Well</th>
+                                <th>Overlap Detection</th>
+                                <th>Potential Conflicts</th>
+                            </tr>
+                            {% for row in cptablerows %}
+                                {% if row["type"] != "Impurity" %}
+                                    {% if row["overlaps"] != "No peak overlap detected." or row["conflicts"] != "No potential conflicts found." %}
+                                        <tr class = "table-warning">
+                                    {% else %}
+                                        <tr>
+                                    {% endif %}
+                                    <td><a href="#cmp-detail-container" onclick='loadCompoundFromTable("{{ row["name"] }}")'>{{ row["name"] }}</a></td>
+                                    <td>
+                                        <img src="structures/{{ row["name"] }}.png"></img><br>
+                                        <!-- <button class="btn btn-outline-secondary btn-sm btn-platemap" data-bs-toggle="modal" data-bs-target="#modal-platemap-{{ row["name"] }}">Click to View Platemap</button>   -->
+                                    </td>
+                                    <td>{{ row["mass1"] }}</td>
+                                    <td>{{ row["mass2"] }}</td>
+                                    <td>{{ row["mass3"] }}</td>
+                                    <td>{{ row["time"] }}</td>
+                                    <td>{{ row["mass-"] }}</td>
+                                    <td>{{ row["mass+"] }}</td>
+                                    <td>{{ row["best_well"] }}</td>
+                                    <td>{{ row["best_purity"] }}</td>
+                                    <td>{{ row["overlaps"] }}</td>
+                                    <td>{{ row["conflicts"] }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <div id="pageContent">
+            
+            <h2 id = "PlateAnalysis">{{ analysis_name }} - {{ options["detector"] }}</h2>
+            <div class="container-fluid" id="heatmap_container">
+                <div id="heatmap_space"></div>
+            </div>
+            <div id="heatmap_buttons_container" class="d-flex flex-row justify-content-center"></div>
+
+
+            <div class="container-fluid">
+                <div id="cmp-detail-container" class="container-fluid"></div>
+                <div class="row">
+                    <h2 id="curr_sample_name">Placeholdername</h2>
+                </div>
+                <div class="row">
+                    {% for row in cptablerows %}
+                        {% if row["type"] != "Impurity" %}
+
+                            <div class="container-lg logs" id="accordion-{{ row["name"] }}-container">
+                                <div class="accordion" id="accordion-{{ row["name"] }}">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header no-margin" id="heading1-{{ row["name"] }}">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1-{{ row["name"] }}" aria-expanded="true" aria-controls="collapse1-{{ row["name"] }}">Key Logs</button>
+                                        </h2>
+                                        <div id="collapse1-{{ row["name"] }}" class="accordion-collapse collapse" aria-labelledby="heading1-{{ row["name"] }}">
+                                            <div class="accordion-body">
+                                                {% set counter = [] %}
+                                                {% for comment in row["comments"] %}
+                                                    {% if "<strong>" in comment or "were found for" in comment or "Validation" in comment %}
+                                                        {{ comment }}<br>
+                                                        {% set __ = counter.append("1") %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header no-margin" id="heading2-{{ row["name"] }}">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-{{ row["name"] }}" aria-expanded="false" aria-controls="collapse2-{{ row["name"] }}">Additional Logs</button>
+                                    </h2>
+                                
+                                    {% if row["comments"]|length > counter|length %}
+                                    
+                                        <div id="collapse2-{{ row["name"] }}" class="accordion-collapse collapse" aria-labelledby="heading2-{{ row["name"] }}" data-bs-parent="#accordion-{{ row["name"] }}">
+                                            <div class="accordion-body">
+                                            {% for comment in row["comments"] %}
+                                                {% if "<strong>" not in comment and "were found for" not in comment and "Validation" not in comment %}
+                                                    {{ comment }}<br>
+                                                {% endif %}
+                                            {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div id="chroma-space-container" class="col-6">
+                        <div id="chroma-plot-space"></div>
+                    </div>
+                    <div id="validation-space" class="col-6">
+                        <div id="validation-plot-space"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col d-flex flex-row justify-content-center" id="well_cp_search_container">
+                        <button class="p-2 btn btn-primary" id="prev_well_btn"><< Previous Sample</button>
+                        <button class="p-2 btn btn-primary" id="prev_cmp_btn">< Previous Compound</button>
+                        <div>
+                            <input id="cp_well_search" class="form-control" type="search" placeholder="Search for Compound" aria-label="Search for Compound">
+                            <ul id="cp_well_search_options" class="downdown-menu">
+                                {% for cpname in cpnames %}
+                                <li id = "cp_well_search{{ cpname }}"><a class="dropdown-item" onclick='searchCompound("{{ cpname }}")' href='#cmp-detail-container'>{{ cpname }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <button class="p-2 btn btn-primary" id="next_cmp_btn">Next Compound ></button>
+                        <button class="p-2 btn btn-primary" id="next_well_btn">Next Sample >></button>
+                    </div>
+                </div>
+            </div>
+                
+
+            
+            <h2 id= 'PlateSummary'>Plate Summary</h2><br>
+            
+            {% if times|length > 0 %}
+                <h2>Process Summary</h2><br>
+                <table><tr><th>Process</th><th>Time Taken</th></tr>
+                {% for index, value in times.items() %}
+                    <tr><td>{{ index }}</td><td>{{ round(value, 2) }} s</td></tr>
+                {% endfor %}
+                </table><br><br>
+            {% endif %}
+
+            <h2>Process Options</h2>
+            <table>
+                <tr>
+                    <th>Option Name</th><th>Value</th></tr>
+                {% for index, option in options.items() %}
+                    <tr>
+                        <td>{{ index }}</td>
+                        <td>{{ option }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br>
+            
+        </div>
+
+        <script>
+            
+
+
+            let this_sample_no = 0
+            let this_cmp_no = 0
+            let this_sample_name = ""
+            let this_heatmap = ""
+            let data_text = []
+
+            let selected_metric = '{{ plot_type }}'
+
+            const search_options = {{ cpnames }}
+
+            let cpData = '{{ cpData }}'
+            let samples = '{{ SampleTable }}'
+            let peaks = '{{ DADTable }}'
+            let msData = '{{ MSTable }}'
+            let lcData = '{{ TraceTable }}'
+            let uvData = '{{ UVTable }}'
+            let heatmapData = '{{ heatmapData }}'
+
+            cpData = JSON.parse(cpData)
+            samples = JSON.parse(samples)
+            peaks = JSON.parse(peaks)
+            msData = JSON.parse(msData)
+            lcData = JSON.parse(lcData)
+            uvData = JSON.parse(uvData)
+
+            heatmapData = JSON.parse(heatmapData)
+            
+
+            function changeSample() {
+                let filtered_peaks = peaks.filter(value => value["filename"] == this_sample_name)
+                let max_peak = filtered_peaks.reduce((prev, current) => (prev && prev["area"] > current["area"]) ? prev : current, {"area": -1})
+                
+                refreshChroma(max_peak["peakID"])
+                
+            }
+
+            function changeValidation() {
+                refreshValidation()
+            }
+            
+            //Show/hide the logs to match the current view. 
+            function changeLogs() {
+                $(' .logs ').addClass("d-none")
+
+                let product_name = cpData[this_cmp_no]["name"]
+                $(' #accordion-' + product_name + '-container').removeClass("d-none")
+            }
+
+            function searchCompound(cmp_name) {
+                //Reset the list style
+                $(' #search_options li ').addClass("d-none")
+                $(' #cp_well_search_options li ').addClass("d-none")
+
+
+                this_cmp_no = cpData.findIndex(x => x["name"] == cmp_name)
+                this_sample_name = cpData[this_cmp_no]["best_sample_filename"]
+                this_sample_no = samples.findIndex(x => x["filename"] == this_sample_name)
+                changeSample()
+                changeValidation()
+                changeLogs()
+
+                //Set the name of the sample currently shown. 
+                $(' #curr_sample_name ').html(cpData[this_cmp_no]["name"] + '; well: ' + cpData[this_cmp_no]["best_well"] + '.')
+                
+                // and empty the text box
+                $(' #cp_search ').val("")
+                $(' #cp_well_search ').val("")
+
+            }
+
+            function loadCompoundFromTable(cmp_name) {
+                searchCompound(cmp_name)
+                $('.side-collapse').toggleClass('open');
+            }
+
+        
+            $(document).ready(function() { 
+                $('[data-toggle=collapse-side]').click(function(e) {
+                    $('.side-collapse').toggleClass('open');
+
+                });
+
+                //Set the heatmap buttons
+                $.each(heatmapData, function(key, value) {
+                    $(' #heatmap_buttons_container ').append('<button class="p-2 btn btn-secondary heatmap-btn" data-htype="' + key + '">' + value["name"] + '</button>')
+
+                })
+
+                $(' .heatmap-btn ').click(function() {
+                    this_heatmap = $(this).data("htype")
+                    changeHeatmap()
+                })
+
+                $(' #prev_cmp_btn ').click(function() {
+                    if(this_cmp_no == 0) {
+                        this_cmp_no = cpData.length -1
+                    }
+                    else {
+                        this_cmp_no = this_cmp_no - 1
+                    }
+                    
+                    this_sample_name = cpData[this_cmp_no]["best_sample_filename"]
+                    this_sample_no = samples.findIndex(x => x["filename"] == this_sample_name)
+                    changeSample()
+                    changeLogs()
+                    changeValidation()
+
+                    //Set the name of the sample currently shown. 
+                    $(' #curr_sample_name ').html(cpData[this_cmp_no]["name"] + '; well: ' + cpData[this_cmp_no]["best_well"] + '.')
+                })
+
+                $(' #next_cmp_btn ').click(function() {
+                    if(this_cmp_no == cpData.length-1) {
+                        this_cmp_no = 0
+                    }
+                    else {
+                        this_cmp_no = this_cmp_no + 1
+                    }
+                    
+                    this_sample_name = cpData[this_cmp_no]["best_sample_filename"]
+                    this_sample_no = samples.findIndex(x => x["filename"] == this_sample_name)
+                    changeSample()
+                    changeLogs()
+                    changeValidation()
+
+                    //Set the name of the sample currently shown. 
+                    $(' #curr_sample_name ').html(cpData[this_cmp_no]["name"] + '; well: ' + cpData[this_cmp_no]["best_well"] + '.')
+                })
+
+                $(' #prev_well_btn ').click(function() {
+                    if(this_sample_no == 0) {
+                        this_sample_no = samples.length - 1
+                    }
+                    else {
+                        this_sample_no = this_sample_no - 1
+                    }
+                    
+                    this_sample_name = samples[this_sample_no]["filename"]
+                    changeSample()
+
+                    //Stop showing the logs as we've switched to a "by-well" format. 
+                    $(' .logs ').addClass("d-none")
+
+                    //Set the name of the sample currently shown. 
+                    $(' #curr_sample_name ').html('Well: ' + samples[this_sample_no]["well_readable"] + '.')
+                })
+
+                $(' #next_well_btn ').click(function() {
+                    if(this_sample_no == samples.length-1) {
+                        this_sample_no = 0
+                    }
+                    else {
+                        this_sample_no = this_sample_no + 1
+                    }
+                    
+                    this_sample_name = samples[this_sample_no]["filename"]
+                    changeSample()
+                    
+                    //Stop showing the logs as we've switched to a "by-well" format. 
+                    $(' .logs ').addClass("d-none")
+
+                    //Set the name of the sample currently shown. 
+                    $(' #curr_sample_name ').html('Well: ' + samples[this_sample_no]["well_readable"] + '.')
+                })
+
+                //Initialise the search box function. 
+                $(' #search_options li ').addClass("d-none")
+
+                const search = document.querySelector("#cp_search")
+                search.onkeyup = function(e) {
+                    
+                    $(' #search_options li ').addClass("d-none")
+                    if(search.value != "") {
+                        let myregex = new RegExp(search.value.toLowerCase())
+                        let matches = search_options.filter(x => myregex.test(x.toLowerCase()))
+                        matches.forEach(x => {
+                            $(' #'+x).removeClass("d-none")
+                        })
+                    }
+                }
+
+                $(' #cp_well_search_options li ').addClass("d-none")
+
+                const cp_well_search = document.querySelector("#cp_well_search")
+                cp_well_search.onkeyup = function(e) {
+                    
+                    $(' #cp_well_search_options li ').addClass("d-none")
+                    if(cp_well_search.value != "") {
+                        let myregex = new RegExp(cp_well_search.value.toLowerCase())
+                        let matches = search_options.filter(x => myregex.test(x.toLowerCase()))
+                        matches.forEach(x => {
+                            $(' #cp_well_search'+x).removeClass("d-none")
+                        })
+                    }
+                }
+                
+                
+
+                //Plot the heatmap 
+                Plotly.newPlot("heatmap_space", [heatmap_plot], heatmap_layout, {modeBarButtonsToRemove: heatmap_buttons_to_remove, responsive: true})
+                this_heatmap = selected_metric
+                changeHeatmap()
+                setHeatmapClickFns()
+
+
+                Plotly.newPlot("chroma-plot-space", [plotting, overlay, uv_plotting, ms_minus, ms_plus], layout, {modeBarButtonsToRemove: buttons_to_remove, responsive: true})
+                setClickFns()
+
+                //Get maximum well number for the validation plot
+                const max_well = lcData.reduce((prev, current) => (prev && prev["well"] > current["well"]) ? prev : current)
+                validation_layout["xaxis"]["range"] = [0, Math.ceil(max_well["well"]*1.1)]
+
+                //Get run time of the LCMS for the validation plot
+                //const max_time = lcData.reduce((prev, current) => (prev && prev["well"] > current["time"]) ? prev : current)
+                //validation_layout["yaxis"]["range"] = [0, Math.ceil(max_time["time"]*1.1)]
+
+                //Set the sample to be the first compound. 
+                this_cmp_no = 0
+                this_sample_name = cpData[this_cmp_no]["best_sample_filename"]
+                this_sample_no = samples.findIndex(x => x["filename"] == this_sample_name)
+                changeSample()
+                changeValidation()
+                changeLogs()
+                setValidationClickFns()
+
+                //Set the name of the sample currently shown. 
+                $(' #curr_sample_name ').html(cpData[this_cmp_no]["name"] + '; well: ' + cpData[this_cmp_no]["best_well"] + '.')
+
+                
+
+            });
+        </script>
+    </body>
+</html>
+
+

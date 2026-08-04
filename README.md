@@ -1,9 +1,10 @@
+[![DOI](https://zenodo.org/badge/616543497.svg)](https://zenodo.org/badge/latestdoi/616543497)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Welcome to PyParse!
 ===================================
 
-Authors: [Joe Mason](https://github.com/thatchemistryguy)
+Authors: [Joe Mason](https://github.com/thatchemistryguy), Francesco Rianjongdee, Harry Wilders, [David Fallon](https://github.com/fallonda)
 
 
 Description
