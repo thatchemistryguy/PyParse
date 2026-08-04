@@ -48,7 +48,7 @@ class Assignment:
         #replace empty cells with an empty string
         #convert all column names to lower case and remove whitespace
         self.inputCSV = pd.read_csv(filename)
-        self.inputCSV.fillna("", inplace=True)
+        self.inputCSV.fillna(value=None, inplace=True)
         self.inputCSV.columns = self.inputCSV.columns.str.strip().str.lower()
         
         self.plate_col_no = plate_col_no
@@ -143,7 +143,7 @@ class Assignment:
                     name = ""
                     if cpname_column in self.inputCSV.columns:
                         name_series = self.inputCSV.loc[self.inputCSV[col] == row[col]][cpname_column]
-                        potential_names = [x for x in name_series if x != ""]
+                        potential_names = [x for x in name_series if type(x) == str and x != ""]
                         if len(potential_names) != 0:
                             name = potential_names[0]
                     #if a name could not be generated, create a generic one using a simple counter
