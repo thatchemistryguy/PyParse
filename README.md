@@ -1,10 +1,9 @@
-[![DOI](https://zenodo.org/badge/616543497.svg)](https://zenodo.org/badge/latestdoi/616543497)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Welcome to PyParse!
 ===================================
 
-Authors: [Joe Mason](https://github.com/thatchemistryguy), Francesco Rianjongdee, Harry Wilders, [David Fallon](https://github.com/fallonda)
+Authors: [Joe Mason](https://github.com/thatchemistryguy)
 
 
 Description
@@ -30,17 +29,20 @@ You can also find our published user-guide for chemists at our peer-reviewed art
 ```
 (Saves all output tables, data and visualisations to "new_output_directory".)
 
-New!! About This Branch
+New!!! About Version 2!!
+--------------------------
+
+The latest version, v2, of PyParse features a reworked user interface for the output, taking advantage of the Plotly Javascript library to generate interactive heatmaps and graphs. Try clicking on the wells of the heatmap and see the chromatogram change!
+You can click on any point of the hit validation graphs (which plot all hits for a compound by their retention time vs well) to highlight particular peaks as well. 
+
+Analytical Data Table
 -------------------
 
-This branch, genAnalyticalTable, generates a .csv file containing all possible information about every analyte for every well in the plate. It is designed to encompass everything, in a machine-readable format ready
-for upload to a database or similar. 
+This tool is most useful when used in conjunction with [PyParse_designer](https://github.com/thatchemistryguy/PyParse_designer), which a simple and lightweight tool to help the user generate fully detailed platemaps
+with minimal effort. When used, the user gets a full end-to-end workflow to design the plate, analyse the data, and prepare this data for long term storage in a database. generates a .csv file containing all possible information about every analyte for every well in the plate. It is designed to encompass everything, in a machine-readable format ready for upload to a database or similar. 
 <p align="center">
 	<img src="https://github.com/user-attachments/assets/f3d12331-44ab-42fc-bb9a-5aff86b6b006" width="700">
 </p>
-
-It is most useful when used in conjunction with [PyParse_designer](https://github.com/thatchemistryguy/PyParse_designer), which a simple and lightweight tool to help the user generate fully detailed platemaps
-with minimal effort. When used, the user gets a full end-to-end workflow to design the plate, analyse the data, and prepare this data for long term storage in a database. 
 
 Workflow in a Nutshell:
 
