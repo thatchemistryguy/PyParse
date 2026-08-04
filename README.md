@@ -9,8 +9,7 @@ Authors: [Joe Mason](https://github.com/thatchemistryguy)
 Description
 --------------- 
 
-This script will read Liquid Chromatography Mass Spectrometry (LCMS) data in the Waters OpenLynx™ browser report (.rpt)
-or Shimadzu .daml file formats, and assign peaks to compounds specified in  a .csv platemap. This assignment is then used to generate heatmaps and 
+This script will read Liquid Chromatography Mass Spectrometry (LCMS) data in the Waters OpenLynx™ browser report (.rpt), and assign peaks to compounds specified in  a .csv platemap. This assignment is then used to generate heatmaps and 
 other visualisations to compare and contrast different LCMS runs. It was designed specifically for the analysis of data generated from 
 high-throughput chemistry, and is suitable for reaction optimisations, parallel synthesis, library validation experiments and direct-to-biology. 
 
@@ -60,6 +59,10 @@ Publications which make use of PyParse to aid analysis of high-throughput LC-MS 
 Mason J., Wilders H., Fallon D.J., Thomas R.P., Bush J.T., Tomkinson N.C.O., Rianjongdee, F.; Automated LC-MS Analysis and Data Extraction for High-Throughput Chemistry; Digital Discovery (**2023**), 2, 1894 - 1899; https://doi.org/10.1039/D3DD00167A
 
 (An earlier version of this manuscript was published on ChemRxiv (**2023**), https://doi.org/10.26434/chemrxiv-2023-1x288)
+
+Shimadzu Files
+---------------
+Users with a Shimadzu machine should opt to use the v1_archive branch for now. This code will be ported across to v2 in the future, but is currently not compatible with version 2. 
 		
 License
 ---------------
